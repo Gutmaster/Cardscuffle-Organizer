@@ -1,0 +1,297 @@
+:root {
+  --bg: #282c34;
+  --header: #fff;
+  --link: #61dafb;
+  --text: hsla(0, 0%, 100%, 0.88);
+}
+
+.home {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpapercave.com%2Fwp%2Fwp6936159.jpg&f=1&nofb=1&ipt=1c8cd9365d145e63c1d06f3ec60ced33edd086a178823cb33c7bd799d9292a59&ipo=images");
+  padding: 8px;
+  text-align: center;
+  height: 1000px;
+}
+
+.homeText {
+  background-color: rgb(48, 168, 138);
+  padding: 8px;
+  margin: auto;
+  width: 50%;
+  text-indent: 12px;
+  text-align: left;
+  border-radius: 12px;
+  font-size:30px;
+}
+
+.animals {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2F7%2F2%2Fb%2F628275.jpg&f=1&nofb=1&ipt=6da27e7efb09bcad5dab99525fc3cb8b6c0bd7d7ca75d24df261892888dde492&ipo=images");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.locations {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpng.pngtree.com%2Fbackground%2F20230611%2Foriginal%2Fpngtree-wallpaper-of-a-scenic-mountain-landscape-with-trees-picture-image_3137681.jpg&f=1&nofb=1&ipt=bf65ce36380b52103e97e398498259d46befb3a6c24ca0ea5f5d3262595c87fc&ipo=images");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.photographs {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F008%2F605%2F354%2Foriginal%2Fworld-photography-day-background-outline-camera-concept-free-vector.jpg&f=1&nofb=1&ipt=7e31664c35b231d487bc734b1c67e83d2ddbca7ad7ebc7208070a0bb428b1888&ipo=images");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.newPhoto {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fblogs-images.forbes.com%2Fceciliarodriguez%2Ffiles%2F2019%2F05%2F7c0dD0Jw-1-.jpeg&f=1&nofb=1&ipt=5fb65b85330048617faefc54880e20a5c31a8a13806685efcda231bce079aa24&ipo=images");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  height: 100%;
+}
+
+.title {
+  text-align: center;
+  font-size:larger;
+}
+
+header {
+  padding: 8px;
+  background-color: rgb(150, 76, 34);
+  text-align: center;
+}
+
+header nav {
+  padding: 8px;
+}
+
+header nav a {
+  font-size: 1.5rem;
+}
+
+.container {
+  padding: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.photoCard {
+  padding: 5px;
+  width: 550px;
+  height: 550px;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 12px;
+  height:fit-content;
+  background-color: rgb(22, 153, 44);
+  background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FAlDivIaiuMU%2Fmaxresdefault.jpg&f=1&nofb=1&ipt=35cfae5a4211eb3d2ed27161f5e830941e9baf1fbb1d015d9c029f4b1d82dcf6&ipo=images')
+}
+
+.photoCard img {
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:20px;
+  width: 500px;
+  height: 370px;
+  vertical-align: middle;
+}
+
+.photoCard button {
+  display:inline-flex;
+  background-color: rgb(255, 0, 106);
+  color: white;
+  border-radius: 20px;
+}
+
+.animalCard {
+  margin: 5px 0;
+  padding: 5px;
+  width: 550px;
+  height: 550px;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 12px;
+  background-color: rgb(15, 119, 32);
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2Fe%2Fd%2Fc%2F269263.jpg&f=1&nofb=1&ipt=4230a72ce2dfa22448160489a7d36f840fd7487a14f07d4a096a6fc12c8e636b&ipo=images");
+  background-size: 180%;
+}
+
+.animalCard img {
+  display: inline-flex;
+  width: 300px;
+  height: 300px;
+  vertical-align: middle;
+}
+
+.locationCard {
+  margin: 5px 0;
+  padding: 5px;
+  width: 550px;
+  height: 550px;
+  color: black;
+  border: 1px solid grey;
+  border-radius: 12px;
+  background-color: rgb(15, 43, 119);
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F024%2F581%2F458%2Flarge_2x%2Fold-crumpled-paper-background-brown-crumpled-paper-texture-abstract-old-brown-paper-as-vintage-wallpaper-backdrop-ai-generated-free-photo.jpg&f=1&nofb=1&ipt=f3288c666a2e7df125a80f724aac47c4c2b78ac8e6e6e3fb377e1dd642bb591f&ipo=images");
+  background-size: 150%;
+}
+
+.locationCard img {
+  display: inline-flex;
+  width: 300px;
+  height: 300px;
+  vertical-align: middle;
+}
+
+.cardText {
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: solid 1px black;
+  background-color: rgb(33, 136, 52);
+  border-radius: 20px;
+  overflow-wrap:break-word;
+  hyphens:auto;
+  width:fit-content;
+  padding: 5px;
+}
+
+.listText {
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  border: solid 1px black;
+  background-color: rgb(33, 136, 52);
+  overflow-wrap:break-word;
+  hyphens:auto;
+  width:fit-content;
+  padding-left:25px;
+  padding-right:10px;
+  padding-bottom:5px;
+}
+
+.description {
+  padding:10px;
+  border: solid 1px black;
+  background-color: rgb(33, 136, 52);
+  border-radius: 20px;
+  overflow-wrap:break-word;
+  hyphens:auto;
+}
+
+.animalCard button {
+  display:inline-flex;
+  background-color: rgb(255, 0, 106);
+  color: white;
+  border-radius: 20px;
+}
+
+.locationCard button {
+  display:inline-flex;
+  background-color: rgb(255, 0, 106);
+  color: white;
+  border-radius: 20px;
+}
+
+.filter{
+  margin-left:43%;
+  text-align:center;
+  width:fit-content;
+  background-color:magenta;
+  border: 20px solid blueviolet;
+}
+
+.newPhotoForm{
+  margin-left:30%;
+  width: 700px;
+  border: 5px solid royalblue;
+  background-color: gray;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+label {
+  display: inline-block;
+  width: 150px;
+  text-align: right;
+  text-align: top;
+}
+
+ul {
+  margin:0px;
+}
+
+.submitButton {
+  margin-left:45%;
+}
+
+textarea {
+  vertical-align: top;
+}
+
+
+.description {
+  padding:10px;
+  border: solid 1px black;
+  border-radius: 20px;
+  overflow-wrap:break-word;
+  hyphens:auto;
+  background-color: rgb(33, 136, 52);
+}
+
+.edit {
+  margin-left:10px;
+  margin-right:10px;
+  margin-top: 10px;
+  text-align: top;
+  vertical-align: top;
+}
+
+body { background: #222; color: white; }
+
+.left, .right { width: 50%; float: left; }
+
+.left  { text-align: right; }
+.right { text-align: left;  }
+
+
+span   { font-family: sans-serif; line-height: 20px; font-weight: bold;     }
+input  { width: 200px;            height: 30px;      box-sizing:border-box; }
+select { width: 200px;            height: 30px;      box-sizing:border-box; }
+
+.goodAlert {
+  padding: 20px;
+  background-color: chartreuse;
+  color: white;
+  text-align: center;
+}
+
+.badAlert {
+  padding: 20px;
+  background-color: red;
+  color: black;
+  text-align: center;
+}
+
+.cardTitle {
+  font-family:Impact, Haettenschweiler;
+  font-weight:bold;
+  margin-left:15px;
+  padding: 5px;
+  background-color:rgb(15, 119, 32);
+  border-style: solid;
+  border-color: black;
+  width:fit-content;
+}
+
+.listTitle {
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight:bold;
+  font-size:large;
+}
