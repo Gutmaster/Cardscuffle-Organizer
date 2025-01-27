@@ -12,7 +12,7 @@ from flask import make_response
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import Animal, Photograph, Location
+from models import Animal, Photograph, Location, User, Score
 
 load_dotenv()
 
@@ -20,6 +20,41 @@ load_dotenv()
 @app.errorhandler(404)
 def not_found(e):
     return render_template("index.html")
+
+class Users(Resource):
+    def get(self):
+        users = User.query.all()
+        user_dicts = []
+        for user in users:
+            user_dict = user.to_dict()
+            user_dict['scores'] = [score.score for score in user.scores]
+            user_dicts.append(user_dict)
+        return make_response(user_dicts, 200)
+    
+    def post(self):
+        data = request.json
+        print('POSTING ATTEMPT', data.get('username'), data.get('password'))
+        user = User(username = data.get('username'), password = data.get('password'))
+        db.session.add(user)
+        db.session.commit()
+        return user.to_dict(), 201
+    
+class Scores(Resource):
+    def get(self):
+        scores = Score.query.all()
+        score_dicts = []
+        for score in scores:
+            score_dict = score.to_dict()
+            score_dicts.append(score_dict)
+        return make_response(score_dicts, 200)
+    
+    def post(self):
+        data = request.json  
+        user = User.query.filter_by(username=data.get('username')).first()
+        score = Score(user = user, score = data.get('score'))
+        db.session.add(score)
+        db.session.commit()
+        return score.to_dict(), 201
 
 class Animals(Resource):
     def get(self):
@@ -122,6 +157,8 @@ class PhotographById(Resource):
         else:
             return {'Error': 'Photograph not found'}, 404
 
+api.add_resource(Users, '/_users')
+api.add_resource(Scores, '/_scores')
 api.add_resource(Animals, '/_animals')
 api.add_resource(AnimalById, '/_animals/<int:id>')
 api.add_resource(Locations, '/_locations')

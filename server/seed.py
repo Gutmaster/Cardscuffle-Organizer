@@ -7,7 +7,7 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, Animal, Photograph, Location
+from models import db, Score, Animal, Photograph, Location
 
 if __name__ == '__main__':
     fake = Faker()
@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
         print("Starting seed...")
         print("Deleting data...")
+        Score.query.delete()
         Photograph.query.delete()
         Animal.query.delete()
         Location.query.delete()

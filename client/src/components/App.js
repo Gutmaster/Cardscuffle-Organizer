@@ -5,14 +5,32 @@ import Photographs from "./Photographs.js"
 import Animals from "./Animals.js"
 import Locations from "./Locations.js"
 import NewPhoto from "./NewPhoto.js"
+import SignUp from "./SignUp.js"
+import PatienceGame from "./PatienceGame.js"
 import { Switch, Route } from "react-router-dom";
 
 function App() {
+  const [user, setUser] = useState()
+  const [users, setUsers] = useState([])
   const [animals, setAnimals] = useState([])
   const [locations, setLocations] = useState([])
   const [photos, setPhotos] = useState([])
+  const [scores, setScores] = useState([])
 
+  function fetchUsers(){
+    fetch("/_users")
+     .then((r) => r.json())
+     .then(json => setUsers(json));
+  }
+  function fetchScores(){
+    fetch("/_scores")
+     .then((r) => r.json())
+     .then(json => setScores(json));
+  }
+  
   useEffect(() => {
+    fetchScores()
+    fetchUsers()
     fetch("/_animals")
       .then((r) => r.json())
       .then(json => setAnimals(json));
@@ -24,8 +42,23 @@ function App() {
   useEffect(() => {
     fetch("/_photographs")
       .then((r) => r.json())
-      .then(setPhotos);
+      .then(setPhotos)
   }, []);
+
+  // function handleSubmitNewUser(username, password) {
+  //     fetch('/_users', {
+  //         method: 'POST',
+  //         headers: {
+  //             'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ username, password }),
+  //     })
+  //     .then((r) => r.json())
+  //     .then((user) => {
+  //         setUser(user)
+  //         setUsers(...users, user)
+  //     });
+  // }
 
   function handleDeletePhoto(id) {
     fetch(`/_photographs/${id}`, {
@@ -62,10 +95,13 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user}/>
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route exact path="/signup">
+          <SignUp users={users} setUsers={setUsers} setUser={setUser}/>
         </Route>
         <Route exact path="/animals">
           <Animals animals={animals}/>
@@ -82,6 +118,9 @@ function App() {
         </Route>
         <Route exact path="/newphoto">
           <NewPhoto animals={animals} locations={locations} photos={photos} setPhotos={setPhotos}/>
+        </Route>
+        <Route exact path="/patiencegame">
+          <PatienceGame user={user} scores={scores} fetchScores={fetchScores}/>
         </Route>
       </Switch>
     </>

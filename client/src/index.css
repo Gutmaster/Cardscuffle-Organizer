@@ -55,6 +55,14 @@
   height: 100%;
 }
 
+.signUp {
+  background-color: rgb(34, 53, 150);
+  padding: 8px;
+  color: white;
+  text-align: center;
+  border-radius: 12px;
+}
+
 .title {
   text-align: center;
   font-size:larger;

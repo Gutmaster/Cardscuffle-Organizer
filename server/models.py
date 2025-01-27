@@ -4,6 +4,27 @@ from sqlalchemy.ext.associationproxy import association_proxy
 
 from config import db
 
+class User(db.Model, SerializerMixin):
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    scores = db.relationship('Score', back_populates='user')
+
+    serialize_rules = ('-scores.user',)
+
+class Score(db.Model, SerializerMixin):
+    __tablename__ = 'scores'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship('User', back_populates='scores')
+    score = db.Column(db.Integer)
+
+    serialize_rules = ('-user.scores',)
+
+
 class Animal(db.Model, SerializerMixin):
     __tablename__ = 'animals'
 
