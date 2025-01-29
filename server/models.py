@@ -26,9 +26,12 @@ class Card(db.Model, SerializerMixin):
     art = db.Column(db.String, nullable=False)
 
     set_id = db.Column(db.Integer, db.ForeignKey('sets.id'))
-    artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
+    set = db.relationship('Set', back_populates='cards', lazy='joined')
 
+    artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
+    artist = db.relationship('Artist', back_populates='cards', lazy='joined')
     users = db.relationship('User', secondary='user_cards', back_populates='cards')
+    
 
 class Set(db.Model, SerializerMixin):
     __tablename__ ='sets'

@@ -24,7 +24,7 @@ def not_found(e):
 class Users(Resource):
     def get(self):
         users = User.query.all()
-        return make_response(users.to_dict(), 200)
+        return make_response([user.to_dict() for user in users], 200)
     
     def post(self):
         data = request.json
