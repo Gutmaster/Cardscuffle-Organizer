@@ -34,7 +34,17 @@ class Users(Resource):
         db.session.commit()
         return user.to_dict(), 201
     
-
+class Cards(Resource):
+    def get(self):
+        cards = Card.query.all()
+        return make_response([card.to_dict() for card in cards], 200)
+    
+    def post(self):
+        data = request.json
+        card = Card(name = data.get('name'), art = data.get('art'), artist_id = data.get('artist_id'), set_id = data.get('set_id'))
+        db.session.add(card)
+        db.session.commit()
+        return card.to_dict(), 201
 
 # class Animals(Resource):
 #     def get(self):

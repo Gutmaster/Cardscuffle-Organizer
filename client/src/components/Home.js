@@ -7,7 +7,7 @@ function Home() {
           <h1 className='title'>Welcome to the Cardscuffle collection digitizer!</h1>
           <p>
             Here you can add and track which Cardscuffle cards you have and view your collection sorted by Artist or card set.
-            <Link to="/animals">animals</Link>
+            <Link to="/NewCard">Upload a card.</Link>
           </p>
         </div>
       </div>
