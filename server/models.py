@@ -13,6 +13,8 @@ class User(db.Model, SerializerMixin):
 
     cards = db.relationship('Card', secondary='user_cards', back_populates='users')
 
+    serialize_rules = ('-cards.users',)
+
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
@@ -31,6 +33,8 @@ class Card(db.Model, SerializerMixin):
     artist_id = db.Column(db.Integer, db.ForeignKey('artists.id'))
     artist = db.relationship('Artist', back_populates='cards', lazy='joined')
     users = db.relationship('User', secondary='user_cards', back_populates='cards')
+
+    serialize_rules = ('-users.cards', '-set.cards', '-artist.cards')
     
 
 class Set(db.Model, SerializerMixin):
@@ -41,6 +45,8 @@ class Set(db.Model, SerializerMixin):
     release_date = db.Column(db.Date, nullable=False)
 
     cards = db.relationship('Card', back_populates='set')
+
+    serialize_rules = ('-cards.set',)
     
 class Artist(db.Model, SerializerMixin):
     __tablename__ = 'artists'
@@ -49,6 +55,8 @@ class Artist(db.Model, SerializerMixin):
     name = db.Column(db.String, unique=True, nullable=False)
 
     cards = db.relationship('Card', back_populates='artist')
+
+    serialize_rules = ('-cards.artist',)
 
 
 # class Animal(db.Model, SerializerMixin):

@@ -46,6 +46,30 @@ class Cards(Resource):
         db.session.commit()
         return card.to_dict(), 201
 
+class Artists(Resource):
+    def get(self):
+        artists = Artist.query.all()
+        return make_response([artist.to_dict() for artist in artists], 200)
+    
+    def post(self):
+        data = request.json
+        artist = Artist(name = data.get('name'))
+        db.session.add(artist)
+        db.session.commit()
+        return artist.to_dict(), 201
+    
+class Sets(Resource):
+    def get(self):
+        sets = Set.query.all()
+        return make_response([set.to_dict() for set in sets], 200)
+    
+    def post(self):
+        data = request.json
+        set = Set(name = data.get('name'), release_date = data.get('release_date'))
+        db.session.add(set)
+        db.session.commit()
+        return set.to_dict(), 201
+    
 # class Animals(Resource):
 #     def get(self):
 #         animals = Animal.query.all()
@@ -148,6 +172,9 @@ class Cards(Resource):
 #             return {'Error': 'Photograph not found'}, 404
 
 api.add_resource(Users, '/_users')
+api.add_resource(Cards, '/_cards')
+api.add_resource(Artists, '/_artists')
+api.add_resource(Sets, '/_sets')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

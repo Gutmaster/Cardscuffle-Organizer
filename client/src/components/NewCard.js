@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function NewCard({sets, artists}) {
+function NewCard({artists, sets}) {
     const [alertMessage, setAlertMessage] = useState('')
     const [addArtist, setAddArtist] = useState(false)
     const [addSet, setAddSet] = useState(false)
@@ -81,7 +81,12 @@ function NewCard({sets, artists}) {
                         ))}
                     </select>
                 <label htmlFor='set'>Set: </label>
-                    <input type="text" id = "set" name="set" value={formik.values.set} onChange={formik.handleChange}/>
+                    <select id="set" name="set" value={formik.values.set} onChange={formik.handleChange}>
+                        <option value={'select'}>Select Set</option>
+                        {sets.map((set) => (
+                            <option key={set.id} value={set.name}>{set.name}</option>
+                        ))}
+                    </select>
                 <button type="submit" className='submitButton'>Submit</button>
             </form>
             {alertMessage!==''? <p className='goodAlert'>{alertMessage}</p>: <></>}
@@ -92,6 +97,13 @@ function NewCard({sets, artists}) {
                     <button type="submit" className='submitButton'>Submit</button>
                 </div> :
                 <button onClick={e => setAddArtist(!addArtist)}>Add Artist</button> }
+
+            {addSet?
+                <div>
+                    <input type="text" value={newSet} onChange={e => setNewSet(e.target.value)}/>
+                    <button type="submit" className='submitButton'>Submit</button>
+                </div> :
+                <button onClick={e => setAddSet(!addSet)}>Add Set</button> }
         </div>
     );
 }
