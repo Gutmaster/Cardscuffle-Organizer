@@ -66,6 +66,18 @@ function NewCard({artists, sets}) {
         }
     })
 
+    function handleArtistSubmit(){
+        fetch('/_artists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: newArtist
+            }, null, 2)
+        })
+    }
+
     return (
         <div className='signUp'>
             <form className='' onSubmit={formik.handleSubmit}>
@@ -92,18 +104,18 @@ function NewCard({artists, sets}) {
             {alertMessage!==''? <p className='goodAlert'>{alertMessage}</p>: <></>}
 
             {addArtist ?  
-                <div>
+                <form onSubmit={handleArtistSubmit}>
                     <input type="text" value={newArtist} onChange={e => setNewArtist(e.target.value)}/>
                     <button type="submit" className='submitButton'>Submit</button>
-                </div> :
-                <button onClick={e => setAddArtist(!addArtist)}>Add Artist</button> }
+                </form> :
+                <button onClick={e => setAddArtist(!addArtist)}>Add Artist</button>}
 
             {addSet?
-                <div>
+                <form>
                     <input type="text" value={newSet} onChange={e => setNewSet(e.target.value)}/>
                     <button type="submit" className='submitButton'>Submit</button>
-                </div> :
-                <button onClick={e => setAddSet(!addSet)}>Add Set</button> }
+                </form> :
+                <button onClick={e => setAddSet(!addSet)}>Add Set</button>}
         </div>
     );
 }

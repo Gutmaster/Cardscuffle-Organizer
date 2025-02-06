@@ -10,7 +10,8 @@ function App() {
   const [users, setUsers] = useState([])
   const [artists, setArtists] = useState([])
   const [sets, setSets] = useState([])
-
+  const [cards, setCards] = useState([])
+  
   useEffect(() => {
     fetch("/_users")
     .then((r) => r.json())
