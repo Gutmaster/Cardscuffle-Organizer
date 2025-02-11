@@ -54,4 +54,4 @@ function Card({card}) {
   );
 }
 
-export default Animal;
+export default Card;

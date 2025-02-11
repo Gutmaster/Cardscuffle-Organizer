@@ -9,6 +9,8 @@ function NewCard({artists, sets}) {
     const [newArtist, setNewArtist] = useState('')
     const [newSet, setNewSet] = useState('')
 
+    console.log(artists, sets)
+
     function alertReset(){
         setAlertMessage('')
     }

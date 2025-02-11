@@ -3,6 +3,7 @@ import Home from "./Home.js"
 import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
 import { Switch, Route } from "react-router-dom";
+import Cards from "./Cards.js"
 import NewCard from "./NewCard.js"
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
     fetch("/_sets")
     .then((r) => r.json())
     .then(json => setSets(json));
+
+    fetch("/_cards")
+    .then((r) => r.json())
+    .then(json => setCards(json));
   }, []);
 
   return (
@@ -38,6 +43,9 @@ function App() {
         </Route>
         <Route exact path="/newcard">
           <NewCard artists={artists} sets={sets}/>
+        </Route>
+        <Route exact path="/cards">
+          <Cards cards={cards}/>
         </Route>
       </Switch>
     </>

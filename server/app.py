@@ -37,7 +37,11 @@ class Users(Resource):
 class Cards(Resource):
     def get(self):
         cards = Card.query.all()
-        return make_response([card.to_dict() for card in cards], 200)
+        card_dicts = []
+        for card in cards:
+            card_dict = card.to_dict()
+            card_dicts.append(card_dict)
+        return make_response(card_dicts, 200)
     
     def post(self):
         data = request.json
