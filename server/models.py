@@ -1,10 +1,15 @@
 from sqlalchemy_serializer import SerializerMixin
+from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from config import db
 
-class User(db.Model, SerializerMixin):
+class User(db.Model, SerializerMixin, UserMixin):
+    @classmethod
+    def get(self, id):
+        return User.query.get(id)
+    
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,6 +19,15 @@ class User(db.Model, SerializerMixin):
     cards = db.relationship('Card', secondary='user_cards', back_populates='users')
 
     serialize_rules = ('-cards.users',)
+
+    def is_authenticated(self):
+        return True
+    def is_active(self):
+        return True
+    def is_anonymous(self):
+        return False
+    def get_id(self):
+        return str(id)
 
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'

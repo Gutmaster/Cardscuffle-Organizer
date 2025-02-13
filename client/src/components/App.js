@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Home from "./Home.js"
 import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
+import LogIn from "./LogIn.js"
 import { Switch, Route } from "react-router-dom";
 import Cards from "./Cards.js"
 import NewCard from "./NewCard.js"
@@ -40,6 +41,9 @@ function App() {
         </Route>
         <Route exact path="/signup">
           <SignUp users={users} setUsers={setUsers} setUser={setUser}/>
+        </Route>
+        <Route exact path="/login">
+          <LogIn users={users} setUsers={setUsers} setUser={setUser}/>
         </Route>
         <Route exact path="/newcard">
           <NewCard artists={artists} sets={sets}/>

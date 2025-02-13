@@ -35,7 +35,7 @@ if __name__ == '__main__':
         users = [Billy]
 
         print("Creating Cards...")
-        FireHuck = Card(name="Firehuck", art = "NOART", artist = Randal, set = CroreSet)
+        FireHuck = Card(name="Firehuck", art = "https://imgs.search.brave.com/izk5prphnJGNL88vbLHEm1GVa-XUUCeCkylHu4j_kuk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAzLzgyLzUyLzUx/LzM2MF9GXzM4MjUy/NTEwNF91VVJ6QU8w/Uzl0dnpNelM5OGt0/QlNyTzFyRVFtS09m/NC5qcGc", artist = Randal, set = CroreSet)
         cards = [FireHuck]
 
         Billy.cards.append(FireHuck)
