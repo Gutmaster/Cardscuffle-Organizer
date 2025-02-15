@@ -9,6 +9,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_restful import Resource
 from flask import make_response
 from flask_login import login_user, login_required
+import os
 
 # Local imports
 from config import app, db, api, login_manager
@@ -17,7 +18,7 @@ from models import User, Card, Set, Artist
 
 load_dotenv()
 
-app.secret_key = b'a55effcfec6e5625a16a2ec827ea7d883d1510edfbf141493c72fc8c34e7d458'
+app.secret_key = os.environ.get('SECRET_KEY')
 
 
 @login_manager.user_loader

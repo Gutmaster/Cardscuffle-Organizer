@@ -45,7 +45,7 @@ function LogIn({users, setUser}) {
                 setUser(data)
                 formik.values.username = ''
                 formik.values.password = ''
-                setAlertMessage('User added!')
+                setAlertMessage('Logged In!')
                 setTimeout(alertReset, 2000)
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
