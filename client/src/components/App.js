@@ -26,11 +26,14 @@ function App() {
     fetch("/_sets")
     .then((r) => r.json())
     .then(json => setSets(json));
+  }, []);
 
+  function logInUser(user) {
+    setUser(user)
     fetch("/_cards")
     .then((r) => r.json())
     .then(json => setCards(json));
-  }, []);
+  }
 
   return (
     <>
@@ -43,7 +46,7 @@ function App() {
           <SignUp users={users} setUsers={setUsers} setUser={setUser}/>
         </Route>
         <Route exact path="/login">
-          <LogIn users={users} setUsers={setUsers} setUser={setUser}/>
+          <LogIn logInUser={logInUser}/>
         </Route>
         <Route exact path="/newcard">
           <NewCard artists={artists} sets={sets}/>

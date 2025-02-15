@@ -5,10 +5,9 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 # Remote library imports
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 from flask_restful import Resource
-from flask import make_response
-from flask_login import login_user, login_required
+from flask_login import login_user, login_required, current_user
 import os
 
 # Local imports
@@ -18,13 +17,12 @@ from models import User, Card, Set, Artist
 
 load_dotenv()
 
-app.secret_key = os.environ.get('SECRET_KEY')
-
 
 @login_manager.user_loader
 def load_user(user_id):
+    print(user_id)
+    print(User.get(user_id))
     return User.get(user_id)
-##else return NONE
 
 # Views go here!
 @app.errorhandler(404)
@@ -46,13 +44,18 @@ class Users(Resource):
     
 
 class Cards(Resource):
+    @login_required
     def get(self):
-        cards = Card.query.all()
-        card_dicts = []
-        for card in cards:
-            card_dict = card.to_dict()
-            card_dicts.append(card_dict)
-        return make_response(card_dicts, 200)
+        if current_user.is_authenticated:
+            # Use .any() to check if any users associated with the card match the current user's ID
+            cards = Card.query.filter(Card.users.any(id=current_user.id)).all()
+            card_dicts = []
+            for card in cards:
+                card_dict = card.to_dict()
+                card_dicts.append(card_dict)
+            return make_response(card_dicts, 200)
+        else:
+            return make_response("You need to be logged in to access this feature", 401)
     
     def post(self):
         data = request.json
@@ -98,6 +101,7 @@ class Login(Resource):
             return response
         
         login_user(user)
+
         print('login successful', user.username)
 
         return make_response(user.to_dict(), 201)

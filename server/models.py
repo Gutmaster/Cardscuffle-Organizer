@@ -27,7 +27,7 @@ class User(db.Model, SerializerMixin, UserMixin):
     def is_anonymous(self):
         return False
     def get_id(self):
-        return str(id)
+        return str(self.id)
 
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'

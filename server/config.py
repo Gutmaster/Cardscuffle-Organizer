@@ -15,8 +15,7 @@ from flask_login import LoginManager
 app = Flask(
     __name__,
     static_url_path='',
-    static_folder='../client/build',
-    template_folder='../client/build'
+    static_folder='../client/build'
 )
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -45,3 +44,5 @@ CORS(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+app.secret_key = os.environ.get('SECRET_KEY')
