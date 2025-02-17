@@ -31,7 +31,7 @@ if __name__ == '__main__':
         artists = [Randal]
 
         print("Creating Users...")
-        Billy = User(username="Billy", password="Yllib")
+        Billy = User(username="Billy", password_hash="Yllib")
         users = [Billy]
 
         print("Creating Cards...")

@@ -12,6 +12,7 @@ function Navbar({user}) {
         <Link to="/cards">My Cards </Link>
         <Link to="/newcard">New Card</Link>
       </nav>
+      {user && <button onClick={() => {localStorage.removeItem('user'); window.location.reload()}}>Log Out</button>}
     </header>
   );
 }

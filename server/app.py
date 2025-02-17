@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 # Remote library imports
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 from flask_restful import Resource
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user
 import os
+
 
 # Local imports
 from config import app, db, api, login_manager
@@ -16,6 +17,7 @@ from config import app, db, api, login_manager
 from models import User, Card, Set, Artist
 
 load_dotenv()
+
 
 
 @login_manager.user_loader
@@ -36,8 +38,8 @@ class Users(Resource):
     
     def post(self):
         data = request.json
-        print('POSTING ATTEMPT', data.get('username'), data.get('password'))
-        user = User(username = data.get('username'), password = data.get('password'))
+        print('POSTING ATTEMPT', data.get('username'))
+        user = User(username = data.get('username'), password_hash = data.get('password'))
         db.session.add(user)
         db.session.commit()
         return user.to_dict(), 201
@@ -95,7 +97,7 @@ class Login(Resource):
     def post(self):
         data = request.json
         user = User.query.filter_by(username=data.get("username")).first()
-        if user is None or user.password != data.get("password"):
+        if user is None or not user.authenticate(data.get("password")):
             response = make_response(redirect(url_for("login")))
             response.status_code = 401
             return response
@@ -106,6 +108,12 @@ class Login(Resource):
 
         return make_response(user.to_dict(), 201)
 
+
+class Logout(Resource):
+    @login_required
+    def post(self):
+        logout_user()
+        return make_response(redirect(url_for("login")), 200)
 
 # @app.route('/login', methods=['GET', 'POST'])
 # def login():
@@ -135,6 +143,7 @@ api.add_resource(Cards, '/_cards')
 api.add_resource(Artists, '/_artists')
 api.add_resource(Sets, '/_sets')
 api.add_resource(Login, '/_login')
+api.add_resource(Logout, '/_logout')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

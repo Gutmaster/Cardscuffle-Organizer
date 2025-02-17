@@ -45,8 +45,9 @@ function Card({card}) {
 
         <img src={card.art} alt={card.name}/>
 
-
       </span>
+      <p className='artistName'>{card.artist.name}</p>
+      <p className='setName'>{card.set.name}</p>
       {/* {edit ? <textarea className='edit' rows="5" cols="69" value={description?description:''} onChange={(e) => handleDescriptionChange(e.target.value)}/> : <p className='description'>{description}</p>}
       <button onClick={() => handleEdit()}>{edit ? 'Save': 'Edit'}</button> */}
       {alertMessage!==''? <p className='badAlert'>{alertMessage}</p>: <></>}

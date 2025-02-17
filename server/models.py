@@ -2,8 +2,9 @@ from sqlalchemy_serializer import SerializerMixin
 from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
 
-from config import db
+from config import db, bcrypt
 
 class User(db.Model, SerializerMixin, UserMixin):
     @classmethod
@@ -14,8 +15,8 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
-
+    _password_hash = db.Column(db.String, nullable=False)
+    
     cards = db.relationship('Card', secondary='user_cards', back_populates='users')
 
     serialize_rules = ('-cards.users',)
@@ -28,6 +29,21 @@ class User(db.Model, SerializerMixin, UserMixin):
         return False
     def get_id(self):
         return str(self.id)
+    
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+
+    @password_hash.setter
+    def password_hash(self, password):
+        # utf-8 encoding and decoding is required in python 3
+        password_hash = bcrypt.generate_password_hash(
+            password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(
+            self._password_hash, password.encode('utf-8'))
 
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'

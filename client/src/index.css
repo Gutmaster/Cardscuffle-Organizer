@@ -55,6 +55,24 @@ header nav a {
   font-size: 1.5rem;
 }
 
+.artistName {
+  margin-left: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-style: italic;
+  color: red;
+}
+
+.setName {
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-style: italic;
+  color: blue;
+}
+
 .container {
   padding: 1px;
   display: flex;

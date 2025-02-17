@@ -9,7 +9,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_login import LoginManager
-
+from flask_bcrypt import Bcrypt
 
 # Instantiate app, set attributes
 app = Flask(
@@ -46,3 +46,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 app.secret_key = os.environ.get('SECRET_KEY')
+
+# instantiate Bcrypt with app instance
+bcrypt = Bcrypt(app)
