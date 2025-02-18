@@ -18,12 +18,8 @@ from models import User, Card, Set, Artist
 
 load_dotenv()
 
-
-
 @login_manager.user_loader
 def load_user(user_id):
-    print(user_id)
-    print(User.get(user_id))
     return User.get(user_id)
 
 # Views go here!
@@ -38,7 +34,6 @@ class Users(Resource):
     
     def post(self):
         data = request.json
-        print('POSTING ATTEMPT', data.get('username'))
         user = User(username = data.get('username'), password_hash = data.get('password'))
         db.session.add(user)
         db.session.commit()
@@ -58,13 +53,19 @@ class Cards(Resource):
             return make_response(card_dicts, 200)
         else:
             return make_response("You need to be logged in to access this feature", 401)
-    
+    @login_required
     def post(self):
-        data = request.json
-        card = Card(name = data.get('name'), art = data.get('art'), artist_id = data.get('artist_id'), set_id = data.get('set_id'))
-        db.session.add(card)
-        db.session.commit()
-        return card.to_dict(), 201
+        print(current_user.username)
+        if current_user.is_authenticated:
+            data = request.json
+            card = Card(name = data.get('name'), 
+                        art = data.get('art'), 
+                        artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id,
+                        set_id = Set.query.filter(Set.name == data.get('set')).first().id,
+                        users = [current_user])
+            db.session.add(card)
+            db.session.commit()
+            return card.to_dict(), 201
 
 
 class Artists(Resource):
@@ -87,7 +88,7 @@ class Sets(Resource):
     
     def post(self):
         data = request.json
-        set = Set(name = data.get('name'), release_date = data.get('release_date'))
+        set = Set(name = data.get('name'), release_date = datetime(data.get('year'), data.get('month'), data.get('day')))
         db.session.add(set)
         db.session.commit()
         return set.to_dict(), 201

@@ -43,7 +43,7 @@ function App() {
           <Home />
         </Route>
         <Route exact path="/signup">
-          <SignUp users={users} setUsers={setUsers} setUser={setUser}/>
+          <SignUp users={users} setUsers={setUsers} logInUser={logInUser}/>
         </Route>
         <Route exact path="/login">
           <LogIn logInUser={logInUser}/>
@@ -52,7 +52,7 @@ function App() {
           <NewCard artists={artists} sets={sets}/>
         </Route>
         <Route exact path="/cards">
-          <Cards cards={cards}/>
+          <Cards artists={artists} sets={sets} cards={cards}/>
         </Route>
       </Switch>
     </>

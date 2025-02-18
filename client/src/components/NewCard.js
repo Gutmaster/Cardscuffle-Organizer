@@ -9,8 +9,6 @@ function NewCard({artists, sets}) {
     const [newArtist, setNewArtist] = useState('')
     const [newSet, setNewSet] = useState('')
 
-    console.log(artists, sets)
-
     function alertReset(){
         setAlertMessage('')
     }
@@ -75,7 +73,22 @@ function NewCard({artists, sets}) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: newArtist
+                name: newArtist,
+            }, null, 2)
+        })
+    }
+
+    function handleSetSubmit(){
+        fetch('/_sets', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: newSet,
+                year: 2015,
+                month: 2,
+                day: 1
             }, null, 2)
         })
     }
@@ -112,8 +125,8 @@ function NewCard({artists, sets}) {
                 </form> :
                 <button onClick={e => setAddArtist(!addArtist)}>Add Artist</button>}
 
-            {addSet?
-                <form>
+            {addSet ?
+                <form onSubmit={handleSetSubmit}>
                     <input type="text" value={newSet} onChange={e => setNewSet(e.target.value)}/>
                     <button type="submit" className='submitButton'>Submit</button>
                 </form> :
@@ -121,38 +134,5 @@ function NewCard({artists, sets}) {
         </div>
     );
 }
-
-{/* <div className='newPhoto'>
-<form className='newPhotoForm' onSubmit={formik.handleSubmit}>
-    <div className='left'>
-        <label htmlFor='animal'>Animal: </label>
-            <select id="animal" name="animal" value={formik.values.animal} onChange={formik.handleChange}>
-                <option value={'select'}>Select Animal</option>
-                {animals.map((animal) => (
-                    <option key={animal.id} value={animal.name}>{animal.name}</option>
-                ))}
-                <option value={'newAnimal'}>New Animal</option>
-            </select>
-
-        <label htmlFor='location'>Location: </label>
-            <select id="location" name="location" value={formik.values.location} onChange={formik.handleChange}>
-                <option value={'select'}>Select Location</option>
-                {locations.map((location) => (
-                    <option key={location.id} value={location.name}>{location.name}</option>
-                ))}
-                <option value={'newLocation'}>New Location</option>
-            </select>
-
-        <label htmlFor='image'>Image URL: </label>
-            <input type="text" id = "image" name="image" value={formik.values.image} onChange={formik.handleChange}/>
-    </div>
-    <div className='right'>
-        {formik.values.animal === 'newAnimal' ? <input type="text" id = "newAnimal" name="newAnimal" value={formik.values.newAnimal} onChange={formik.handleChange}/> : <input type="text" readOnly={true} value={''} style = {{visibility: 'hidden'}}/>}
-        {formik.values.location === 'newLocation' ? <input type="text" id = "newLocation" name="newLocation" value={formik.values.newLocation} onChange={formik.handleChange}/> : <input type="text" readOnly={true} value={''} style = {{visibility: 'hidden'}}/>}
-    </div>  
-    <button type="submit" className='submitButton'>Submit</button>
-</form>
-{alertMessage!==''? <p className='goodAlert'>{alertMessage}</p>: <></>}
-</div> */}
 
 export default NewCard;

@@ -42,7 +42,6 @@ function LogIn({logInUser}) {
                     return
                 }
                 const data = await response.json()
-                console.log(data)
                 logInUser(data)
                 formik.values.username = ''
                 formik.values.password = ''
