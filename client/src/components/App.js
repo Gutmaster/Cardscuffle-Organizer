@@ -12,8 +12,10 @@ function App() {
   const [users, setUsers] = useState([])
   const [artists, setArtists] = useState([])
   const [sets, setSets] = useState([])
-  const [cards, setCards] = useState([])
   
+  const [userArtists, setUserArtists] = useState([])
+  const [userSets, setUserSets] = useState([])
+
   useEffect(() => {
     fetch("/_users")
     .then((r) => r.json())
@@ -30,11 +32,14 @@ function App() {
 
   function logInUser(user) {
     setUser(user)
-    fetch("/_cards")
+    fetch("/_userartistsandsets")
     .then((r) => r.json())
-    .then(json => setCards(json));
+    .then(json => {
+      setUserArtists(json.artists)
+      setUserSets(json.sets)
+    })
   }
-
+  
   return (
     <>
       <Navbar user={user}/>
@@ -52,7 +57,7 @@ function App() {
           <NewCard artists={artists} sets={sets}/>
         </Route>
         <Route exact path="/cards">
-          <Cards artists={artists} sets={sets} cards={cards}/>
+          <Cards artists={userArtists} sets={userSets}/>
         </Route>
       </Switch>
     </>

@@ -21,6 +21,21 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     serialize_rules = ('-cards.users',)
 
+    def artists_and_sets(self):
+        artists = set()
+        sets = set()
+        
+        for card in self.cards:
+            if card.artist:
+                artists.add(card.artist)
+            if card.set:
+                sets.add(card.set)
+        # Convert sets to lists for JSON serialization
+        return {
+            'artists': list(artists),
+            'sets': list(sets)
+        }
+    
     def is_authenticated(self):
         return True
     def is_active(self):
@@ -36,7 +51,6 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     @password_hash.setter
     def password_hash(self, password):
-        # utf-8 encoding and decoding is required in python 3
         password_hash = bcrypt.generate_password_hash(
             password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
@@ -75,8 +89,6 @@ class Set(db.Model, SerializerMixin):
     release_date = db.Column(db.Date, nullable=False)
 
     cards = db.relationship('Card', back_populates='set')
-
-    serialize_rules = ('-cards.set',)
     
 class Artist(db.Model, SerializerMixin):
     __tablename__ = 'artists'
@@ -85,8 +97,6 @@ class Artist(db.Model, SerializerMixin):
     name = db.Column(db.String, unique=True, nullable=False)
 
     cards = db.relationship('Card', back_populates='artist')
-
-    serialize_rules = ('-cards.artist',)
 
 
 # class Animal(db.Model, SerializerMixin):

@@ -27,10 +27,17 @@ def load_user(user_id):
 def not_found(e):
     return render_template("index.html")
 
-class Users(Resource):
+class CheckSession(Resource):
     def get(self):
-        users = User.query.all()
-        return make_response([user.to_dict() for user in users], 200)
+        if current_user.is_authenticated():
+            return make_response(current_user.to_dict(), 201)
+        else:
+            return {'message': 'Not logged in'}
+        
+class Users(Resource):
+    # def get(self):
+    #     users = User.query.all()
+    #     return make_response([user.to_dict() for user in users], 200)
     
     def post(self):
         data = request.json
@@ -40,12 +47,34 @@ class Users(Resource):
         return user.to_dict(), 201
     
 
+class UserArtistsAndSets(Resource):
+    @login_required
+    def get(self):
+        if current_user.is_authenticated:
+            artists_and_sets = current_user.artists_and_sets()
+            print("ARTISTS AND SETTTS", artists_and_sets)
+
+            artists = artists_and_sets['artists']
+            sets = artists_and_sets['sets']
+
+            artist_dicts = [artist.to_dict() for artist in artists]
+            set_dicts = [set.to_dict() for set in sets]
+
+            # Combine them into a result dictionary
+            result = {
+                "artists": artist_dicts,
+                "sets": set_dicts
+            }
+
+            return make_response(result, 200)
+        else:
+            return make_response("You need to be logged in to access this feature", 401)
+
 class Cards(Resource):
     @login_required
     def get(self):
         if current_user.is_authenticated:
-            # Use .any() to check if any users associated with the card match the current user's ID
-            cards = Card.query.filter(Card.users.any(id=current_user.id)).all()
+            cards = current_user.cards
             card_dicts = []
             for card in cards:
                 card_dict = card.to_dict()
@@ -53,6 +82,7 @@ class Cards(Resource):
             return make_response(card_dicts, 200)
         else:
             return make_response("You need to be logged in to access this feature", 401)
+        
     @login_required
     def post(self):
         print(current_user.username)
@@ -106,6 +136,9 @@ class Login(Resource):
         login_user(user)
 
         print('login successful', user.username)
+        card = db.session.query(Card).filter_by(id=1).first() 
+        print(card)
+        print(card.artist.name)
 
         return make_response(user.to_dict(), 201)
 
@@ -140,11 +173,13 @@ class Logout(Resource):
 #     return flask.render_template('login.html', form=form)
 
 api.add_resource(Users, '/_users')
+api.add_resource(UserArtistsAndSets, '/_userartistsandsets')
 api.add_resource(Cards, '/_cards')
 api.add_resource(Artists, '/_artists')
 api.add_resource(Sets, '/_sets')
 api.add_resource(Login, '/_login')
 api.add_resource(Logout, '/_logout')
+api.add_resource(CheckSession, '/_check_session')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
