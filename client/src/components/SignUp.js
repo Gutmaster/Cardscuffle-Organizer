@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function SignUp({users, setUsers, logInUser}) {
+function SignUp({logInUser}) {
     const [alertMessage, setAlertMessage] = useState('')
 
     function alertReset(){
@@ -42,7 +42,6 @@ function SignUp({users, setUsers, logInUser}) {
                     return
                 }
                 const data = await response.json()
-                setUsers([...users, data])
                 logInUser(data)
                 formik.values.username = ''
                 formik.values.password = ''

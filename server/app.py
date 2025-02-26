@@ -32,7 +32,7 @@ class CheckSession(Resource):
         if current_user.is_authenticated():
             return make_response(current_user.to_dict(), 201)
         else:
-            return {'message': 'Not logged in'}
+            return make_response(None, 204)
         
 class Users(Resource):
     # def get(self):

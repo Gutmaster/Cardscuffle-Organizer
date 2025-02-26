@@ -19,7 +19,7 @@ class User(db.Model, SerializerMixin, UserMixin):
     
     cards = db.relationship('Card', secondary='user_cards', back_populates='users')
 
-    serialize_rules = ('-cards.users',)
+    serialize_rules = ('-cards.users', '-_password_hash')
 
     def artists_and_sets(self):
         artists = set()

@@ -9,7 +9,6 @@ import NewCard from "./NewCard.js"
 
 function App() {
   const [user, setUser] = useState()
-  const [users, setUsers] = useState([])
   const [artists, setArtists] = useState([])
   const [sets, setSets] = useState([])
   
@@ -17,10 +16,6 @@ function App() {
   const [userSets, setUserSets] = useState([])
 
   useEffect(() => {
-    fetch("/_users")
-    .then((r) => r.json())
-    .then(json => setUsers(json));
-
     fetch("/_artists")
     .then((r) => r.json())
     .then(json => setArtists(json));
@@ -28,6 +23,13 @@ function App() {
     fetch("/_sets")
     .then((r) => r.json())
     .then(json => setSets(json));
+
+    fetch("/_check_session")
+    .then((r) => {
+      if(r.status === 201)
+        return r.json()
+    })
+    .then(json => logInUser(json))
   }, []);
 
   function logInUser(user) {
@@ -39,7 +41,7 @@ function App() {
       setUserSets(json.sets)
     })
   }
-  
+
   return (
     <>
       <Navbar user={user}/>
@@ -48,7 +50,7 @@ function App() {
           <Home />
         </Route>
         <Route exact path="/signup">
-          <SignUp users={users} setUsers={setUsers} logInUser={logInUser}/>
+          <SignUp logInUser={logInUser}/>
         </Route>
         <Route exact path="/login">
           <LogIn logInUser={logInUser}/>
