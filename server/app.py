@@ -25,20 +25,17 @@ def load_user(user_id):
 # Views go here!
 @app.errorhandler(404)
 def not_found(e):
+    print("NOTFOUND")
     return render_template("index.html")
 
 class CheckSession(Resource):
     def get(self):
-        if current_user.is_authenticated():
+        if current_user.is_authenticated:
             return make_response(current_user.to_dict(), 201)
         else:
-            return make_response(None, 204)
+            return make_response('', 204)
         
 class Users(Resource):
-    # def get(self):
-    #     users = User.query.all()
-    #     return make_response([user.to_dict() for user in users], 200)
-    
     def post(self):
         data = request.json
         user = User(username = data.get('username'), password_hash = data.get('password'))
@@ -52,7 +49,6 @@ class UserArtistsAndSets(Resource):
     def get(self):
         if current_user.is_authenticated:
             artists_and_sets = current_user.artists_and_sets()
-            print("ARTISTS AND SETTTS", artists_and_sets)
 
             artists = artists_and_sets['artists']
             sets = artists_and_sets['sets']
@@ -145,7 +141,7 @@ class Login(Resource):
 
 class Logout(Resource):
     @login_required
-    def post(self):
+    def get(self):
         logout_user()
         return make_response(redirect(url_for("login")), 200)
 

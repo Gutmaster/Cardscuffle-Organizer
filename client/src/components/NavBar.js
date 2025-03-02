@@ -1,6 +1,20 @@
 import { Link } from "react-router-dom";
 
-function Navbar({user}) {
+function Navbar({user, setUser}) {
+  function HandleLogOut() {
+    fetch("_logout")
+      .then(response => {
+        if (response.ok) {
+          setUser(null);
+          window.location.reload();
+        } else {
+          // Handle server errors
+          console.error('Logout failed', response.statusText);
+        }
+      })
+      .catch(error => console.error('Network error:', error));
+  }
+
   return (
     <header>
     <h1>{user? `Cardscuffle Organizer, welcome ${user.username}.`
@@ -12,7 +26,7 @@ function Navbar({user}) {
         <Link to="/cards">My Cards </Link>
         <Link to="/newcard">New Card</Link>
       </nav>
-      {user && <button onClick={() => {localStorage.removeItem('user'); window.location.reload()}}>Log Out</button>}
+      {user && <button onClick={HandleLogOut}>Log Out</button>}
     </header>
   );
 }

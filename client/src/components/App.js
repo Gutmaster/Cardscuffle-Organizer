@@ -8,7 +8,7 @@ import Cards from "./Cards.js"
 import NewCard from "./NewCard.js"
 
 function App() {
-  const [user, setUser] = useState()
+  const [user, setUser] = useState(null)
   const [artists, setArtists] = useState([])
   const [sets, setSets] = useState([])
   
@@ -44,7 +44,7 @@ function App() {
 
   return (
     <>
-      <Navbar user={user}/>
+      <Navbar user={user} setUser={setUser}/>
       <Switch>
         <Route exact path="/">
           <Home />
