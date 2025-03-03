@@ -67,17 +67,17 @@ class UserArtistsAndSets(Resource):
             return make_response("You need to be logged in to access this feature", 401)
 
 class Cards(Resource):
-    @login_required
-    def get(self):
-        if current_user.is_authenticated:
-            cards = current_user.cards
-            card_dicts = []
-            for card in cards:
-                card_dict = card.to_dict()
-                card_dicts.append(card_dict)
-            return make_response(card_dicts, 200)
-        else:
-            return make_response("You need to be logged in to access this feature", 401)
+    # @login_required
+    # def get(self):
+    #     if current_user.is_authenticated:
+    #         cards = current_user.cards
+    #         card_dicts = []
+    #         for card in cards:
+    #             card_dict = card.to_dict()
+    #             card_dicts.append(card_dict)
+    #         return make_response(card_dicts, 200)
+    #     else:
+    #         return make_response("You need to be logged in to access this feature", 401)
         
     @login_required
     def post(self):
@@ -92,6 +92,16 @@ class Cards(Resource):
             db.session.add(card)
             db.session.commit()
             return card.to_dict(), 201
+
+
+class CardLibrary(Resource):
+    def get(self):
+        cards = Card.query.all()
+        card_dicts = []
+        for card in cards:
+            card_dict = card.to_dict()
+            card_dicts.append(card_dict)
+        return make_response(card_dicts, 200)
 
 
 class Artists(Resource):
@@ -171,6 +181,7 @@ class Logout(Resource):
 api.add_resource(Users, '/_users')
 api.add_resource(UserArtistsAndSets, '/_userartistsandsets')
 api.add_resource(Cards, '/_cards')
+api.add_resource(CardLibrary, '/_library')
 api.add_resource(Artists, '/_artists')
 api.add_resource(Sets, '/_sets')
 api.add_resource(Login, '/_login')

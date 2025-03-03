@@ -5,6 +5,7 @@ import SignUp from "./SignUp.js"
 import LogIn from "./LogIn.js"
 import { Switch, Route } from "react-router-dom";
 import Cards from "./Cards.js"
+import Library from "./Library.js"
 import NewCard from "./NewCard.js"
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
     .then(json => logInUser(json))
   }, []);
 
-  function logInUser(user) {
+  function logInUser(user){
     setUser(user)
     fetch("/_userartistsandsets")
     .then((r) => r.json())
@@ -60,6 +61,9 @@ function App() {
         </Route>
         <Route exact path="/cards">
           <Cards artists={userArtists} sets={userSets}/>
+        </Route>
+        <Route exact path="/library">
+          <Library artists={artists} sets={sets}/>
         </Route>
       </Switch>
     </>

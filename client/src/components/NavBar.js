@@ -24,6 +24,7 @@ function Navbar({user, setUser}) {
         <Link to="/signup">Sign Up </Link>
         <Link to="/login">Log In </Link>
         <Link to="/cards">My Cards </Link>
+        <Link to="/library">Card Library</Link>
         <Link to="/newcard">New Card</Link>
       </nav>
       {user && <button onClick={HandleLogOut}>Log Out</button>}
