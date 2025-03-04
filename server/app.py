@@ -81,17 +81,30 @@ class Cards(Resource):
         
     @login_required
     def post(self):
-        print(current_user.username)
-        if current_user.is_authenticated:
-            data = request.json
-            card = Card(name = data.get('name'), 
-                        art = data.get('art'), 
-                        artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id,
-                        set_id = Set.query.filter(Set.name == data.get('set')).first().id,
-                        users = [current_user])
-            db.session.add(card)
+        data = request.json
+        card = Card(name = data.get('name'), 
+                    art = data.get('art'), 
+                    artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id,
+                    set_id = Set.query.filter(Set.name == data.get('set')).first().id,
+                    users = [current_user])
+        db.session.add(card)
+        db.session.commit()
+        return card.to_dict(), 201
+        
+    @login_required
+    def patch(self):
+        data = request.json
+        card = Card.query.get(data.get('id'))
+        if card:
+            card.name = data.get('name')
+            card.art = data.get('art')
+            card.artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id
+            card.set_id = Set.query.filter(Set.name == data.get('set')).first().id
             db.session.commit()
-            return card.to_dict(), 201
+            return card.to_dict(), 200
+        else:
+            return make_response("Card not found", 404)
+
 
 
 class CardLibrary(Resource):

@@ -23,7 +23,7 @@ function Cards({artists, sets}) {
       filtered = selectedSet.cards
     setFilteredCards(filtered)
   }
-
+  console.log(artists, sets)
   return (
     <div className='animals'>
       <label htmlFor='artist'>Artist: </label>
@@ -42,7 +42,7 @@ function Cards({artists, sets}) {
         </select>
       <section className="container">
         {filteredCards.map((card) => (
-          <Card key = {card.id} card = {card}/>
+          <Card key = {card.id} card = {card} artists = {artists} sets = {sets}/>
         ))}
       </section>
     </div>
