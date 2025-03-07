@@ -1,48 +1,76 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import Card from "./Card.js"
 
-function Cards({artists, sets}) {
+function Cards({artists, sets, user, setUser}) {
   const [filteredCards, setFilteredCards] = useState([])
   const [artistFilter, setArtistFilter] = useState('select')
   const [setFilter, setSetFilter] = useState('select')
+  const [userArtists, setUserArtists] = useState([])
+  const [userSets, setUserSets] = useState([])
+
+  const filterCards = useCallback(() => {
+    let filtered = []
+    let selectedArtist = userArtists.find(artist => artist.id === parseInt(artistFilter))
+    let selectedSet = userSets.find(set => set.id === parseInt(setFilter))
+    
+    if(selectedArtist && artistFilter !== 'select'){
+      filtered = selectedArtist.cards
+      if(selectedSet && setFilter !== 'select')
+        filtered = filtered.filter(card => card.set.name === selectedSet.name)
+    }
+    else if(selectedSet && setFilter !== 'select')
+      filtered = selectedSet.cards
+    setFilteredCards(filtered)
+  }, [artistFilter, setFilter, userArtists, userSets])
+
+  useEffect(() => {
+    fetch("/_userartistsandsets")
+    .then((r) => r.json())
+    .then(json => {
+      setUserArtists(json.artists)
+      setUserSets(json.sets)
+    })
+  }, [user]);
 
   useEffect(() => {
     filterCards();
-  }, [artistFilter, setFilter]);
+  }, [filterCards]);
 
-  function filterCards() {
-    let filtered = []
-    let selectedArtist = artists.find(artist => artist.id === parseInt(artistFilter))
-    let selectedSet = sets.find(set => set.id === parseInt(setFilter))
-    if(artistFilter !== 'select'){
-      filtered = selectedArtist.cards
-      if(setFilter !== 'select')
-        filtered = filtered.filter(card => card.set.name === selectedSet.name)
-    }
-    else if(setFilter !== 'select')
-      filtered = selectedSet.cards
-    setFilteredCards(filtered)
+  function handleDelete(id) {
+    fetch('_users', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ card_id: id }),
+    })
+    .then((r) => r.json())
+    .then((json) => setUser(json))
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   }
-  console.log(artists, sets)
+
+
   return (
     <div className='animals'>
       <label htmlFor='artist'>Artist: </label>
         <select id="artist" name="artist" value={artistFilter} onChange={e=>setArtistFilter(e.target.value)}>
             <option value={'select'}>Select Artist</option>
-            {artists.map((artist) => (
+            {userArtists.map((artist) => (
                 <option key={artist.id} value={artist.id}>{artist.name}</option>
             ))}
         </select>
       <label htmlFor='set'>Set: </label>
         <select id="set" name="set" value={setFilter} onChange={e=>setSetFilter(e.target.value)}>
           <option value={'select'}>Select Set</option>
-          {sets.map((set) => (
+          {userSets.map((set) => (
               <option key={set.id} value={set.id}>{set.name}</option>
           ))}
         </select>
       <section className="container">
         {filteredCards.map((card) => (
-          <Card key = {card.id} card = {card} artists = {artists} sets = {sets}/>
+          <Card key={card.id} cardData={card} artists={artists} sets={sets} handleDelete={handleDelete}/>
         ))}
       </section>
     </div>

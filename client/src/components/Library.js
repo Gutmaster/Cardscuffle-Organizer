@@ -1,13 +1,31 @@
-import React, {useState, useEffect} from 'react'
-import Card from "./Card.js"
+import React, {useState, useEffect, useCallback} from 'react'
+import LibCard from "./LibCard.js"
 
 
-function Library({artists, sets}) {
+function Library({artists, sets, user}) {
     const [library, setLibrary] = useState([])
     const [filteredCards, setFilteredCards] = useState([])
     const [artistFilter, setArtistFilter] = useState('select')
     const [setFilter, setSetFilter] = useState('select')
 
+    const filterCards = useCallback(() => {
+        let filtered = []
+        let selectedArtist = artists.find(artist => artist.id === parseInt(artistFilter))
+        let selectedSet = sets.find(set => set.id === parseInt(setFilter))
+        if(artistFilter !== 'select'){
+            console.log("artistfilter", selectedArtist.cards)
+            filtered = selectedArtist.cards
+            if(setFilter !== 'select')
+            filtered = filtered.filter(card => card.set.name === selectedSet.name)
+        }
+        else if(setFilter !== 'select')
+            filtered = selectedSet.cards
+        else
+            filtered = library
+        console.log(filtered)
+        setFilteredCards(filtered)
+    }, [artistFilter, setFilter, artists, sets, library])
+    
     useEffect(() => {
         fetch("/_library")
         .then((r) => r.json())
@@ -19,23 +37,7 @@ function Library({artists, sets}) {
 
     useEffect(() => {
         filterCards()
-    }, [artistFilter, setFilter])
-
-    function filterCards() {
-        let filtered = []
-        let selectedArtist = artists.find(artist => artist.id === parseInt(artistFilter))
-        let selectedSet = sets.find(set => set.id === parseInt(setFilter))
-        if(artistFilter !== 'select'){
-            filtered = selectedArtist.cards
-            if(setFilter !== 'select')
-            filtered = filtered.filter(card => card.set.name === selectedSet.name)
-        }
-        else if(setFilter !== 'select')
-            filtered = selectedSet.cards
-        else
-            filtered = library
-        setFilteredCards(filtered)
-    }
+    }, [filterCards])
 
     return (
         <div className='animals'>
@@ -55,7 +57,7 @@ function Library({artists, sets}) {
             </select>
             <section className="container">
             {filteredCards.map((card) => (
-                <Card key = {card.id} card = {card}/>
+                <LibCard key={card.id} card={card} user={user}/>
             ))}
             </section>
         </div>

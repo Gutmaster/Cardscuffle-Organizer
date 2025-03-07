@@ -45,6 +45,11 @@ if __name__ == '__main__':
                         artist = Randal, 
                         set = Core)
         
+        FireCluck = Card(name="Firecluck", 
+                        art = "https://imgs.search.brave.com/p83TmfrIrb8BrulaBKEauxW8nXRJmONavJuYSm0iZQs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2YxLzVl/Lzk3L2YxNWU5N2Rh/YTViMjZjYmUxZTNk/NjVlYzcwZGMxZTZh/LmpwZw", 
+                        artist = Randal, 
+                        set = Core)
+        
         Tree = Card(name="Tree", 
                 art = "https://imgs.search.brave.com/UbPZAKMfEvtG03DOAWq1SzdR81bc5yGddozumtcvQ6U/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTg2/ODI2NzQ0L3Bob3Rv/L3RyZWUuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPU10YjJU/ak5DMDBaTUVmcnBX/LVl0MkZVQVRkdHJT/ajNsYWRabXotdW5B/U1E9", 
                 artist = Harry, 
@@ -55,9 +60,10 @@ if __name__ == '__main__':
                 artist = Dirk, 
                 set = Expansionous)
         
-        cards = [FireHuck, Tree]
+        cards = [FireHuck, FireCluck, Tree, Pangolini]
 
         Billy.cards.append(FireHuck)
+        Billy.cards.append(FireCluck)
         Billy.cards.append(Tree)
         Davey.cards.append(FireHuck)
         Davey.cards.append(Pangolini)
