@@ -13,7 +13,6 @@ function Library({artists, sets, user}) {
         let selectedArtist = artists.find(artist => artist.id === parseInt(artistFilter))
         let selectedSet = sets.find(set => set.id === parseInt(setFilter))
         if(artistFilter !== 'select'){
-            console.log("artistfilter", selectedArtist.cards)
             filtered = selectedArtist.cards
             if(setFilter !== 'select')
             filtered = filtered.filter(card => card.set.name === selectedSet.name)
@@ -22,7 +21,6 @@ function Library({artists, sets, user}) {
             filtered = selectedSet.cards
         else
             filtered = library
-        console.log(filtered)
         setFilteredCards(filtered)
     }, [artistFilter, setFilter, artists, sets, library])
     

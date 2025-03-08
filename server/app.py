@@ -32,8 +32,11 @@ class CheckSession(Resource):
     def get(self):
         if current_user.is_authenticated:
             return make_response(current_user.to_dict(), 201)
-        else:
-            return make_response('', 204)
+        if current_user is None or not current_user.is_authenticated:
+            response = make_response(redirect(url_for("login")))
+            response.status_code = 401
+            return response
+
         
 class Users(Resource):
     def post(self):
@@ -56,37 +59,33 @@ class Users(Resource):
         else: 
             user.cards.append(card)
 
-        print(len(card.users))
         if not len(card.users):
             db.session.delete(card)
         
         db.session.commit()
         return make_response(current_user.to_dict(), 200)
-    
 
-class UserArtistsAndSets(Resource):
+
+class UserCards(Resource):
     @login_required
     def get(self):
-        if current_user.is_authenticated:
-            artists_and_sets = current_user.artists_and_sets()
-
-            artists = artists_and_sets['artists']
-            sets = artists_and_sets['sets']
-
-            artist_dicts = [artist.to_dict() for artist in artists]
-            set_dicts = [set.to_dict() for set in sets]
-
-            # Combine them into a result dictionary
-            result = {
-                "artists": artist_dicts,
-                "sets": set_dicts
-            }
-
-            return make_response(result, 200)
-        else:
-            return make_response("You need to be logged in to access this feature", 401)
+        card_dicts = []
+        for card in current_user.cards:
+            card_dict = card.to_dict()
+            card_dicts.append(card_dict)
+        return make_response(card_dicts, 200)
+    
 
 class Cards(Resource):
+    @login_required
+    def get(self):
+        cards = Card.query.all()
+        card_dicts = []
+        for card in cards:
+            card_dict = card.to_dict()
+            card_dicts.append(card_dict)
+        return make_response(card_dicts, 200)
+
     @login_required
     def post(self):
         data = request.json
@@ -112,25 +111,6 @@ class Cards(Resource):
             return card.to_dict(), 200
         else:
             return make_response("Card not found", 404)
-
-# class CardById(Resource):
-#     def delete(self, id):
-#         card = Card.query.filter_by(id=id).first()
-#         if card:
-#             db.session.delete(card)
-#             db.session.commit()
-#             return {'Message': 'Card deleted'}, 200
-#         else:
-#             return {'Error': 'Card not found'}, 404
-
-class CardLibrary(Resource):
-    def get(self):
-        cards = Card.query.all()
-        card_dicts = []
-        for card in cards:
-            card_dict = card.to_dict()
-            card_dicts.append(card_dict)
-        return make_response(card_dicts, 200)
 
 
 class Artists(Resource):
@@ -164,15 +144,11 @@ class Login(Resource):
         data = request.json
         user = User.query.filter_by(username=data.get("username")).first()
         if user is None or not user.authenticate(data.get("password")):
-            response = make_response(redirect(url_for("login")))
+            response = make_response({'Error':'Invalid username or ID'})
             response.status_code = 401
             return response
         
         login_user(user)
-
-        card = db.session.query(Card).filter_by(id=1).first() 
-        print(card)
-        print(card.artist.name)
 
         return make_response(user.to_dict(), 201)
 
@@ -207,10 +183,8 @@ class Logout(Resource):
 #     return flask.render_template('login.html', form=form)
 
 api.add_resource(Users, '/_users')
-api.add_resource(UserArtistsAndSets, '/_userartistsandsets')
+api.add_resource(UserCards, '/_usercards')
 api.add_resource(Cards, '/_cards')
-# api.add_resource(CardById, '/_cardbyid/<int:id>/')
-api.add_resource(CardLibrary, '/_library')
 api.add_resource(Artists, '/_artists')
 api.add_resource(Sets, '/_sets')
 api.add_resource(Login, '/_login')
