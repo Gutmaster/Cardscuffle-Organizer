@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# Standard library imports
-from datetime import datetime
 # Remote library imports
 from faker import Faker
 
@@ -13,7 +11,6 @@ from datetime import date
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
-
         print("Starting seed...")
         print("Deleting data...")
         User.query.delete()

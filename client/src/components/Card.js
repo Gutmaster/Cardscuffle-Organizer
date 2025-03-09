@@ -28,10 +28,10 @@ function Card({ cardData, artists, sets, handleDelete }) {
     validateOnChange: false,
     validateOnBlur: false,
     initialValues: {
-      name: '',
-      art: '',
-      artist: '',
-      set: '',
+      name: card.name,
+      art: card.art,
+      artist: card.artist.name,
+      set: card.set.name,
     },
     validationSchema: formSchema,
     onSubmit: async (values) => {
@@ -60,7 +60,7 @@ function Card({ cardData, artists, sets, handleDelete }) {
         setCard(data);
 
         formik.resetForm();
-        setAlertMessage('Card added!');
+        setAlertMessage('Card edited!');
         setTimeout(alertReset, 2000);
       } catch (error) {
         console.error('Network Error or unexpected issue:', error);

@@ -25,7 +25,7 @@ def load_user(user_id):
 # Views go here!
 @app.errorhandler(404)
 def not_found(e):
-    print( e)
+    print(e)
     return render_template("index.html")
 
 class CheckSession(Resource):
@@ -101,7 +101,7 @@ class Cards(Resource):
     @login_required
     def patch(self):
         data = request.json
-        card = Card.query.filter(id == data.get('id').first())
+        card = Card.query.filter(Card.id == data.get('id')).first()
         if card:
             card.name = data.get('name')
             card.art = data.get('art')
