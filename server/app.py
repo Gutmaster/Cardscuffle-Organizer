@@ -140,10 +140,8 @@ class Sets(Resource):
 class Login(Resource):
     def post(self):
         data = request.json
-        print("ATTEMPTING TO LOG IN", data)
         user = User.query.filter_by(username=data.get("username")).first()
         if user is None or not user.authenticate(data.get("password")):
-            print("SADDD!!!")
             response = make_response({'Error':'Invalid username or ID'})
             response.status_code = 401
             return response
