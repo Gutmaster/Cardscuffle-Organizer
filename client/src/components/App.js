@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Home from "./Home.js"
 import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
@@ -17,11 +17,11 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  function handleError(error){
-    setErrorMessage(error.toString())
+  const handleError = useCallback((error) => {
+    setErrorMessage(error.toString());
     if (window.location.pathname !== "/error")
       navigate("/error");
-  }
+  }, [navigate]);
 
   useEffect(() => {
     fetch("/_artists")
@@ -55,7 +55,7 @@ function App() {
     })
     .then(json => logInUser(json))
     .catch(error =>handleError(error));
-  }, [location, navigate]);
+  }, [location, navigate, handleError]);
 
   function logInUser(user){
     setUser(user)

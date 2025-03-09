@@ -50,7 +50,6 @@ function NewCard({artists, sets}) {
                     console.error('Validation error:', errorData)
                     return
                 }
-                const data = await response.json();
                 formik.resetForm();
                 setAlertMessage('Card added!');
                 setTimeout(alertReset, 2000);

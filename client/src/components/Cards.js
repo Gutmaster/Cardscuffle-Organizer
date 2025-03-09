@@ -19,7 +19,7 @@ function Cards({artists, sets, user, setUser}) {
     else if(setFilter !== 'select')
       filtered = filtered.filter(card => card.set.name === setFilter)
     setFilteredCards(filtered)
-  }, [artistFilter, setFilter, userArtists, userSets])
+  }, [artistFilter, setFilter, userCards])
 
   useEffect(() => {
     fetch("/_usercards")
