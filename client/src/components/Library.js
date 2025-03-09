@@ -3,7 +3,6 @@ import LibCard from "./LibCard.js"
 
 
 function Library({artists, sets, user}) {
-    const [library, setLibrary] = useState([])
     const [filteredCards, setFilteredCards] = useState([])
     const [artistFilter, setArtistFilter] = useState('select')
     const [setFilter, setSetFilter] = useState('select')
@@ -19,19 +18,8 @@ function Library({artists, sets, user}) {
         }
         else if(setFilter !== 'select')
             filtered = selectedSet.cards
-        else
-            filtered = library
         setFilteredCards(filtered)
-    }, [artistFilter, setFilter, artists, sets, library])
-    
-    useEffect(() => {
-        fetch("/_library")
-        .then((r) => r.json())
-        .then(json => {
-            setLibrary(json)
-            setFilteredCards(json)
-        })
-    }, [])
+    }, [artistFilter, setFilter, artists, sets])
 
     useEffect(() => {
         filterCards()
