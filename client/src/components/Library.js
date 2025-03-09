@@ -38,7 +38,7 @@ function Library({artists, sets, user}) {
     }, [filterCards])
 
     return (
-        <div className='animals'>
+        <div>
             <label htmlFor='artist'>Artist: </label>
             <select id="artist" name="artist" value={artistFilter} onChange={e=>setArtistFilter(e.target.value)}>
                 <option value={'select'}>Select Artist</option>

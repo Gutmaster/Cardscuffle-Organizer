@@ -82,69 +82,54 @@ header nav a {
   align-items: center;
 }
 
-.photoCard {
-  padding: 5px;
-  width: 550px;
-  height: 550px;
-  color: black;
-  border: 1px solid grey;
-  border-radius: 12px;
-  height:fit-content;
-  background-color: rgb(22, 153, 44);
-  background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FAlDivIaiuMU%2Fmaxresdefault.jpg&f=1&nofb=1&ipt=35cfae5a4211eb3d2ed27161f5e830941e9baf1fbb1d015d9c029f4b1d82dcf6&ipo=images')
-}
-
-.photoCard img {
-  display: inline-flex;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top:20px;
-  width: 500px;
-  height: 370px;
-  vertical-align: middle;
-}
-
-.photoCard button {
-  display:inline-flex;
-  background-color: rgb(255, 0, 106);
-  color: white;
-  border-radius: 20px;
-}
-
-.animalCard {
+.card {
   margin: 5px 0;
-  padding: 5px;
-  width: 550px;
-  height: 550px;
+  padding: 20px;
+  width: 100%;
+  max-width: 550px;
   color: black;
   border: 1px solid grey;
   border-radius: 12px;
   background-color: rgb(15, 119, 32);
-  background-image: url("https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2Fe%2Fd%2Fc%2F269263.jpg&f=1&nofb=1&ipt=4230a72ce2dfa22448160489a7d36f840fd7487a14f07d4a096a6fc12c8e636b&ipo=images");
-  background-size: 180%;
+  background-image: url("https://imgs.search.brave.com/sV5E5-XqkhEz6mAx4iDT9zI5fwXNfZLGnEEuc5-vQgg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA5LzEwLzk2Lzgy/LzM2MF9GXzkxMDk2/ODI4MV9wZ0RiVldQ/ckdrRU9nNlJkVU5J/MUtVZFBhalM5Y3Za/bS5qcGc");
+  background-size: cover;
+  box-sizing: border-box;
 }
 
-.animalCard img {
-  display: inline-flex;
-  width: 300px;
-  height: 300px;
-  vertical-align: middle;
+form {
+  display: flex;
+  flex-direction: column;
 }
 
-.locationCard {
-  margin: 5px 0;
-  padding: 5px;
-  width: 550px;
-  height: 550px;
-  color: black;
-  border: 1px solid grey;
-  border-radius: 12px;
-  background-color: rgb(15, 43, 119);
-  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F024%2F581%2F458%2Flarge_2x%2Fold-crumpled-paper-background-brown-crumpled-paper-texture-abstract-old-brown-paper-as-vintage-wallpaper-backdrop-ai-generated-free-photo.jpg&f=1&nofb=1&ipt=f3288c666a2e7df125a80f724aac47c4c2b78ac8e6e6e3fb377e1dd642bb591f&ipo=images");
-  background-size: 150%;
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: white;
 }
 
-.locationCard img {
+input, select {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submitButton {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width:25%;
+  text-align:center;
+  display:inline-block;
+}
+
+.submitButton:hover {
+  background-color: #218838;
+}
+
+.card img {
   display: inline-flex;
   width: 300px;
   height: 300px;
@@ -162,35 +147,7 @@ header nav a {
   padding: 5px;
 }
 
-.listText {
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  border: solid 1px black;
-  background-color: rgb(33, 136, 52);
-  overflow-wrap:break-word;
-  hyphens:auto;
-  width:fit-content;
-  padding-left:25px;
-  padding-right:10px;
-  padding-bottom:5px;
-}
-
-.description {
-  padding:10px;
-  border: solid 1px black;
-  background-color: rgb(33, 136, 52);
-  border-radius: 20px;
-  overflow-wrap:break-word;
-  hyphens:auto;
-}
-
-.animalCard button {
-  display:inline-flex;
-  background-color: rgb(255, 0, 106);
-  color: white;
-  border-radius: 20px;
-}
-
-.locationCard button {
+.card button {
   display:inline-flex;
   background-color: rgb(255, 0, 106);
   color: white;
@@ -205,43 +162,8 @@ header nav a {
   border: 20px solid blueviolet;
 }
 
-.newPhotoForm{
-  margin-left:30%;
-  width: 700px;
-  border: 5px solid royalblue;
-  background-color: gray;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-label {
-  display: inline-block;
-  width: 150px;
-  text-align: right;
-  text-align: top;
-}
-
-ul {
-  margin:0px;
-}
-
-.submitButton {
-  margin-left:45%;
-}
-
 textarea {
   vertical-align: top;
-}
-
-
-.description {
-  padding:10px;
-  border: solid 1px black;
-  border-radius: 20px;
-  overflow-wrap:break-word;
-  hyphens:auto;
-  background-color: rgb(33, 136, 52);
 }
 
 .edit {
@@ -287,10 +209,4 @@ select { width: 200px;            height: 30px;      box-sizing:border-box; }
   border-style: solid;
   border-color: black;
   width:fit-content;
-}
-
-.listTitle {
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-weight:bold;
-  font-size:large;
 }

@@ -40,7 +40,7 @@ function LibCard({card, user}) {
   }
 
   return (
-      <div className="animalCard">
+      <div className="card">
         <h1 className='cardTitle'>{card.name}</h1>
         <span className='container'>
           <img src={card.art ? card.art: noImage} alt={card.name}/>

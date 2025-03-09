@@ -71,7 +71,7 @@ function Card({ cardData, artists, sets, handleDelete }) {
   return (
     <>
       {edit ? (
-        <div className="animalCard">
+        <div className="card">
           <form onSubmit={formik.handleSubmit}>
             <label htmlFor="name">Name: </label>
             <input
@@ -117,13 +117,12 @@ function Card({ cardData, artists, sets, handleDelete }) {
                 </option>
               ))}
             </select>
-            <button type="submit" className="submitButton">
-              Submit
-            </button>
+            <button type="submit" className="submitButton">Submit</button>
+            <button onClick={e=>setEdit(false)} className="submitButton">Cancel</button>
           </form>
         </div>
       ) : (
-        <div className="animalCard">
+        <div className="card">
           <h1 className="cardTitle">{card.name}</h1>
           <span className="container">
             <img src={card.art ? card.art : noImage} alt={card.name} />

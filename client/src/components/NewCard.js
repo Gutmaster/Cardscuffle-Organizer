@@ -50,18 +50,13 @@ function NewCard({artists, sets}) {
                     console.error('Validation error:', errorData)
                     return
                 }
-                const data = await response.json()
-                //setPhotos([...photos, data])
-                console.log("REMEMBER TO SET CARD STATE")
-                formik.values.name = ''
-                formik.values.art = ''
-                formik.values.artist = 'select'
-                formik.values.set = 'select'
-                setAlertMessage('Card added!')
-                setTimeout(alertReset, 2000)
+                const data = await response.json();
+                formik.resetForm();
+                setAlertMessage('Card added!');
+                setTimeout(alertReset, 2000);
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
-                console.error('Network Error or unexpected issue:', error)
+                console.error('Network Error or unexpected issue:', error);
             }
         }
     })
