@@ -77,9 +77,17 @@ header nav a {
   padding: 1px;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.container h1 {
+  font-size:xx-large;
+}
+
+.container a {
+  font-size:xx-large;
 }
 
 .card {

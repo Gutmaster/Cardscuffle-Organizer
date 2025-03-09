@@ -11,7 +11,6 @@ function Cards({artists, sets, user, setUser}) {
 
   const filterCards = useCallback(() => {
     let filtered = userCards
-    console.log(artistFilter, setFilter)
     if(artistFilter !== 'select'){
       filtered = filtered.filter(card => card.artist.name === artistFilter)
       if(setFilter !== 'select')
