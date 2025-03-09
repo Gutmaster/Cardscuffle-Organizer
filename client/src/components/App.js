@@ -10,7 +10,6 @@ import NewCard from "./NewCard.js"
 import ErrorPage from "./ErrorPage.js";
 
 function App() {
-  console.log("APP")
   const [user, setUser] = useState(null);
   const [artists, setArtists] = useState([]);
   const [sets, setSets] = useState([]);
@@ -46,9 +45,7 @@ function App() {
 
     fetch("/_check_session")
     .then((response) => {
-      if (!response.ok)
-        throw new Error('Network response was not ok');
-      else if(response.status === 201)
+      if(response.status === 201)
         return response.json();
       else if(response.status === 401)
         if (window.location.pathname !== "/login")
