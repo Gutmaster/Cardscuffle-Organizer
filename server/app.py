@@ -25,7 +25,7 @@ def load_user(user_id):
 # Views go here!
 @app.errorhandler(404)
 def not_found(e):
-    print("NOTFOUND")
+    print("NOTFOUND", e)
     return render_template("index.html")
 
 class CheckSession(Resource):

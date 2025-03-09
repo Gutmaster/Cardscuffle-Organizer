@@ -10,6 +10,7 @@ import NewCard from "./NewCard.js"
 import ErrorPage from "./ErrorPage.js";
 
 function App() {
+  console.log("APP")
   const [user, setUser] = useState(null);
   const [artists, setArtists] = useState([]);
   const [sets, setSets] = useState([]);
