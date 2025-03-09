@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
 
-# Remote library imports
-from faker import Faker
-
 # Local imports
 from app import app
 from models import db, User, Card, UserCard, Artist, Set
 from datetime import date
 
 if __name__ == '__main__':
-    fake = Faker()
     with app.app_context():
         print("Starting seed...")
         print("Deleting data...")
+        UserCard.query.delete()
         User.query.delete()
         Card.query.delete()
-        UserCard.query.delete()
         Artist.query.delete()
         Set.query.delete()
        

@@ -2,7 +2,6 @@
 
 # Standard library imports
 from datetime import datetime
-from dotenv import load_dotenv
 
 # Remote library imports
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
@@ -16,7 +15,6 @@ from config import app, db, api, login_manager
 # Add your model imports
 from models import User, Card, Set, Artist
 
-load_dotenv()
 
 @login_manager.user_loader
 def load_user(user_id):

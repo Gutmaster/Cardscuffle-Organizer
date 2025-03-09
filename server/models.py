@@ -7,17 +7,17 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 
 class User(db.Model, SerializerMixin, UserMixin):
-    @classmethod
-    def get(self, id):
-        return User.query.get(id)
-    
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
+
+    cards = db.relationship('Card', secondary='user_cards', back_populates='users', cascade='all, delete', passive_deletes=True)
     
-    cards = db.relationship('Card', secondary='user_cards', back_populates='users')
+    @classmethod
+    def get(self, id):
+        return User.query.get(id)
 
     serialize_rules = ('-cards.users', '-_password_hash')
     
@@ -46,8 +46,9 @@ class User(db.Model, SerializerMixin, UserMixin):
 
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    card_id = db.Column(db.Integer, db.ForeignKey('cards.id'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), primary_key=True)
+    card_id = db.Column(db.Integer, db.ForeignKey('cards.id', ondelete='CASCADE'), primary_key=True)
+
 
 class Card(db.Model, SerializerMixin):
     __tablename__ = 'cards'
@@ -64,7 +65,7 @@ class Card(db.Model, SerializerMixin):
     users = db.relationship('User', secondary='user_cards', back_populates='cards')
 
     serialize_rules = ('-users.cards', '-set.cards', '-artist.cards')
-    
+
 
 class Set(db.Model, SerializerMixin):
     __tablename__ ='sets'

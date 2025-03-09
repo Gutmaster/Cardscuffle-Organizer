@@ -10,6 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
+from dotenv import load_dotenv
 
 # Instantiate app, set attributes
 app = Flask(
@@ -19,13 +20,15 @@ app = Flask(
     template_folder='../client/build'
 )
 
+load_dotenv()
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-#comment back in to switch to local deployment
+#comment back in to switch to local db
 # DATABASE = os.environ.get("DB_URI", f"sqlite:///{os.path.join(BASE_DIR, 'app.db')}")
 # app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE
 
-##Comment out to switch to local deployment
+##Comment out to switch to local db
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
