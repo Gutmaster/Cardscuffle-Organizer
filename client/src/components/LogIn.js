@@ -3,16 +3,23 @@ import {useFormik} from "formik";
 import * as yup from "yup"
 
 function LogIn({logInUser}) {
-    const [alertMessage, setAlertMessage] = useState('')
+    const [alertMessage, setAlertMessage] = useState('');
+    const [alertClass, setAlertClass] = useState('postiveAlert');
 
     function alertReset(){
         setAlertMessage('')
     }
 
+    function handleAlert(message, aClass){
+        setAlertClass(aClass)
+        setAlertMessage(message)
+        setTimeout(alertReset, 2000)
+    }
+
     const formSchema = yup.object().shape({
         username: yup.string().required("Please enter a username.").max(30),
         password: yup.string().required("Please enter a password.").max(30),
-    })
+    });
 
     const formik = useFormik({
         validateOnChange : false,
@@ -36,23 +43,21 @@ function LogIn({logInUser}) {
                 })
                 if (!response.ok) {
                     // This block will catch non-200-level HTTP responses
-                    const errorData = await response.json()
-                    console.error('Validation error:', errorData)
-                    console.log("VALIDATION ERRORERRORERROR")
-                    return
+                    const errorData = await response.json();
+                    handleAlert(errorData.error, 'negativeAlert');
+                    return;
                 }
-                const data = await response.json()
-                logInUser(data)
-                formik.values.username = ''
-                formik.values.password = ''
-                setAlertMessage('Logged In!')
-                setTimeout(alertReset, 2000)
+                const data = await response.json();
+                logInUser(data);
+                formik.resetForm();
+                handleAlert('Logged In!', 'positiveAlert');
+                setTimeout(alertReset, 2000);
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
-                console.error('Network Error or unexpected issue:', error)
+                console.error('Network Error or unexpected issue:', error);
             }
         }
-    })
+    });
 
     return (
         <div className='signUp'>
@@ -70,7 +75,7 @@ function LogIn({logInUser}) {
                 </div>
                 <button type="submit" className='submitButton'>Submit</button>
             </form>
-            {alertMessage!==''? <p className='goodAlert'>{alertMessage}</p>: <></>}
+            {alertMessage!==''? <p className={alertClass}>{alertMessage}</p>: <></>}
         </div>
     );
 }

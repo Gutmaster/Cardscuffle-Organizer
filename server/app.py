@@ -164,7 +164,7 @@ class Login(Resource):
         data = request.json
         user = User.query.filter_by(username=data.get("username")).first()
         if user is None or not user.authenticate(data.get("password")):
-            response = make_response({'Error':'Invalid username or ID'})
+            response = make_response({'error':'Invalid username or ID'})
             response.status_code = 401
             return response
         
