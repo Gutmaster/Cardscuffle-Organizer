@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
-
+import re
 from config import db, bcrypt
 
 class User(db.Model, SerializerMixin, UserMixin):
@@ -15,11 +15,11 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     cards = db.relationship('Card', secondary='user_cards', back_populates='users', cascade='all, delete', passive_deletes=True)
     
+    serialize_rules = ('-cards.users', '-_password_hash')
+
     @classmethod
     def get(self, id):
         return User.query.get(id)
-
-    serialize_rules = ('-cards.users', '-_password_hash')
     
     def is_authenticated(self):
         return True
@@ -34,8 +34,23 @@ class User(db.Model, SerializerMixin, UserMixin):
     def password_hash(self):
         return self._password_hash
 
+    @validates('_password_hash')
+    def validate_password(self, key, password):
+        if len(password) < 8:
+            raise ValueError('Password must be at least 8 characters long.')
+        if not re.search(r'[A-Z]', password):
+            raise ValueError('Password must contain at least one uppercase letter.')
+        if not re.search(r'[0-9]', password):
+            raise ValueError('Password must contain at least one digit.')
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+            raise ValueError('Password must contain at least one special character.')
+        return password
+
     @password_hash.setter
     def password_hash(self, password):
+        # Validate before hashing
+        self.validate_password('_password_hash', password)
+        # Hashing the password
         password_hash = bcrypt.generate_password_hash(
             password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
@@ -43,6 +58,18 @@ class User(db.Model, SerializerMixin, UserMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(
             self._password_hash, password.encode('utf-8'))
+    
+    @validates('username')
+    def validate_text(self, key, value):
+        if not value:
+            raise ValueError(f'{key} cannot be empty.')
+        if type(value) != str:
+            raise ValueError(f'{key} must be a string.')
+        if key == 'username':
+            if not 3 <= len(value) <= 20:
+                raise ValueError('Username must be between 3 and 20 characters.')
+
+        return value
 
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'

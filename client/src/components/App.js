@@ -48,7 +48,7 @@ function App() {
       if(response.status === 201)
         return response.json();
       else if(response.status === 401)
-        if (window.location.pathname !== "/login")
+        if(window.location.pathname !== "/login" && window.location.pathname !== "/signup" && window.location.pathname !== "/")
           navigate("/login");
     })
     .then(json => logInUser(json))

@@ -194,14 +194,14 @@ span   { font-family: sans-serif; line-height: 20px; font-weight: bold;     }
 input  { width: 200px;            height: 30px;      box-sizing:border-box; }
 select { width: 200px;            height: 30px;      box-sizing:border-box; }
 
-.goodAlert {
+.positiveAlert {
   padding: 20px;
   background-color: chartreuse;
   color: white;
   text-align: center;
 }
 
-.badAlert {
+.negativeAlert {
   padding: 20px;
   background-color: red;
   color: black;

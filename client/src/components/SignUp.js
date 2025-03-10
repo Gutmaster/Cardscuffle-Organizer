@@ -4,11 +4,18 @@ import * as yup from "yup"
 
 function SignUp({logInUser}) {
     const [alertMessage, setAlertMessage] = useState('')
+    const [alertClass, setAlertClass] = useState('positiveAlert')
 
     function alertReset(){
         setAlertMessage('')
     }
 
+    function handleAlert(message, aClass){
+        setAlertClass(aClass)
+        setAlertMessage(message)
+        setTimeout(alertReset, 2000)
+    }
+    
     const formSchema = yup.object().shape({
         username: yup.string().required("Please enter a username.").max(30),
         password: yup.string().required("Please enter a password.").max(30),
@@ -38,15 +45,13 @@ function SignUp({logInUser}) {
                     // This block will catch non-200-level HTTP responses
                     const errorData = await response.json()
                     console.error('Validation error:', errorData)
-                    console.log("VALIDATION ERRORERRORERROR")
+                    handleAlert(errorData.message, 'negativeAlert')
                     return
                 }
                 const data = await response.json()
                 logInUser(data)
-                formik.values.username = ''
-                formik.values.password = ''
-                setAlertMessage('User added!')
-                setTimeout(alertReset, 2000)
+                formik.resetForm();
+                handleAlert('User Added', 'positiveAlert')
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
                 console.error('Network Error or unexpected issue:', error)
@@ -70,7 +75,7 @@ function SignUp({logInUser}) {
                 </div>
                 <button type="submit" className='submitButton'>Submit</button>
             </form>
-            {alertMessage!==''? <p className='goodAlert'>{alertMessage}</p>: <></>}
+            {alertMessage!==''? <p className={alertClass}>{alertMessage}</p>: <></>}
         </div>
     );
 }

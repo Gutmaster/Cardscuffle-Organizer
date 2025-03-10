@@ -4,9 +4,10 @@
 from datetime import datetime
 
 # Remote library imports
-from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
+from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, jsonify
 from flask_restful import Resource
 from flask_login import login_user, logout_user, login_required, current_user
+from sqlalchemy.exc import IntegrityError
 import os
 
 
@@ -39,10 +40,31 @@ class CheckSession(Resource):
 class Users(Resource):
     def post(self):
         data = request.json
-        user = User(username = data.get('username'), password_hash = data.get('password'))
-        db.session.add(user)
-        db.session.commit()
-        return user.to_dict(), 201
+        try:
+            user = User(username=data.get('username'), password_hash=data.get('password'))
+            db.session.add(user)
+            db.session.commit()
+            return {'id': user.id, 'username': user.username}, 201
+        except ValueError as ve:
+            response = {
+                'error': 'Validation Error',
+                'message': str(ve)
+            }
+            print("ValidtionErrornation", response)
+            return make_response(response, 400)
+        except IntegrityError as ie:
+            db.session.rollback() 
+            response = {
+                'error': 'Database Error',
+                'message': 'Username already exists.'
+            }
+            return make_response(response, 400)
+        except Exception as e:
+            response = {
+                'error': 'Internal Server Error',
+                'message': 'An unexpected error occurred.'
+            }
+            return make_response(response, 500)
     
     def patch(self):
         data = request.json
