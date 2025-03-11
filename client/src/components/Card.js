@@ -6,20 +6,34 @@ function Card({ cardData, artists, sets, handleDelete }) {
   const [card, setCard] = useState(cardData);
   const [edit, setEdit] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [alertClass, setAlertClass] = useState('positiveAlert')
 
   function alertReset() {
     setAlertMessage('');
+    formik.setErrors({});
   }
 
   function handleEdit() {
     setEdit(!edit);
   }
 
+  function handleAlert(message, aClass){
+    setAlertClass(aClass)
+    setAlertMessage(message)
+    setTimeout(alertReset, 2000)
+  }
+
   const formSchema = yup.object().shape({
     name: yup.string().required('Card must be named.').max(30),
     art: yup.string().required('Must link an image.'),
-    artist: yup.string().required('Card must have an artist.').max(30),
-    set: yup.string().required('Card must belong to a set.').max(30),
+    artist: yup.string()
+    .required('Card must have an artist.')
+    .notOneOf(['select'], 'Please select a valid artist.')
+    .max(30),
+    set: yup.string()
+    .required('Card must belong to a set.')
+    .notOneOf(['select'], 'Please select a valid set.')
+    .max(30),
   });
 
   const formik = useFormik({
@@ -32,6 +46,26 @@ function Card({ cardData, artists, sets, handleDelete }) {
       set: card.set.name,
     },
     validationSchema: formSchema,
+    validate: (values) => {
+      // Use Yup's validation method
+      const validationErrors = {};
+      try {
+        formSchema.validateSync(values, { abortEarly: false });
+      } catch (err) {
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
+        });
+      }
+
+      // Set a timer to clear errors after 3 seconds
+      if (Object.keys(validationErrors).length > 0) {
+        setTimeout(() => {
+          formik.setErrors({});
+        }, 2000);
+      }
+
+      return validationErrors;
+    },
     onSubmit: async (values) => {
       setEdit(!edit);
       try {
@@ -51,17 +85,19 @@ function Card({ cardData, artists, sets, handleDelete }) {
 
         if (!response.ok) {
           const errorData = await response.json();
+          formik.resetForm();
           console.error('Validation error:', errorData);
+          handleAlert(errorData.message, 'negativeAlert');
           return;
         }
         const data = await response.json();
         setCard(data);
 
         formik.resetForm();
-        setAlertMessage('Card edited!');
-        setTimeout(alertReset, 2000);
+        handleAlert('Card edited!', 'positiveAlert');
       } catch (error) {
         console.error('Network Error or unexpected issue:', error);
+        handleAlert(error.message, 'negativeAlert');
       }
     },
   });
@@ -78,7 +114,12 @@ function Card({ cardData, artists, sets, handleDelete }) {
               name="name"
               value={formik.values.name}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
+            {formik.touched.name && formik.errors.name ? (
+              <div className="cardError">{formik.errors.name}</div>
+            ) : null}
+
             <label htmlFor="art">Art: </label>
             <input
               type="text"
@@ -86,13 +127,19 @@ function Card({ cardData, artists, sets, handleDelete }) {
               name="art"
               value={formik.values.art}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             />
+            {formik.touched.art && formik.errors.art ? (
+              <div className="cardError">{formik.errors.art}</div>
+            ) : null}
+
             <label htmlFor="artist">Artist: </label>
             <select
               id="artist"
               name="artist"
               value={formik.values.artist}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <option value={'select'}>Select Artist</option>
               {artists.map((artist) => (
@@ -101,12 +148,17 @@ function Card({ cardData, artists, sets, handleDelete }) {
                 </option>
               ))}
             </select>
+            {formik.touched.artist && formik.errors.artist ? (
+              <div className="cardError">{formik.errors.artist}</div>
+            ) : null}
+
             <label htmlFor="set">Set: </label>
             <select
               id="set"
               name="set"
               value={formik.values.set}
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
             >
               <option value={'select'}>Select Set</option>
               {sets.map((set) => (
@@ -115,8 +167,12 @@ function Card({ cardData, artists, sets, handleDelete }) {
                 </option>
               ))}
             </select>
+            {formik.touched.set && formik.errors.set ? (
+              <div className="cardError">{formik.errors.set}</div>
+            ) : null}
+
             <button type="submit" className="submitButton">Submit</button>
-            <button onClick={e=>setEdit(false)} className="submitButton">Cancel</button>
+            <button onClick={e => setEdit(false)} className="submitButton">Cancel</button>
           </form>
         </div>
       ) : (
@@ -132,7 +188,7 @@ function Card({ cardData, artists, sets, handleDelete }) {
           <button onClick={handleEdit}>{edit ? 'Save' : 'Edit'}</button>
           <button onClick={() => handleDelete(card.id)}>Remove from collection</button>
           {alertMessage !== '' ? (
-            <p className="badAlert">{alertMessage}</p>
+            <p className={alertClass}>{alertMessage}</p>
           ) : null}
         </div>
       )}
@@ -140,4 +196,4 @@ function Card({ cardData, artists, sets, handleDelete }) {
   );
 }
 
-export default Card
+export default Card;

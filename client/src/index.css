@@ -24,6 +24,10 @@
   font-size:30px;
 }
 
+.cardError{
+  color: white;
+}
+
 .signUp {
   margin-left:50%;
   background-color: rgb(34, 53, 150);

@@ -17,6 +17,7 @@ function NewCard({artists, sets, setArtists, setSets}) {
     }
 
     function handleAlert(message, aClass){
+        console.log('HANDLEALERT')
         setAlertClass(aClass)
         setAlertMessage(message)
         setTimeout(alertReset, 2000)
