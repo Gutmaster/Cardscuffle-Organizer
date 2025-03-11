@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function LogIn({logInUser}) {
+function LogIn({setUser}) {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertClass, setAlertClass] = useState('postiveAlert');
 
@@ -48,7 +48,7 @@ function LogIn({logInUser}) {
                     return;
                 }
                 const data = await response.json();
-                logInUser(data);
+                setUser(data);
                 formik.resetForm();
                 handleAlert('Logged In!', 'positiveAlert');
                 setTimeout(alertReset, 2000);

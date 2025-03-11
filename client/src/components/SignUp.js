@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function SignUp({logInUser}) {
+function SignUp({setUser}) {
     const [alertMessage, setAlertMessage] = useState('')
     const [alertClass, setAlertClass] = useState('positiveAlert')
 
@@ -49,7 +49,7 @@ function SignUp({logInUser}) {
                     return
                 }
                 const data = await response.json()
-                logInUser(data)
+                setUser(data)
                 formik.resetForm();
                 handleAlert('User Added', 'positiveAlert')
             } catch (error) {

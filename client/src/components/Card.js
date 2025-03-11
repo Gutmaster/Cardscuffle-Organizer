@@ -2,8 +2,6 @@ import {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-const noImage = 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.shoshinsha-design.com%2Fwp-content%2Fuploads%2F2020%2F05%2Fnoimage-760x460.png&f=1&nofb=1&ipt=d872ea62b4b151bf09b2fbf210849cba33aa79c637b5c2ce34dd1d2399081e1b&ipo=images'
-
 function Card({ cardData, artists, sets, handleDelete }) {
   const [card, setCard] = useState(cardData);
   const [edit, setEdit] = useState(false);
@@ -125,7 +123,7 @@ function Card({ cardData, artists, sets, handleDelete }) {
         <div className="card">
           <h1 className="cardTitle">{card.name}</h1>
           <span className="container">
-            <img src={card.art ? card.art : noImage} alt={card.name} />
+            <img src={card.art} alt={'Image Unavailable'} />
           </span>
 
           <p className="artistName">{card.artist.name}</p>

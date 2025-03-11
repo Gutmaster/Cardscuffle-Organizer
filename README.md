@@ -1,9 +1,8 @@
-# Phase 4 Full Stack Web Application Project
-## Animal Papparazi
+# Phase 5 Full Stack Web Application Project
+## CardScuffle Organizer
 
 ## Introduction
-This web application lets users upload and view photos of animals, categorized by species and location.
-The user can also add and edit descriptions of any animals or locations to better inform future users.
+This web application lets users upload and view cards from the hit fiction collectible card game Card Scuffle, categorized by artist and set. The user can also add and edit cards to keep the database current with new releases.
 
 
 # File Descriptions
@@ -18,11 +17,9 @@ Creates root and renders App.
 The following files are react components.
 ### App.js
 #### App
-Pulls animals, locations, and photographs from the database and makes stateful arrays out of them.
-Returns JSX describing route mapping and passes relevant information to rendered components.
-Contains the following helper function:
-- handleDeletePhoto: takes an id, and deletes the associated object from the photograph database, updates photos in state 
-- handleEditPhoto: takes an id, animal id, and location id, updates photo with id to contain new animal and location ids
+Pulls artists and sets from the database and makes stateful arrays out of them. Checks the session and pulls up to date
+artists and sets when needed, and manages user login with session. Redirects users to login page if trying to access
+restricted views. Returns JSX describing route mapping and passes relevant information to rendered components.
 
 ### Home.js
 #### Home

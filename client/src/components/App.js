@@ -51,21 +51,18 @@ function App() {
         if(window.location.pathname !== "/login" && window.location.pathname !== "/signup" && window.location.pathname !== "/")
           navigate("/login");
     })
-    .then(json => logInUser(json))
+    .then(json => setUser(json))
     .catch(error =>handleError(error));
   }, [location, navigate, handleError]);
 
-  function logInUser(user){
-    setUser(user)
-  }
   return (
     <>
       <Navbar user={user} setUser={setUser}/>
       <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp logInUser={logInUser}/>} />
-          <Route path="/login" element={<LogIn logInUser={logInUser}/>} />
-          <Route path="/newcard" element={<NewCard artists={artists} sets={sets}/>} />
+          <Route path="/signup" element={<SignUp setUser={setUser}/>} />
+          <Route path="/login" element={<LogIn setUser={setUser}/>} />
+          <Route path="/newcard" element={<NewCard artists={artists} sets={sets} setArtists={setArtists} setSets={setSets}/>} />
           <Route path="/cards" element={<Cards artists={artists} sets={sets} user={user} setUser={setUser}/>} />
           <Route path="/library" element={<Library artists={artists} sets={sets} user={user}/>} />
           <Route path="/error" element={<ErrorPage message={errorMessage}/>} />

@@ -6,7 +6,8 @@
 }
 
 .home {
-  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpapercave.com%2Fwp%2Fwp6936159.jpg&f=1&nofb=1&ipt=1c8cd9365d145e63c1d06f3ec60ced33edd086a178823cb33c7bd799d9292a59&ipo=images");
+  background-image: url("https://imgs.search.brave.com/3LDxPhmx9a-EGYJMo3a9ZnTG8R6r66Elc1m6PlwP708/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9saXZl/LnN0YXRpY2ZsaWNr/ci5jb20vNjU1MzUv/NDkxMjc5NjE1Mjhf/M2ViYzRjMThkMl9j/LmpwZw");
+  background-size: cover;
   padding: 8px;
   text-align: center;
   height: 1000px;
@@ -32,8 +33,11 @@
   border-radius: 12px;
   width: 35%;
   margin: auto;
-  display:flex; 
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .title {
@@ -128,7 +132,7 @@ input, select {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width:25%;
+  width:70px;
   text-align:center;
   display:inline-block;
 }

@@ -27,9 +27,9 @@ if __name__ == '__main__':
         artists = [Randal, Dirk, Harry]
 
         print("Creating Users...")
-        Billy = User(username="Billy", password_hash="Yllib")
-        Davey = User(username="Davey", password_hash="Yevad")
-        Scrambles = User(username="Scambles", password_hash="ILOVEEGGS")
+        Billy = User(username="Billy", password_hash="B1llyrules!")
+        Davey = User(username="Davey", password_hash="M0ast@che")
+        Scrambles = User(username="Scambles", password_hash="I<3EGGSalot")
         users = [Billy, Davey, Scrambles]
 
         print("Creating Cards...")
