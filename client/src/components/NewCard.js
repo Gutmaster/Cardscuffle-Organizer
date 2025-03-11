@@ -13,14 +13,12 @@ function NewCard({artists, sets, setArtists, setSets}) {
 
     function alertReset(){
         setAlertMessage('');
-        formik.setErrors({});
     }
 
     function handleAlert(message, aClass){
-        console.log('HANDLEALERT')
         setAlertClass(aClass)
         setAlertMessage(message)
-        setTimeout(alertReset, 2000)
+        setTimeout(alertReset, 3000)
     }
     
     const formSchema = yup.object().shape({
@@ -55,7 +53,7 @@ function NewCard({artists, sets, setArtists, setSets}) {
             if (Object.keys(validationErrors).length > 0) {
               setTimeout(() => {
                 formik.setErrors({});
-              }, 2000);
+              }, 3000);
             }
       
             return validationErrors;

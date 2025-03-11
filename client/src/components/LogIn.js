@@ -13,7 +13,7 @@ function LogIn({setUser}) {
     function handleAlert(message, aClass){
         setAlertClass(aClass)
         setAlertMessage(message)
-        setTimeout(alertReset, 2000)
+        setTimeout(alertReset, 3000)
     }
 
     const formSchema = yup.object().shape({
@@ -29,6 +29,26 @@ function LogIn({setUser}) {
             password: "",
         },
         validationSchema: formSchema,
+        validate: (values) => {
+            // Use Yup's validation method
+            const validationErrors = {};
+            try {
+              formSchema.validateSync(values, { abortEarly: false });
+            } catch (err) {
+              err.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+              });
+            }
+      
+            // Set a timer to clear errors after 3 seconds
+            if (Object.keys(validationErrors).length > 0) {
+              setTimeout(() => {
+                formik.setErrors({});
+              }, 3000);
+            }
+      
+            return validationErrors;
+        },
         onSubmit: async (values) => {
             try {
                 const response = await fetch('/_login', {
@@ -61,23 +81,38 @@ function LogIn({setUser}) {
 
     return (
         <div className='signUp'>
-            <h1 className='title'>Log In</h1>
-            <form className='newPhotoForm' onSubmit={formik.handleSubmit}>
-                <div className='left'>
-                    <label>
-                        Username:
-                        <input type="text" id = "username" name="username" value={formik.values.username} onChange={formik.handleChange}/>
-                    </label>
-                    <label>
-                        Password:
-                        <input type="text" id = "password" name="password" value={formik.values.password} onChange={formik.handleChange}/>
-                    </label>
-                </div>
-                <button type="submit" className='submitButton'>Submit</button>
-            </form>
-            {alertMessage!==''? <p className={alertClass}>{alertMessage}</p>: <></>}
+          <h1 className='title'>Log In</h1>
+          <form className='newPhotoForm' onSubmit={formik.handleSubmit}>
+            <div className='left'>
+              <label>
+                Username:
+                <input 
+                  type="text" 
+                  id="username" 
+                  name="username" 
+                  value={formik.values.username} 
+                  onChange={formik.handleChange}
+                />
+              </label>
+              {formik.errors.username ? <div className="error">{formik.errors.username}</div> : null}
+      
+              <label>
+                Password:
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  value={formik.values.password} 
+                  onChange={formik.handleChange}
+                />
+              </label>
+              {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
+            </div>
+            <button type="submit" className='submitButton'>Submit</button>
+          </form>
+          {alertMessage !== '' ? <p className={alertClass}>{alertMessage}</p> : null}
         </div>
-    );
+      );
 }
 
 export default LogIn;

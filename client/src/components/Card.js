@@ -13,10 +13,6 @@ function Card({ cardData, artists, sets, handleDelete }) {
     formik.setErrors({});
   }
 
-  function handleEdit() {
-    setEdit(!edit);
-  }
-
   function handleAlert(message, aClass){
     setAlertClass(aClass)
     setAlertMessage(message)
@@ -185,7 +181,7 @@ function Card({ cardData, artists, sets, handleDelete }) {
           <p className="artistName">{card.artist.name}</p>
           <p className="setName">{card.set.name}</p>
 
-          <button onClick={handleEdit}>{edit ? 'Save' : 'Edit'}</button>
+          <button onClick={e => setEdit(!edit)}>{edit ? 'Save' : 'Edit'}</button>
           <button onClick={() => handleDelete(card.id)}>Remove from collection</button>
           {alertMessage !== '' ? (
             <p className={alertClass}>{alertMessage}</p>

@@ -50,7 +50,6 @@ class Users(Resource):
                 'error': 'Validation Error',
                 'message': str(ve)
             }
-            print("ValidtionErrornation", response)
             return make_response(response, 400)
         except IntegrityError as ie:
             db.session.rollback() 

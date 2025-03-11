@@ -21,58 +21,72 @@ Pulls artists and sets from the database and makes stateful arrays out of them. 
 artists and sets when needed, and manages user login with session. Redirects users to login page if trying to access
 restricted views. Returns JSX describing route mapping and passes relevant information to rendered components.
 
+### Card.js
+#### Card
+Returns JSX for viewing, editing, and removing a card from the user's collection. Contains the following helper functions:
+ - onSubmit: Sends patch request to the server with card edits made by the user
+ - handleAlert: Takes a message and a css class for displaying alerts to the user for editing and removing cards
+ - alertReset: Resets alert messages, called on a timer
+
+### Cards.js
+#### Cards
+Returns a list of all of the user's cards in JSX, categorized by artist and/or set. Contains the following helper functions:
+ - filterCards: Checks the artist and set filters and filters cards appropriately before display
+ - handleDelete: Sends a patch request to the server to remove card from user's collection, the back end will delete 
+                 the card from the database if no user owns a copy.
+
+### ErrorPage.js
+#### ErrorPage
+Simple error view.
+
 ### Home.js
 #### Home
 Returns JSX for a splash page with a quick description of the site and links to it's pages.
 
+### LibCard.js
+#### LibCard
+Returns JSX for viewing a card currently in the database, sorted by artist and/or set. Users can add cards to their
+collection from this page. Contains the following helper function:
+ - handleAddCard: Sends a patch request to the server to add card to current user's collection.
+
+### Library.js
+Returns a list of all cards in the database in JSX. Contains the following helper function: 
+ - filterCards: Checks the artist and set filters and filters cards appropriately before display
+
+### LogIn.Js
+Returns JSX for a log in form. Sends a request to the server to log in user with the inputted credentials, alerts
+success or failure. Contains the following helper functions: 
+ - onSubmit: Sends post request to log in user from form info
+ - handleAlert: Takes a message and a css class for displaying alerts to the user for log in status
+ - alertReset: Resets alert messages, called on a timer
+
 ### NavBar.js
 #### Navbar
-Returns JSX for a navbar with links to all pages on site.
+Returns JSX for a navbar with links to all pages on site, as well as a logout button.
 
-### Animal.js
-#### Animal
-Returns a JSX representation of an Animal object. Contains the following helper functions:
-- handleArrowRight: raises photo index and changes displayed picture for animal
-- handleArrowLeft: lowers photo index and changes displayed picture for animal
-- handleEdit: edits animal description from content received from client then pushes changes to database
-- handleDescriptionChange: used to edit the value of the description in state
-- alertReset: used to reset the value of the popup text when timer runs out
+### NewCard.js
+#### NewCard
+Returns JSX for a form to add cards to the database, as well as forms for adding new artists and sets.
+Contains the following helper functions:
+ - handleAlert: Takes a message and a css class for displaying alerts to the user for log in status
+ - alertReset: Resets alert messages, called on a timer
+ - onSubmit: Attempts to post new card to database from form info, server will add card to user collection if successful
+ - handleArtistSubmit: Attempts to post artist to database from add artist form
+ - handleSetSubmit: Attempts to post set to database from add set form
 
-### Animals.js
-#### Animals
-Returns a list of all Animal objects in JSX.
-
-### Location.js
-#### Location
-Returns a JSX representation of a Location object. Contains the following helper functions:
-- handleArrowRight: raises photo index and changes displayed picture for location
-- handleArrowLeft: lowers photo index and changes displayed picture for location
-- handleEdit: edits location description from content received from client then pushes changes to database
-- handleDescriptionChange: used to edit the value of the description in state
-- alertReset: used to reset the value of the popup text when timer runs out
-
-### Locations.js
-#### Locations
-Returns a list of all Location objects in JSX.
-
-### Photograph.js
-#### Photograph
-Returns a JSX representation of a Photograph object. Contains the following helper functions:
-- handleEdit: swaps editing on and off, if swapping off, passes values to confirmEdit function received from App component to push changes to database and state
-- handleEditAnimal: sets new animal for the photograph in state
-- handleEditLocation: sets new location for the photograph in state
-
-### Photographs.js
-#### Photographs
-Returns a filter and filtered list of photographs from the database. Contains the following helper functions:
-- handleFilterTypeChange: handles changing the state of the type of filter applied
-- handleFilterChange: handles changing the state of the filter
+### SignUp.js
+#### SignUp
+Returns JSX for a sign up form. Sends a request to the server to sign up user with the inputted credentials, alerts
+success or failure. Contains the following helper functions: 
+ - onSubmit: Sends post request to log in user from form info
+ - handleAlert: Takes a message and a css class for displaying alerts to the user for log in status
+ - alertReset: Resets alert messages, called on a timer
 
 
 
 ## Server Side
 ### seed.py
-This file resets and seeds the animal_photo database with initial values for
+This file resets and seeds the database with initial values for
 the program. It can be run by entering `python server/seed.py` from the project directory.
 
 
@@ -83,6 +97,22 @@ This file contains imports and configuration for the app and database.
 ### app.py
 This file contains the following routes that serve to and accepts data from the client application. 
 It is written to Flask RESTful standards and contains the following classes and methods.
+
+#### Class CheckSession
+##### get
+Handles get requests to /_check_session, returns logged in user if successful otherwise returns 401
+and a redirect to the login page.
+
+#### Class Users
+##### post
+Handles post requests to /_users, adds new user to database from request data, returns user on success, errors on failure.
+##### patch
+Handles patch requests to /_users, takes a given card id and removes the matching card from the current user's card. 
+If no user owns the card after it has been removed from the current user, it will be deleted from the database.
+    
+
+
+
 
 #### Class Animals
 ##### get
