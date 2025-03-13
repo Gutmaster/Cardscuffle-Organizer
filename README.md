@@ -85,15 +85,6 @@ success or failure. Contains the following helper functions:
 
 
 ## Server Side
-### seed.py
-This file resets and seeds the database with initial values for
-the program. It can be run by entering `python server/seed.py` from the project directory.
-
-
-### config.py
-This file contains imports and configuration for the app and database.
-
-
 ### app.py
 This file contains the following routes that serve to and accepts data from the client application. 
 It is written to Flask RESTful standards and contains the following classes and methods.
@@ -110,51 +101,59 @@ Handles post requests to /_users, adds new user to database from request data, r
 Handles patch requests to /_users, takes a given card id and removes the matching card from the current user's card. 
 If no user owns the card after it has been removed from the current user, it will be deleted from the database.
     
-
-
-
-
-#### Class Animals
+#### Class UserCards
 ##### get
-Handles get requests to /animals and returns a list of all animals from the database.
+Handles get requests to /_usercards, returns a list of all cards owned by current user.
 
-#### Class AnimalsById
-##### patch
-Handles patch requests to /animals/{id} and pulls the animal from the database matching the given ID and patches it's
-name and description with the name and description from the request body. Returns the patched animal if successful.
-
-#### Class Locations
+#### Class Cards
 ##### get
-Handles get requests to /locations and returns a list of all locations from the database.
+Handles get requests to /_cards, returns a list of all cards in the database.
 
-#### Class LocationById
+##### post
+Handles post requests to /_cards, adds a card to the database from data in the request, returns a serialized copy of the card.
+
 ##### patch
-Handles patch requests to /locations/{id} and pulls the location from the database matching the given ID and patches it's
-name and description with the name and description from the request body. Returns the patched location if successful.
-
-#### Class Photographs
+Handles patch requests to /_cards, edits a card from the database with data in the request, returns a serialized copy of the
+card if successful.
+        
+#### Class Artists
 ##### get
-Handles get requests to /photographs and returns a list of all photographs from the database.
+Handles get requests to /_artists, returns a list of all artists in the database.
 
-#### post
-Handles post requests to /photographs and attempts to create a new photograph from information in the request body.
-It will create a new animal and/or location if those requested are not yet in the database. On success, updates the
-database and returns the new photograph.
+##### post
+Handles post requests to /_artists, adds a new artist to the database with the name in the request. Returns a serialized copy
+of the artist if successful.
 
-#### Class PhotographsById
-##### patch
-Handles patch requests to /photographs/{id}, patches animal in database matching ID with new animal and location values.
+#### Class Sets
+##### get
+Handles get requests to /_sets, returns a list of all sets in the database.
 
-##### delete
-Handles delete requests to /photographs/{id}, finds the photograph associated with the given id and deletes it from the database.
-Returns nothing if successful.
+##### post
+Handles post requests to /_sets, adds a new set to the database with the name and date in the request. Returns a serialized copy
+of the set if successful.
+
+#### Class Login
+##### post
+Handles post requests to /_login, searches for a user from the database with the username in the request, and attempts to
+authenticate with the given password, logs in the user on the server and returns a serialized copy of the user if successful.
+
+#### Class Logout
+##### get
+Handles get requests to /_logout, logs out the current user from the server, returns a redirect to the login page.
+
+### config.py
+This file contains imports and configuration for the app and database.
 
 ### models.py
-This file contains the definitions for all models used in the animal_photo database.
+This file contains the definitions for all models used in the database.
+
+### seed.py
+This file resets and seeds the database with initial values for
+the program. It can be run by entering `python server/seed.py` from the project directory.
 
 
 
-Copyright (c) 2024 Chevy Vall
+Copyright (c) 2025 Chevy Vall
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
