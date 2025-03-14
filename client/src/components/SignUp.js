@@ -31,7 +31,7 @@ function SignUp({setUser}) {
         validationSchema: formSchema,
         onSubmit: async (values) => {
             try {
-                const response = await fetch('/_users', {
+                const response = await fetch('/users', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -65,11 +65,23 @@ function SignUp({setUser}) {
             <form onSubmit={formik.handleSubmit}>
                 <label>
                     Username:
-                    <input type="text" id = "username" name="username" value={formik.values.username} onChange={formik.handleChange}/>
+                    <input 
+                        type="text" 
+                        id = "username" 
+                        name="username" 
+                        value={formik.values.username} 
+                        onChange={formik.handleChange}
+                    />
                 </label>
                 <label>
                     Password:
-                    <input type="text" id = "password" name="password" value={formik.values.password} onChange={formik.handleChange}/>
+                    <input 
+                        type="password" 
+                        id = "password" 
+                        name="password" 
+                        value={formik.values.password} 
+                        onChange={formik.handleChange}
+                    />
                 </label>
                 <button type="submit" className='submitButton'>Submit</button>
             </form>

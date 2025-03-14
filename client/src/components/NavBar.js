@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Navbar({user, setUser}) {
   function HandleLogOut() {
-    fetch("_logout")
+    fetch("logout")
       .then(response => {
         if (response.ok) {
           setUser(null);

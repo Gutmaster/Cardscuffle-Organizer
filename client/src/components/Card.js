@@ -23,7 +23,7 @@ function Card({ cardData, handleDelete }) {
 
     //When the edit button is switched on, fetch artists and sets to choose from
     function handleEdit(){
-        fetch("/_artists")
+        fetch("/artists")
         .then(response => {
             if (!response.ok)
                 throw new Error('Network response was not ok');
@@ -32,7 +32,7 @@ function Card({ cardData, handleDelete }) {
         .then(json => setArtists(json))
         .catch(error => handleAlert(error.message, 'negativeAlert'));
 
-        fetch("/_sets")
+        fetch("/sets")
         .then(response => {
             if (!response.ok)
                 throw new Error('Network response was not ok');
@@ -90,7 +90,7 @@ function Card({ cardData, handleDelete }) {
     onSubmit: async (values) => {
         setEdit(!edit);
         try {
-        const response = await fetch('/_cards', {
+        const response = await fetch('/cards', {
             method: 'PATCH',
             headers: {
             'Content-Type': 'application/json',

@@ -51,7 +51,7 @@ function LogIn({setUser}) {
         },
         onSubmit: async (values) => {
             try {
-                const response = await fetch('/_login', {
+                const response = await fetch('/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -81,34 +81,34 @@ function LogIn({setUser}) {
 
     return (
         <div className='signUp'>
-          <h1 className='title'>Log In</h1>
-          <form onSubmit={formik.handleSubmit}>
-              <label>
-                Username:
-                <input 
-                  type="text" 
-                  id="username" 
-                  name="username" 
-                  value={formik.values.username} 
-                  onChange={formik.handleChange}
-                />
-              </label>
-              {formik.errors.username ? <div className="error">{formik.errors.username}</div> : null}
-      
-              <label>
-                Password:
-                <input 
-                  type="password" 
-                  id="password" 
-                  name="password" 
-                  value={formik.values.password} 
-                  onChange={formik.handleChange}
-                />
-              </label>
-              {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
-            <button type="submit" className='submitButton'>Submit</button>
-          </form>
-          {alertMessage !== '' ? <p className={alertClass}>{alertMessage}</p> : null}
+            <h1 className='title'>Log In</h1>
+            <form onSubmit={formik.handleSubmit}>
+                <label>
+                    Username:
+                    <input 
+                        type="text" 
+                        id = "username" 
+                        name="username" 
+                        value={formik.values.username} 
+                        onChange={formik.handleChange}
+                    />
+                </label>
+                {formik.errors.username ? <div className="error">{formik.errors.username}</div> : null}
+        
+                <label>
+                    Password:
+                    <input 
+                        type="password" 
+                        id = "password" 
+                        name="password" 
+                        value={formik.values.password} 
+                        onChange={formik.handleChange}
+                    />
+                </label>
+                {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
+                <button type="submit" className='submitButton'>Submit</button>
+            </form>
+            {alertMessage !== '' ? <p className={alertClass}>{alertMessage}</p> : null}
         </div>
       );
 }

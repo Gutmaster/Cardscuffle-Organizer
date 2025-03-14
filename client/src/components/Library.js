@@ -1,53 +1,83 @@
-import React, {useState, useEffect, useCallback} from 'react'
-import LibCard from "./LibCard.js"
+import React, {useState, useEffect} from 'react'
+import Artist from './UserArtist';
+import Set from './UserSet';
 
-
-function Library({artists, sets, user}) {
-    const [filteredCards, setFilteredCards] = useState([])
-    const [artistFilter, setArtistFilter] = useState('select')
-    const [setFilter, setSetFilter] = useState('select')
-
-    const filterCards = useCallback(() => {
-        let filtered = []
-        let selectedArtist = artists.find(artist => artist.id === parseInt(artistFilter))
-        let selectedSet = sets.find(set => set.id === parseInt(setFilter))
-        if(artistFilter !== 'select'){
-            filtered = selectedArtist.cards
-            if(setFilter !== 'select')
-            filtered = filtered.filter(card => card.set.name === selectedSet.name)
-        }
-        else if(setFilter !== 'select')
-            filtered = selectedSet.cards
-        setFilteredCards(filtered)
-    }, [artistFilter, setFilter, artists, sets])
+function CardLibrary({ setUser }) {
+    const [artists, setArtists] = useState([]);
+    const [sets, setSets] = useState([]);
+    const [currentView, setCurrentView] = useState('none');
+    const [selectedArtist, setSelectedArtist] = useState();
+    const [selectedSet, setSelectedSet] = useState();
 
     useEffect(() => {
-        filterCards()
-    }, [filterCards])
-
-    return (
-        <div>
-            <label htmlFor='artist'>Artist: </label>
-            <select id="artist" name="artist" value={artistFilter} onChange={e=>setArtistFilter(e.target.value)}>
-                <option value={'select'}>Select Artist</option>
-                {artists.map((artist) => (
-                    <option key={artist.id} value={artist.id}>{artist.name}</option>
-                ))}
-            </select>
-            <label htmlFor='set'>Set: </label>
-            <select id="set" name="set" value={setFilter} onChange={e=>setSetFilter(e.target.value)}>
-                <option value={'select'}>Select Set</option>
-                {sets.map((set) => (
-                    <option key={set.id} value={set.id}>{set.name}</option>
-                ))}
-            </select>
-            <section className="container">
-            {filteredCards.map((card) => (
-                <LibCard key={card.id} card={card} user={user}/>
-            ))}
-            </section>
-        </div>
-        );
+        fetch('/artists')
+        .then((r) => r.json())
+        .then((json) => setArtists(json));
+        fetch('/sets')
+        .then((r) => r.json())
+        .then((json) => setSets(json));
+    }, []);
+  
+    function handleArtistSelect(id){
+        setSelectedArtist(artists.find(artist => artist.id === id));
+        setCurrentView('artistSelected');
     }
 
-    export default Library
+    function handleSetSelect(id){
+        setSelectedSet(sets.find(set => set.id === id));
+        setCurrentView('setSelected');
+    }
+
+    const handleViewChange = (view) => {
+      setCurrentView(view);
+    };
+
+    const renderContent = () => {
+      switch (currentView) {
+        case 'artist':
+            return (
+                <>
+                    <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
+                    {artists.map((artist) => (
+                        <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name}</button>
+                    ))}
+                </>
+            );
+        case 'set':
+            return (
+                <>
+                    <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
+                    {sets.map((set) => (
+                        <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name}</button>
+                    ))}
+                </>
+            );
+        case 'artistSelected':
+            return (
+                <>
+                    <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
+                    <Artist artist={selectedArtist} setUser={setUser}/>
+                </>
+            )
+        case 'setSelected':
+            return (
+                <>
+                    <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
+                    <Set set={selectedSet} setUser={setUser}/>
+                </>
+            )
+        case 'none':
+        default:
+            return (
+                <>
+                    <button className='sortButton' onClick={() => handleViewChange('artist')}>View Artists</button>
+                    <button className='sortButton' onClick={() => handleViewChange('set')}>View Sets</button>
+                </>
+            );
+      }
+    };
+  
+    return <div className='container'>{renderContent()}</div>;
+  }
+  
+  export default CardLibrary;

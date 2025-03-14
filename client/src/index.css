@@ -28,15 +28,18 @@
   color: white;
 }
 
+a {
+    text-decoration: none;
+}
+
 nav a {
   color: blue;
-  text-decoration: none;
   font-weight: bold;
   margin-left: 15px;
 }
 
 nav a:hover {
-  color: darkblue; /* Change color on hover */
+  color: darkblue;
 }
 
 .logoutButton {
@@ -101,19 +104,41 @@ header nav a {
 }
 
 .container {
-  padding: 1px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+    background-color: rgb(12, 145, 58);
+    padding: 8px;
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.container h1 {
-  font-size:xx-large;
+.sortButton {
+    padding: 10px 20px;
+    background-color: #bcc95b;
+    color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 500px;
+    text-align: center;
+    margin: 2px;
 }
 
-.container a {
-  font-size:xx-large;
+.backButton {
+    padding: 10px 20px;
+    background-color: #d88f36;
+    color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 200px;
+    text-align: center;
+    margin: 2px;
 }
 
 .card {
@@ -228,7 +253,6 @@ textarea {
 
 body { background: #222; color: white; }
 
-span   { font-family: sans-serif; line-height: 20px; font-weight: bold;     }
 input  { width: 200px;            height: 30px;      box-sizing:border-box; }
 select { width: 200px;            height: 30px;      box-sizing:border-box; }
 

@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function NewCard({artists, sets, setArtists, setSets}) {
+function NewCard() {
+    const [artists, setArtists] = useState([])
+    const [sets, setSets] = useState([])
     const [alertMessage, setAlertMessage] = useState('')
     const [alertClass, setAlertClass] = useState('')
     const [addArtist, setAddArtist] = useState(false)
@@ -10,6 +12,15 @@ function NewCard({artists, sets, setArtists, setSets}) {
     const [newArtist, setNewArtist] = useState('')
     const [newSet, setNewSet] = useState('')
     const [date, setDate] = useState('')
+
+    useEffect(() => {
+        fetch('/artists')
+        .then((r) => r.json())
+        .then((json) => setArtists(json));
+        fetch('/sets')
+        .then((r) => r.json())
+        .then((json) => setSets(json));
+    }, []);
 
     function alertReset(){
         setAlertMessage('');
@@ -60,7 +71,7 @@ function NewCard({artists, sets, setArtists, setSets}) {
         },
         onSubmit: async (values) => {
             try {
-                const response = await fetch('/_cards', {
+                const response = await fetch('/cards', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -91,7 +102,7 @@ function NewCard({artists, sets, setArtists, setSets}) {
     })
 
     function handleArtistSubmit(){
-        fetch('/_artists', {
+        fetch('/artists', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -113,7 +124,7 @@ function NewCard({artists, sets, setArtists, setSets}) {
     }
 
     function handleSetSubmit(){
-        fetch('/_sets', {
+        fetch('/sets', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

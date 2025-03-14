@@ -8,6 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_restful import Resource
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import desc
 import os
 
 
@@ -83,16 +84,6 @@ class Users(Resource):
         
         db.session.commit()
         return make_response(current_user.to_dict(), 200)
-
-
-class UserCards(Resource):
-    @login_required
-    def get(self):
-        card_dicts = []
-        for card in current_user.cards:
-            card_dict = card.to_dict()
-            card_dicts.append(card_dict)
-        return make_response(card_dicts, 200)
     
 
 class Cards(Resource):
@@ -134,7 +125,8 @@ class Cards(Resource):
 
 class Artists(Resource):
     def get(self):
-        artists = Artist.query.all()
+        artists = Artist.query.order_by(Artist.name).all()
+        print(artists)
         return make_response([artist.to_dict() for artist in artists], 200)
     
     def post(self):
@@ -167,7 +159,7 @@ class ArtistUserCards(Resource):
 
 class Sets(Resource):
     def get(self):
-        sets = Set.query.all()
+        sets = Set.query.order_by(Set.name).all()
         return make_response([set.to_dict() for set in sets], 200)
     
     def post(self):
@@ -240,18 +232,17 @@ class Logout(Resource):
 #         return flask.redirect(next or flask.url_for('index'))
 #     return flask.render_template('login.html', form=form)
 
-api.add_resource(Users, '/_users')
-api.add_resource(UserCards, '/_usercards')
-api.add_resource(Cards, '/_cards')
-api.add_resource(Artists, '/_artists')
+api.add_resource(Users, '/users')
+api.add_resource(Cards, '/cards')
+api.add_resource(Artists, '/artists')
 api.add_resource(UserArtists, '/userartists')
 api.add_resource(ArtistUserCards, '/artists/<int:artist_id>/usercards')
-api.add_resource(Sets, '/_sets')
+api.add_resource(Sets, '/sets')
 api.add_resource(UserSets, '/usersets')
 api.add_resource(SetUserCards, '/sets/<int:set_id>/usercards')
-api.add_resource(Login, '/_login')
-api.add_resource(Logout, '/_logout')
-api.add_resource(CheckSession, '/_check_session')
+api.add_resource(Login, '/login')
+api.add_resource(Logout, '/logout')
+api.add_resource(CheckSession, '/check_session')
 
 
 if __name__ == '__main__':

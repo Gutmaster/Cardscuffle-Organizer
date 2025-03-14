@@ -1,15 +1,6 @@
-import React, {useState, useEffect} from 'react'
-import Card from "./Card.js"
+import LibCard from "./LibCard.js"
 
-function UserArtist({artist, setUser}) {
-    const [cards, setCards] = useState([])
-
-    useEffect(() => {
-        fetch(`/artists/${artist.id}/usercards`)
-        .then((r) => r.json())
-        .then(json => setCards(json));
-    }, []);
-
+function Set({set, setUser}) {
     function handleDelete(id) {
         fetch('users', {
             method: 'PATCH',
@@ -27,11 +18,11 @@ function UserArtist({artist, setUser}) {
     
     return (
         <div>
-            {cards.map((card) => (
-                <Card key={card.id} cardData={card} handleDelete={handleDelete}/>
+            {set.cards.map((card) => (
+                <LibCard key={card.id} cardData={card} handleDelete={handleDelete}/>
             ))}
         </div>
     );
     }
 
-export default UserArtist;
+export default Set;

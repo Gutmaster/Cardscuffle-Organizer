@@ -19,11 +19,11 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     @property
     def unique_artists(self):
-        return list({card.artist for card in self.cards})
-    
+        return sorted({card.artist for card in self.cards}, key=lambda artist: artist.name)
+
     @property
     def unique_sets(self):
-        return list({card.set for card in self.cards})
+        return sorted({card.set for card in self.cards}, key=lambda set: set.name)
     
     serialize_rules = ('-cards.users', '-_password_hash')
 

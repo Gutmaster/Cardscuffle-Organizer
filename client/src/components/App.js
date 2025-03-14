@@ -5,7 +5,7 @@ import SignUp from "./SignUp.js"
 import LogIn from "./LogIn.js"
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import UserCards from "./UserCards.js"
-import Library from "./Library.js"
+import CardLibrary from "./Library.js"
 import NewCard from "./NewCard.js"
 import ErrorPage from "./ErrorPage.js";
 
@@ -22,7 +22,7 @@ function App() {
   }, [navigate]);
 
   useEffect(() => {
-    fetch("/_check_session")
+    fetch("/check_session")
     .then((response) => {
       if(response.status === 201)
         return response.json();
@@ -43,7 +43,7 @@ function App() {
           <Route path="/login" element={<LogIn setUser={setUser}/>} />
           <Route path="/newcard" element={<NewCard/>} />
           <Route path="/usercards" element={<UserCards user={user} setUser={setUser}/>} />
-          <Route path="/library" element={<Library user={user}/>} />
+          <Route path="/library" element={<CardLibrary user={user}/>} />
           <Route path="/error" element={<ErrorPage message={errorMessage}/>} />
       </Routes>
     </>

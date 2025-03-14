@@ -11,7 +11,7 @@ function UserSet({set, setUser}) {
     }, []);
 
     function handleDelete(id) {
-        fetch('_users', {
+        fetch('users', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

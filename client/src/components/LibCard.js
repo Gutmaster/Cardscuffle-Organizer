@@ -21,7 +21,7 @@ function LibCard({card, user}) {
   }, [user, card])
 
   function handleAddCard() {
-    fetch('/_users', {
+    fetch('/users', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'

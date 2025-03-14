@@ -10,10 +10,10 @@ function UserCards({ user, setUser }) {
     const [selectedSet, setSelectedSet] = useState();
 
     useEffect(() => {
-      fetch('/userartists')
+        fetch('/userartists')
         .then((r) => r.json())
         .then((json) => setUserArtists(json));
-      fetch('/usersets')
+        fetch('/usersets')
         .then((r) => r.json())
         .then((json) => setUserSets(json));
     }, [user]);
@@ -37,32 +37,32 @@ function UserCards({ user, setUser }) {
         case 'artist':
             return (
                 <>
-                    <button onClick={() => handleViewChange('none')}>Back</button>
+                    <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                     {userArtists.map((artist) => (
-                        <button onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name}</button>
+                        <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name}</button>
                     ))}
                 </>
             );
         case 'set':
             return (
                 <>
-                    <button onClick={() => handleViewChange('none')}>Back</button>
+                    <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                     {userSets.map((set) => (
-                        <button onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name}</button>
+                        <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name}</button>
                     ))}
                 </>
             );
         case 'artistSelected':
             return (
                 <>
-                    <button onClick={() => handleViewChange('artist')}>Back</button>
+                    <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
                     <UserArtist artist={selectedArtist} setUser={setUser}/>
                 </>
             )
         case 'setSelected':
             return (
                 <>
-                    <button onClick={() => handleViewChange('set')}>Back</button>
+                    <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
                     <UserSet set={selectedSet} setUser={setUser}/>
                 </>
             )
@@ -70,14 +70,14 @@ function UserCards({ user, setUser }) {
         default:
             return (
                 <>
-                    <button onClick={() => handleViewChange('artist')}>View Artists</button>
-                    <button onClick={() => handleViewChange('set')}>View Sets</button>
+                    <button className='sortButton' onClick={() => handleViewChange('artist')}>View Artists</button>
+                    <button className='sortButton' onClick={() => handleViewChange('set')}>View Sets</button>
                 </>
             );
       }
     };
   
-    return <div className='signUp'>{renderContent()}</div>;
+    return <div className='container'>{renderContent()}</div>;
   }
   
   export default UserCards;
