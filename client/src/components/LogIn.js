@@ -82,8 +82,7 @@ function LogIn({setUser}) {
     return (
         <div className='signUp'>
           <h1 className='title'>Log In</h1>
-          <form className='newPhotoForm' onSubmit={formik.handleSubmit}>
-            <div className='left'>
+          <form onSubmit={formik.handleSubmit}>
               <label>
                 Username:
                 <input 
@@ -107,7 +106,6 @@ function LogIn({setUser}) {
                 />
               </label>
               {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
-            </div>
             <button type="submit" className='submitButton'>Submit</button>
           </form>
           {alertMessage !== '' ? <p className={alertClass}>{alertMessage}</p> : null}

@@ -99,96 +99,91 @@ function Card({ cardData, artists, sets, handleDelete }) {
   });
 
   return (
-    <>
+    <div className="card">
       {edit ? (
-        <div className="card">
-          <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="name">Name: </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.name && formik.errors.name ? (
-              <div className="cardError">{formik.errors.name}</div>
-            ) : null}
+        <form onSubmit={formik.handleSubmit}>
+          <label htmlFor="name">Name: </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.name && formik.errors.name ? (
+            <div className="cardError">{formik.errors.name}</div>
+          ) : null}
 
-            <label htmlFor="art">Art: </label>
-            <input
-              type="text"
-              id="art"
-              name="art"
-              value={formik.values.art}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.art && formik.errors.art ? (
-              <div className="cardError">{formik.errors.art}</div>
-            ) : null}
+          <label htmlFor="art">Art: </label>
+          <input
+            type="text"
+            id="art"
+            name="art"
+            value={formik.values.art}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.art && formik.errors.art ? (
+            <div className="cardError">{formik.errors.art}</div>
+          ) : null}
 
-            <label htmlFor="artist">Artist: </label>
-            <select
-              id="artist"
-              name="artist"
-              value={formik.values.artist}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value={'select'}>Select Artist</option>
-              {artists.map((artist) => (
-                <option key={artist.id} value={artist.name}>
-                  {artist.name}
-                </option>
-              ))}
-            </select>
-            {formik.touched.artist && formik.errors.artist ? (
-              <div className="cardError">{formik.errors.artist}</div>
-            ) : null}
+          <label htmlFor="artist">Artist: </label>
+          <select
+            id="artist"
+            name="artist"
+            value={formik.values.artist}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value={'select'}>Select Artist</option>
+            {artists.map((artist) => (
+              <option key={artist.id} value={artist.name}>
+                {artist.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.artist && formik.errors.artist ? (
+            <div className="cardError">{formik.errors.artist}</div>
+          ) : null}
 
-            <label htmlFor="set">Set: </label>
-            <select
-              id="set"
-              name="set"
-              value={formik.values.set}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            >
-              <option value={'select'}>Select Set</option>
-              {sets.map((set) => (
-                <option key={set.id} value={set.name}>
-                  {set.name}
-                </option>
-              ))}
-            </select>
-            {formik.touched.set && formik.errors.set ? (
-              <div className="cardError">{formik.errors.set}</div>
-            ) : null}
+          <label htmlFor="set">Set: </label>
+          <select
+            id="set"
+            name="set"
+            value={formik.values.set}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value={'select'}>Select Set</option>
+            {sets.map((set) => (
+              <option key={set.id} value={set.name}>
+                {set.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.set && formik.errors.set ? (
+            <div className="cardError">{formik.errors.set}</div>
+          ) : null}
 
-            <button type="submit" className="submitButton">Submit</button>
-            <button onClick={e => setEdit(false)} className="submitButton">Cancel</button>
-          </form>
-        </div>
+          <button type="submit" className="submitButton">Submit</button>
+          <button onClick={e => setEdit(false)} className="submitButton">Cancel</button>
+        </form>
       ) : (
-        <div className="card">
-          <h1 className="cardTitle">{card.name}</h1>
-          <span className="container">
-            <img src={card.art} alt={'art unavailable'} />
-          </span>
-
+        <>
+          <h1>{card.name}</h1>
+          <img src={card.art} alt={'art unavailable'} />
           <p className="artistName">{card.artist.name}</p>
           <p className="setName">{card.set.name}</p>
 
-          <button onClick={e => setEdit(!edit)}>{edit ? 'Save' : 'Edit'}</button>
-          <button onClick={() => handleDelete(card.id)}>Remove from collection</button>
+          <button className='submitButton' onClick={e => setEdit(!edit)}>{edit ? 'Save' : 'Edit'}</button>
+          <button className='submitButton'onClick={() => handleDelete(card.id)}>Remove from collection</button>
           {alertMessage !== '' ? (
             <p className={alertClass}>{alertMessage}</p>
           ) : null}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
 

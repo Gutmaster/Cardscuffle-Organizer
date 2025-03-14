@@ -62,17 +62,15 @@ function SignUp({setUser}) {
     return (
         <div className='signUp'>
             <h1 className='title'>Sign Up</h1>
-            <form className='newPhotoForm' onSubmit={formik.handleSubmit}>
-                <div className='left'>
-                    <label>
-                        Username:
-                        <input type="text" id = "username" name="username" value={formik.values.username} onChange={formik.handleChange}/>
-                    </label>
-                    <label>
-                        Password:
-                        <input type="text" id = "password" name="password" value={formik.values.password} onChange={formik.handleChange}/>
-                    </label>
-                </div>
+            <form onSubmit={formik.handleSubmit}>
+                <label>
+                    Username:
+                    <input type="text" id = "username" name="username" value={formik.values.username} onChange={formik.handleChange}/>
+                </label>
+                <label>
+                    Password:
+                    <input type="text" id = "password" name="password" value={formik.values.password} onChange={formik.handleChange}/>
+                </label>
                 <button type="submit" className='submitButton'>Submit</button>
             </form>
             {alertMessage!==''? <p className={alertClass}>{alertMessage}</p>: <></>}

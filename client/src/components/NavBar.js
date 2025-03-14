@@ -27,7 +27,7 @@ function Navbar({user, setUser}) {
         <Link to="/library">Card Library</Link>
         <Link to="/newcard">New Card</Link>
       </nav>
-      {user && <button onClick={HandleLogOut}>Log Out</button>}
+      {user && <button className='logoutButton' onClick={HandleLogOut}>Log Out</button>}
     </header>
   );
 }
