@@ -108,8 +108,8 @@ class Cards(Resource):
     @login_required
     def post(self):
         data = request.json
-        card = Card(name = data.get('name'), 
-                    art = data.get('art'), 
+        card = Card(name = data.get('name'),
+                    art = data.get('art'),
                     artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id,
                     set_id = Set.query.filter(Set.name == data.get('set')).first().id,
                     users = [current_user])
@@ -145,6 +145,26 @@ class Artists(Resource):
         return artist.to_dict(), 201
     
 
+class UserArtists(Resource):
+    @login_required
+    def get(self):
+        artist_dicts = []
+        for artist in current_user.unique_artists:
+            artist_dict = artist.to_dict()
+            artist_dicts.append(artist_dict)
+        return make_response(artist_dicts, 200)
+
+
+class ArtistUserCards(Resource):
+    def get(self, artist_id):
+        artist = Artist.query.get(artist_id)
+        if not artist:
+            return make_response({'error': 'Artist not found'}, 404)
+        
+        user_cards = [card for card in artist.cards if current_user in card.users]
+        return make_response([card.to_dict() for card in user_cards], 200)
+
+
 class Sets(Resource):
     def get(self):
         sets = Set.query.all()
@@ -156,6 +176,25 @@ class Sets(Resource):
         db.session.add(set)
         db.session.commit()
         return set.to_dict(), 201
+    
+class UserSets(Resource):
+    @login_required
+    def get(self):
+        set_dicts = []
+        for set in current_user.unique_sets:
+            set_dict = set.to_dict()
+            set_dicts.append(set_dict)
+        return make_response(set_dicts, 200)
+    
+
+class SetUserCards(Resource):
+    def get(self, set_id):
+        set = Set.query.get(set_id)
+        if not set:
+            return make_response({'error': 'Set not found'}, 404)
+
+        user_cards = [card for card in set.cards if current_user in card.users]
+        return make_response([card.to_dict() for card in user_cards], 200)
     
 
 class Login(Resource):
@@ -205,10 +244,15 @@ api.add_resource(Users, '/_users')
 api.add_resource(UserCards, '/_usercards')
 api.add_resource(Cards, '/_cards')
 api.add_resource(Artists, '/_artists')
+api.add_resource(UserArtists, '/userartists')
+api.add_resource(ArtistUserCards, '/artists/<int:artist_id>/usercards')
 api.add_resource(Sets, '/_sets')
+api.add_resource(UserSets, '/usersets')
+api.add_resource(SetUserCards, '/sets/<int:set_id>/usercards')
 api.add_resource(Login, '/_login')
 api.add_resource(Logout, '/_logout')
 api.add_resource(CheckSession, '/_check_session')
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

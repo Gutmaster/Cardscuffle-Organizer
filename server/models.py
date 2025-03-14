@@ -14,6 +14,16 @@ class User(db.Model, SerializerMixin, UserMixin):
     _password_hash = db.Column(db.String, nullable=False)
 
     cards = db.relationship('Card', secondary='user_cards', back_populates='users', cascade='all, delete', passive_deletes=True)
+    artists = association_proxy('cards', 'artist')
+    sets = association_proxy('cards', 'set')
+
+    @property
+    def unique_artists(self):
+        return list({card.artist for card in self.cards})
+    
+    @property
+    def unique_sets(self):
+        return list({card.set for card in self.cards})
     
     serialize_rules = ('-cards.users', '-_password_hash')
 
@@ -109,6 +119,7 @@ class Set(db.Model, SerializerMixin):
     release_date = db.Column(db.Date, nullable=False)
 
     cards = db.relationship('Card', back_populates='set')
+    artists = association_proxy('cards', 'artist')
 
     @validates('name')
     def validate_text(self, key, value):
@@ -127,7 +138,8 @@ class Artist(db.Model, SerializerMixin):
     name = db.Column(db.String, unique=True, nullable=False)
 
     cards = db.relationship('Card', back_populates='artist')
-    
+    sets = association_proxy('cards', 'set')
+
     @validates('name')
     def validate_text(self, key, value):
         if not value:

@@ -2,43 +2,32 @@ import React, {useState, useEffect, useCallback} from 'react'
 import Card from "./Card.js"
 
 function Cards({artists, sets, user, setUser}) {
-  const [filteredCards, setFilteredCards] = useState([])
-  const [artistFilter, setArtistFilter] = useState('select')
-  const [setFilter, setSetFilter] = useState('select')
-  const [userCards, setUserCards] = useState([])
-  const [userArtists, setUserArtists] = useState([])
-  const [userSets, setUserSets] = useState([])
+    const [filteredCards, setFilteredCards] = useState([])
+    const [artistFilter, setArtistFilter] = useState('select')
+    const [setFilter, setSetFilter] = useState('select')
+    const [userCards, setUserCards] = useState([])
+    const [userArtists, setUserArtists] = useState([])
+    const [userSets, setUserSets] = useState([])
 
-  const filterCards = useCallback(() => {
+    const filterCards = useCallback(() => {
     let filtered = userCards
     if(artistFilter !== 'select'){
-      filtered = filtered.filter(card => card.artist.name === artistFilter)
-      if(setFilter !== 'select')
+        filtered = filtered.filter(card => card.artist.name === artistFilter)
+        if(setFilter !== 'select')
         filtered = filtered.filter(card => card.set.name === setFilter)
     }
     else if(setFilter !== 'select')
-      filtered = filtered.filter(card => card.set.name === setFilter)
+        filtered = filtered.filter(card => card.set.name === setFilter)
     setFilteredCards(filtered)
-  }, [artistFilter, setFilter, userCards])
+    }, [artistFilter, setFilter, userCards])
 
   useEffect(() => {
-    fetch("/_usercards")
+    fetch("/_userartists")
     .then((r) => r.json())
-    .then(json => {
-      setUserCards(json)
-
-      const artists = new Set();
-      const sets = new Set();
-      
-      json.forEach(card => {
-        if (card.artist)
-          artists.add(card.artist.name);
-        if (card.set)
-          sets.add(card.set.name);
-      });
-      setUserArtists([...artists]);
-      setUserSets([...sets]);
-    })
+    .then(json => setUserArtists(json));
+    fetch("/_usersets")
+    .then((r) => r.json())
+    .then(json => setUserSets(json))
   }, [user]);
 
   useEffect(() => {

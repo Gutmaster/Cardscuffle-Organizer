@@ -23,7 +23,7 @@ function Navbar({user, setUser}) {
         <Link to="/">Home </Link>
         <Link to="/signup">Sign Up </Link>
         <Link to="/login">Log In </Link>
-        <Link to="/cards">My Cards </Link>
+        <Link to="/usercards">My Cards </Link>
         <Link to="/library">Card Library</Link>
         <Link to="/newcard">New Card</Link>
       </nav>

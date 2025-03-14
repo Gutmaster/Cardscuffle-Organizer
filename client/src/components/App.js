@@ -4,15 +4,13 @@ import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
 import LogIn from "./LogIn.js"
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import Cards from "./Cards.js"
+import UserCards from "./UserCards.js"
 import Library from "./Library.js"
 import NewCard from "./NewCard.js"
 import ErrorPage from "./ErrorPage.js";
 
 function App() {
   const [user, setUser] = useState(null);
-  const [artists, setArtists] = useState([]);
-  const [sets, setSets] = useState([]);
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,25 +22,6 @@ function App() {
   }, [navigate]);
 
   useEffect(() => {
-    fetch("/_artists")
-    .then(response => {
-      if (!response.ok)
-        throw new Error('Network response was not ok');
-      return response.json();
-    })
-    .then(json => setArtists(json))
-    .catch(error => handleError(error));
-    
-
-    fetch("/_sets")
-    .then(response => {
-      if (!response.ok)
-        throw new Error('Network response was not ok');
-      return response.json();
-    })
-    .then(json => setSets(json))
-    .catch(error => handleError(error));
-
     fetch("/_check_session")
     .then((response) => {
       if(response.status === 201)
@@ -62,9 +41,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signup" element={<SignUp setUser={setUser}/>} />
           <Route path="/login" element={<LogIn setUser={setUser}/>} />
-          <Route path="/newcard" element={<NewCard artists={artists} sets={sets} setArtists={setArtists} setSets={setSets}/>} />
-          <Route path="/cards" element={<Cards artists={artists} sets={sets} user={user} setUser={setUser}/>} />
-          <Route path="/library" element={<Library artists={artists} sets={sets} user={user}/>} />
+          <Route path="/newcard" element={<NewCard/>} />
+          <Route path="/usercards" element={<UserCards user={user} setUser={setUser}/>} />
+          <Route path="/library" element={<Library user={user}/>} />
           <Route path="/error" element={<ErrorPage message={errorMessage}/>} />
       </Routes>
     </>
