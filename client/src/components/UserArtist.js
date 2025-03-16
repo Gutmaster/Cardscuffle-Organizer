@@ -8,7 +8,7 @@ function UserArtist({artist, setUser}) {
         fetch(`/artists/${artist.id}/usercards`)
         .then((r) => r.json())
         .then(json => setCards(json));
-    }, []);
+    }, [artist.id]);
 
     function handleDelete(id) {
         fetch('users', {
@@ -32,6 +32,6 @@ function UserArtist({artist, setUser}) {
             ))}
         </div>
     );
-    }
+}
 
 export default UserArtist;

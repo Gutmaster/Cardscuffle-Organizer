@@ -31,6 +31,12 @@ def not_found(e):
 class CheckSession(Resource):
     def get(self):
         if current_user.is_authenticated:
+            
+
+            #sort and override artist and set cards
+
+
+
             return make_response(current_user.to_dict(), 201)
         if current_user is None or not current_user.is_authenticated:
             response = make_response(redirect(url_for("login")))
@@ -75,7 +81,7 @@ class Users(Resource):
         user = current_user
 
         if card in user.cards: 
-            user.cards.remove(card) 
+            user.cards.remove(card)
         else: 
             user.cards.append(card)
 

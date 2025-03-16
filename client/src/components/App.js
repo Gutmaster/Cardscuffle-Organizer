@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React from "react";
 import Home from "./Home.js"
 import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
@@ -10,41 +10,17 @@ import NewCard from "./NewCard.js"
 import ErrorPage from "./ErrorPage.js";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('')
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleError = useCallback((error) => {
-    setErrorMessage(error.toString());
-    if (window.location.pathname !== "/error")
-      navigate("/error");
-  }, [navigate]);
-
-  useEffect(() => {
-    fetch("/check_session")
-    .then((response) => {
-      if(response.status === 201)
-        return response.json();
-      else if(response.status === 401)
-        if(window.location.pathname !== "/login" && window.location.pathname !== "/signup" && window.location.pathname !== "/")
-          navigate("/login");
-    })
-    .then(json => setUser(json))
-    .catch(error =>handleError(error));
-  }, [location, navigate, handleError]);
-
   return (
     <>
-      <Navbar user={user} setUser={setUser}/>
+      <Navbar/>
       <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignUp setUser={setUser}/>} />
-          <Route path="/login" element={<LogIn setUser={setUser}/>} />
+          <Route path="/signup" element={<SignUp/>} />
+          <Route path="/login" element={<LogIn/>} />
           <Route path="/newcard" element={<NewCard/>} />
-          <Route path="/usercards" element={<UserCards user={user} setUser={setUser}/>} />
-          <Route path="/library" element={<CardLibrary user={user}/>} />
-          <Route path="/error" element={<ErrorPage message={errorMessage}/>} />
+          <Route path="/usercards" element={<UserCards/>} />
+          <Route path="/library" element={<CardLibrary/>} />
+          <Route path="/error" element={<ErrorPage/>} />
       </Routes>
     </>
   );

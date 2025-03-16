@@ -93,6 +93,7 @@ function NewCard() {
                 
                 formik.resetForm();
                 handleAlert('Card added!', 'positiveAlert');
+                // add to user cards
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
                 console.error('Network Error or unexpected issue:', error);

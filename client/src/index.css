@@ -66,6 +66,19 @@ nav a:hover {
   align-items: center;
 }
 
+.cardTitle{
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-style: italic;
+    color: rgb(201, 201, 210);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200%;
+}
+
 .title {
   text-align: center;
   font-size:larger;
@@ -101,6 +114,15 @@ header nav a {
   margin-bottom: 10px;
   font-style: italic;
   color: blue;
+}
+
+.setDate{
+    margin-left: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-style:oblique;
+    color: rgb(64, 64, 187);
 }
 
 .container {

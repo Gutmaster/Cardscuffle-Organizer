@@ -45,7 +45,7 @@ function Card({ cardData, handleDelete }) {
     }
 
     const formSchema = yup.object().shape({
-        name: yup.string().required('Card must be named.').max(30),
+        name: yup.string().required('Card must be named.').max(21),
         art: yup.string().required('Must link an image.'),
         artist: yup.string()
         .required('Card must have an artist.')
@@ -196,7 +196,7 @@ function Card({ cardData, handleDelete }) {
             </form>
         ) : (
             <>
-            <h1>{card.name}</h1>
+            <h1 className='cardTitle'>{card.name}</h1>
             <img src={card.art} alt={'art unavailable'} />
             <p className="artistName">{card.artist.name}</p>
             <p className="setName">{card.set.name}</p>
@@ -206,6 +206,7 @@ function Card({ cardData, handleDelete }) {
             {alertMessage !== '' ? (
                 <p className={alertClass}>{alertMessage}</p>
             ) : null}
+            <p className='setDate'>{card.set.release_date}</p>
             </>
         )}
         </div>

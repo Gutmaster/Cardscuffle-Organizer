@@ -8,7 +8,7 @@ function UserSet({set, setUser}) {
         fetch(`/sets/${set.id}/usercards`)
         .then((r) => r.json())
         .then(json => setCards(json));
-    }, []);
+    }, [set.id]);
 
     function handleDelete(id) {
         fetch('users', {
