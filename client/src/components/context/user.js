@@ -6,10 +6,6 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
 
-    console.log(user)
-    if(user)
-        console.log(user.artists)
-
     useEffect(() => {
         fetch("/check_session")
         .then((response) => {

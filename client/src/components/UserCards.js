@@ -1,13 +1,27 @@
 import React, {useState, useContext} from 'react'
-import UserArtist from './UserArtist.js';
-import UserSet from './UserSet.js';
 import UserContext from './context/user.js';
+import Card from './Card.js';
 
 function UserCards() {
     const [currentView, setCurrentView] = useState('none');
     const [selectedArtist, setSelectedArtist] = useState();
     const [selectedSet, setSelectedSet] = useState();
     const {user} = useContext(UserContext);
+
+    // function handleDelete(id) {
+    //     fetch('users', {
+    //         method: 'PATCH',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //     },
+    //         body: JSON.stringify({ card_id: id }),
+    //     })
+    //     .then((r) => r.json())
+    //     .then((json) => setUser(json))
+    //     .catch((error) => {
+    //         console.error("Error:", error);
+    //     });
+    // }
 
     function handleArtistSelect(id){
         setSelectedArtist(user.artists.find(artist => artist.id === id));
@@ -47,14 +61,14 @@ function UserCards() {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                    <UserArtist artist={selectedArtist}/>
+                    {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card}/>)}
                 </>
             )
         case 'setSelected':
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                    <UserSet set={selectedSet}/>
+                    {selectedSet.cards.map((card) => <Card key={card.name} cardData={card}/>)}
                 </>
             )
         case 'none':

@@ -104,6 +104,7 @@ class Cards(Resource):
 
     @login_required
     def post(self):
+        print("ATTEMPTING TO POST NEW CARD")
         data = request.json
         card = Card(name = data.get('name'),
                     art = data.get('art'),
@@ -240,7 +241,7 @@ class Logout(Resource):
 
 api.add_resource(Users, '/users')
 api.add_resource(Cards, '/cards')
-# api.add_resource(Artists, '/artists')
+api.add_resource(Artists, '/artists')
 # api.add_resource(UserArtists, '/userartists')
 # api.add_resource(ArtistUserCards, '/artists/<int:artist_id>/usercards')
 api.add_resource(Sets, '/sets')
