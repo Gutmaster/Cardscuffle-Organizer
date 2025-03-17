@@ -12,7 +12,7 @@ function reducer(state, action){
     }
 }
 
-function LibCard({cardData}) {
+function LibCard({card}) {
     const [state, dispatch] = useReducer(reducer, initialState);
     const {user} = useContext(UserContext);
     useEffect(()=>{
@@ -32,7 +32,7 @@ function LibCard({cardData}) {
         })
         .then((r) => r.json())
         .then(() =>{
-            user.cards.push(cardData)
+            user.cards.push(card)
             dispatch({ type: 'SET_OWNED', payload: true })
         })
             .catch((error) => {
@@ -47,7 +47,7 @@ function LibCard({cardData}) {
             <p className='artistName'>{card.artist.name}</p>                            
             <p className='setName'>{card.set.name}</p>
             {user ? 
-            (state.owned ? (<p>✓</p>) : 
+            (state.owned ? (<p style={{color:"green"}}>Owned ✓</p>) : 
             (<button onClick={handleAddCard}>Add to Collection</button>)) 
             : null}
         </div>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import LibCard from './Card.js';
+import LibCard from './LibCard.js';
 
 function CardLibrary() {
     const [artists, setArtists] = useState([]);
@@ -55,14 +55,14 @@ function CardLibrary() {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                    {selectedArtist.cards.map((card) => <LibCard key={card.name} cardData={card}/>)}
+                    {selectedArtist.cards.map((card) => <LibCard key={card.name} card={card}/>)}
                 </>
             )
         case 'setSelected':
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                    {selectedSet.cards.map((card) => <LibCard key={card.name} cardData={card}/>)}
+                    {selectedSet.cards.map((card) => <LibCard key={card.name} card={card}/>)}
                 </>
             )
         case 'none':

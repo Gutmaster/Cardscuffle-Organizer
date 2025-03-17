@@ -28,15 +28,20 @@ def not_found(e):
     print(e)
     return render_template("index.html")
 
+
+def cutCards(user):
+    for artist in user.unique_artists:
+        filtered_cards = [card for card in artist.cards if user in card.users]
+        artist.cards = filtered_cards 
+    for set in user.unique_sets:
+        filtered_cards = [card for card in set.cards if user in card.users]
+        set.cards = filtered_cards
+
+
 class CheckSession(Resource):
     def get(self):
         if current_user.is_authenticated:
-            for artist in current_user.unique_artists:
-                filtered_cards = [card for card in artist.cards if current_user in card.users]
-                artist.cards = filtered_cards 
-            for set in current_user.unique_sets:
-                filtered_cards = [card for card in set.cards if current_user in card.users]
-                set.cards = filtered_cards
+            cutCards(current_user)
             return make_response(current_user.to_dict(), 201)
         if current_user is None or not current_user.is_authenticated:
             response = make_response(redirect(url_for("login")))
@@ -51,7 +56,8 @@ class Users(Resource):
             user = User(username=data.get('username'), password_hash=data.get('password'))
             db.session.add(user)
             db.session.commit()
-            return {'id': user.id, 'username': user.username}, 201
+            cutCards(user)
+            return make_response(user.to_dict(), 201)
         except ValueError as ve:
             response = {
                 'error': 'Validation Error',
@@ -166,7 +172,7 @@ class Login(Resource):
             return response
         
         login_user(user)
-
+        cutCards(user)
         return make_response(user.to_dict(), 201)
 
 

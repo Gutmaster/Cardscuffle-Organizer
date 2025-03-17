@@ -51,6 +51,7 @@ function SignUp() {
                     return
                 }
                 const data = await response.json()
+                console.log(data)
                 setUser(data)
                 formik.resetForm();
                 handleAlert('User Added', 'positiveAlert')

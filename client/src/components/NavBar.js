@@ -34,14 +34,15 @@ function Navbar() {
                     <button className='logoutButton' onClick={HandleLogOut}>Log Out</button>
                 </>
             ) : (
-            <>
-                <h1>Welcome, please sign up or log in.</h1>
-                <nav>
-                    <Link to="/signup">Sign Up </Link>
-                    <Link to="/login">Log In </Link>
-                </nav>
-            </>
-          )}
+                <>
+                    <h1>Welcome, please sign up or log in.</h1>
+                    <nav>
+                        <Link to="/">Home </Link>
+                        <Link to="/signup">Sign Up </Link>
+                        <Link to="/login">Log In </Link>
+                    </nav>
+                </>
+            )}
         </header>
       );
 }
