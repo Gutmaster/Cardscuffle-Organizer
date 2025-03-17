@@ -11,13 +11,12 @@ export const UserProvider = ({ children }) => {
         .then((response) => {
             if(response.status === 201)
                 return response.json();
-            // else if(response.status === 401)
-            //     navigate("/login");
+            else
+                return null;
         })
         .then(json => setUser(json))
         .catch(error =>setError(error));
     }, []);
-
 
     return (
         <UserContext.Provider value={{ user, setUser, error }}>

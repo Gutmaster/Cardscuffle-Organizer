@@ -18,21 +18,32 @@ function Navbar() {
         .catch(error => console.error('Network error:', error));
     }
 
-  return (
-    <header>
-    <h1>{user ? `Cardscuffle Organizer, welcome ${user.username}.`
-              : 'Welcome, please sign in'}</h1>
-        <nav>
-            <Link to="/">Home </Link>
-            <Link to="/signup">Sign Up </Link>
-            <Link to="/login">Log In </Link>
-            <Link to="/usercards">My Cards </Link>
-            <Link to="/library">Card Library</Link>
-            <Link to="/newcard">New Card</Link>
-        </nav>
-        {user && <button className='logoutButton' onClick={HandleLogOut}>Log Out</button>}
-    </header>
-  );
+    return (
+        <header>
+            {user ? (
+                <>
+                    <h1>{`Cardscuffle Organizer, welcome ${user.username}.`}</h1>
+                    <nav>
+                        <Link to="/">Home </Link>
+                        <Link to="/signup">Sign Up </Link>
+                        <Link to="/login">Log In </Link>
+                        <Link to="/usercards">My Cards </Link>
+                        <Link to="/library">Card Library</Link>
+                        <Link to="/newcard">New Card</Link>
+                    </nav>
+                    <button className='logoutButton' onClick={HandleLogOut}>Log Out</button>
+                </>
+            ) : (
+            <>
+                <h1>Welcome, please sign up or log in.</h1>
+                <nav>
+                    <Link to="/signup">Sign Up </Link>
+                    <Link to="/login">Log In </Link>
+                </nav>
+            </>
+          )}
+        </header>
+      );
 }
 
 export default Navbar;
