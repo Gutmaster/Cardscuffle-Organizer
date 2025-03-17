@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
+import UserContext from "./context/user";
 
-function LogIn({setUser}) {
+function LogIn() {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertClass, setAlertClass] = useState('postiveAlert');
+    const { setUser } = useContext(UserContext);
 
     function alertReset(){
         setAlertMessage('')

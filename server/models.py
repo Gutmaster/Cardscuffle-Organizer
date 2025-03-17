@@ -14,23 +14,43 @@ class User(db.Model, SerializerMixin, UserMixin):
     _password_hash = db.Column(db.String, nullable=False)
 
     cards = db.relationship('Card', secondary='user_cards', back_populates='users', cascade='all, delete', passive_deletes=True)
-    artists = association_proxy('cards', 'artist')
-    sets = association_proxy('cards', 'set')
+    # artists = association_proxy('cards', 'artist')
+    # sets = association_proxy('cards', 'set')
 
     @property
     def unique_artists(self):
-        return sorted({card.artist for card in self.cards}, key=lambda artist: artist.name)
+        unique_artists = {card.artist for card in self.cards}
+        sorted_artists = sorted(unique_artists, key=lambda artist: artist.name)
+        return [artist for artist in sorted_artists]
 
     @property
     def unique_sets(self):
-        return sorted({card.set for card in self.cards}, key=lambda set: set.name)
+        unique_sets = {card.set for card in self.cards}
+        sorted_sets = sorted(unique_sets, key=lambda set: set.name)
+        return [set for set in sorted_sets]
     
     serialize_rules = ('-cards.users', '-_password_hash')
 
+    @hybrid_property
+    def password_hash(self):
+        return self._password_hash
+    
+    @password_hash.setter
+    def password_hash(self, password):
+        # Validate before hashing
+        self.validate_password('_password_hash', password)
+        # Hashing the password
+        password_hash = bcrypt.generate_password_hash(
+            password.encode('utf-8'))
+        self._password_hash = password_hash.decode('utf-8')    
+
+    def authenticate(self, password):
+        return bcrypt.check_password_hash(
+            self._password_hash, password.encode('utf-8'))
+    
     @classmethod
     def get(self, id):
         return User.query.get(id)
-    
     def is_authenticated(self):
         return True
     def is_active(self):
@@ -40,10 +60,12 @@ class User(db.Model, SerializerMixin, UserMixin):
     def get_id(self):
         return str(self.id)
     
-    @hybrid_property
-    def password_hash(self):
-        return self._password_hash
-
+    def to_dict(self):
+        data = super().to_dict()
+        data['artists'] = [artist.to_dict() for artist in self.unique_artists]
+        data['sets'] = [set.to_dict() for set in self.unique_sets]
+        return data
+    
     @validates('_password_hash')
     def validate_password(self, key, password):
         if len(password) < 8:
@@ -55,19 +77,6 @@ class User(db.Model, SerializerMixin, UserMixin):
         if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
             raise ValueError('Password must contain at least one special character.')
         return password
-
-    @password_hash.setter
-    def password_hash(self, password):
-        # Validate before hashing
-        self.validate_password('_password_hash', password)
-        # Hashing the password
-        password_hash = bcrypt.generate_password_hash(
-            password.encode('utf-8'))
-        self._password_hash = password_hash.decode('utf-8')
-
-    def authenticate(self, password):
-        return bcrypt.check_password_hash(
-            self._password_hash, password.encode('utf-8'))
     
     @validates('username')
     def validate_text(self, key, value):
@@ -79,6 +88,7 @@ class User(db.Model, SerializerMixin, UserMixin):
             if not 3 <= len(value) <= 20:
                 raise ValueError('Username must be between 3 and 20 characters.')
         return value
+
 
 class UserCard(db.Model, SerializerMixin):
     __tablename__ = 'user_cards'

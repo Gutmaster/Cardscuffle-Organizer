@@ -27,16 +27,16 @@ def load_user(user_id):
 def not_found(e):
     print(e)
     return render_template("index.html")
-
+        
 class CheckSession(Resource):
     def get(self):
         if current_user.is_authenticated:
-            
-
-            #sort and override artist and set cards
-
-
-
+            for artist in current_user.unique_artists:
+                filtered_cards = [card for card in artist.cards if current_user in card.users]
+                artist.cards = filtered_cards 
+            for set in current_user.unique_sets:
+                filtered_cards = [card for card in set.cards if current_user in card.users]
+                set.cards = filtered_cards
             return make_response(current_user.to_dict(), 201)
         if current_user is None or not current_user.is_authenticated:
             response = make_response(redirect(url_for("login")))
@@ -143,24 +143,24 @@ class Artists(Resource):
         return artist.to_dict(), 201
     
 
-class UserArtists(Resource):
-    @login_required
-    def get(self):
-        artist_dicts = []
-        for artist in current_user.unique_artists:
-            artist_dict = artist.to_dict()
-            artist_dicts.append(artist_dict)
-        return make_response(artist_dicts, 200)
+# class UserArtists(Resource):
+#     @login_required
+#     def get(self):
+#         artist_dicts = []
+#         for artist in current_user.unique_artists:
+#             artist_dict = artist.to_dict()
+#             artist_dicts.append(artist_dict)
+#         return make_response(artist_dicts, 200)
 
 
-class ArtistUserCards(Resource):
-    def get(self, artist_id):
-        artist = Artist.query.get(artist_id)
-        if not artist:
-            return make_response({'error': 'Artist not found'}, 404)
+# class ArtistUserCards(Resource):
+#     def get(self, artist_id):
+#         artist = Artist.query.get(artist_id)
+#         if not artist:
+#             return make_response({'error': 'Artist not found'}, 404)
         
-        user_cards = [card for card in artist.cards if current_user in card.users]
-        return make_response([card.to_dict() for card in user_cards], 200)
+#         user_cards = [card for card in artist.cards if current_user in card.users]
+#         return make_response([card.to_dict() for card in user_cards], 200)
 
 
 class Sets(Resource):
@@ -175,24 +175,24 @@ class Sets(Resource):
         db.session.commit()
         return set.to_dict(), 201
     
-class UserSets(Resource):
-    @login_required
-    def get(self):
-        set_dicts = []
-        for set in current_user.unique_sets:
-            set_dict = set.to_dict()
-            set_dicts.append(set_dict)
-        return make_response(set_dicts, 200)
+# class UserSets(Resource):
+#     @login_required
+#     def get(self):
+#         set_dicts = []
+#         for set in current_user.unique_sets:
+#             set_dict = set.to_dict()
+#             set_dicts.append(set_dict)
+#         return make_response(set_dicts, 200)
     
 
-class SetUserCards(Resource):
-    def get(self, set_id):
-        set = Set.query.get(set_id)
-        if not set:
-            return make_response({'error': 'Set not found'}, 404)
+# class SetUserCards(Resource):
+#     def get(self, set_id):
+#         set = Set.query.get(set_id)
+#         if not set:
+#             return make_response({'error': 'Set not found'}, 404)
 
-        user_cards = [card for card in set.cards if current_user in card.users]
-        return make_response([card.to_dict() for card in user_cards], 200)
+#         user_cards = [card for card in set.cards if current_user in card.users]
+#         return make_response([card.to_dict() for card in user_cards], 200)
     
 
 class Login(Resource):
@@ -240,12 +240,12 @@ class Logout(Resource):
 
 api.add_resource(Users, '/users')
 api.add_resource(Cards, '/cards')
-api.add_resource(Artists, '/artists')
-api.add_resource(UserArtists, '/userartists')
-api.add_resource(ArtistUserCards, '/artists/<int:artist_id>/usercards')
+# api.add_resource(Artists, '/artists')
+# api.add_resource(UserArtists, '/userartists')
+# api.add_resource(ArtistUserCards, '/artists/<int:artist_id>/usercards')
 api.add_resource(Sets, '/sets')
-api.add_resource(UserSets, '/usersets')
-api.add_resource(SetUserCards, '/sets/<int:set_id>/usercards')
+# api.add_resource(UserSets, '/usersets')
+# api.add_resource(SetUserCards, '/sets/<int:set_id>/usercards')
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')
 api.add_resource(CheckSession, '/check_session')

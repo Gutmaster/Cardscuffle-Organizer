@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Artist from './UserArtist';
 import Set from './UserSet';
 
-function CardLibrary({ setUser }) {
+function CardLibrary() {
     const [artists, setArtists] = useState([]);
     const [sets, setSets] = useState([]);
     const [currentView, setCurrentView] = useState('none');
@@ -56,14 +56,14 @@ function CardLibrary({ setUser }) {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                    <Artist artist={selectedArtist} setUser={setUser}/>
+                    <Artist artist={selectedArtist}/>
                 </>
             )
         case 'setSelected':
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                    <Set set={selectedSet} setUser={setUser}/>
+                    <Set set={selectedSet}/>
                 </>
             )
         case 'none':

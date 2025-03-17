@@ -1,30 +1,21 @@
-import React, {useState, useEffect} from 'react'
-import UserArtist from './UserArtist';
-import UserSet from './UserSet';
+import React, {useState, useContext} from 'react'
+import UserArtist from './UserArtist.js';
+import UserSet from './UserSet.js';
+import UserContext from './context/user.js';
 
-function UserCards({ user, setUser }) {
-    const [userArtists, setUserArtists] = useState([]);
-    const [userSets, setUserSets] = useState([]);
+function UserCards() {
     const [currentView, setCurrentView] = useState('none');
     const [selectedArtist, setSelectedArtist] = useState();
     const [selectedSet, setSelectedSet] = useState();
+    const {user} = useContext(UserContext);
 
-    useEffect(() => {
-        fetch('/userartists')
-        .then((r) => r.json())
-        .then((json) => setUserArtists(json));
-        fetch('/usersets')
-        .then((r) => r.json())
-        .then((json) => setUserSets(json));
-    }, [user]);
-  
     function handleArtistSelect(id){
-        setSelectedArtist(userArtists.find(artist => artist.id === id));
+        setSelectedArtist(user.artists.find(artist => artist.id === id));
         setCurrentView('artistSelected');
     }
 
     function handleSetSelect(id){
-        setSelectedSet(userSets.find(set => set.id === id));
+        setSelectedSet(user.sets.find(set => set.id === id));
         setCurrentView('setSelected');
     }
 
@@ -38,7 +29,7 @@ function UserCards({ user, setUser }) {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
-                    {userArtists.map((artist) => (
+                    {user.artists.map((artist) => (
                         <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name}</button>
                     ))}
                 </>
@@ -47,7 +38,7 @@ function UserCards({ user, setUser }) {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
-                    {userSets.map((set) => (
+                    {user.sets.map((set) => (
                         <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name}</button>
                     ))}
                 </>
@@ -56,14 +47,14 @@ function UserCards({ user, setUser }) {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                    <UserArtist artist={selectedArtist} setUser={setUser}/>
+                    <UserArtist artist={selectedArtist}/>
                 </>
             )
         case 'setSelected':
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                    <UserSet set={selectedSet} setUser={setUser}/>
+                    <UserSet set={selectedSet}/>
                 </>
             )
         case 'none':
