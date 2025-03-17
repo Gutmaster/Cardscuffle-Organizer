@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
+import UserContext from "./context/user.js"
 
 function NewCard() {
     const [artists, setArtists] = useState([])
@@ -12,6 +13,7 @@ function NewCard() {
     const [newArtist, setNewArtist] = useState('')
     const [newSet, setNewSet] = useState('')
     const [date, setDate] = useState('')
+    const {user} = useContext(UserContext)
 
     useEffect(() => {
         fetch('/artists')
@@ -40,8 +42,8 @@ function NewCard() {
     })
 
     const formik = useFormik({
-        validateOnChange : false,
-        validateOnBlur : false,
+        validateOnChange: false,
+        validateOnBlur: false,
         initialValues: {
             name: "",
             art: "",
@@ -50,23 +52,19 @@ function NewCard() {
         },
         validationSchema: formSchema,
         validate: (values) => {
-            // Use Yup's validation method
             const validationErrors = {};
             try {
-              formSchema.validateSync(values, { abortEarly: false });
+                formSchema.validateSync(values, { abortEarly: false });
             } catch (err) {
-              err.inner.forEach((error) => {
-                validationErrors[error.path] = error.message;
-              });
+                err.inner.forEach((error) => {
+                    validationErrors[error.path] = error.message;
+                });
             }
-      
-            // Set a timer to clear errors after 3 seconds
             if (Object.keys(validationErrors).length > 0) {
-              setTimeout(() => {
-                formik.setErrors({});
-              }, 3000);
+                setTimeout(() => {
+                    formik.setErrors({});
+                }, 3000);
             }
-      
             return validationErrors;
         },
         onSubmit: async (values) => {
@@ -81,26 +79,42 @@ function NewCard() {
                         art: values.art,
                         artist: values.artist,
                         set: values.set,
-                    }, null, 2)
-                })
+                    })
+                });
+    
                 if (!response.ok) {
-                    // This block will catch non-200-level HTTP responses
-                    const errorData = await response.json()
-                    console.error('Validation error:', errorData)
+                    const errorData = await response.json();
                     handleAlert(errorData.message, 'negativeAlert');
-                    return
+                    return;
                 }
-                
+                const json = await response.json();
+
+
+                user.cards = [...user.cards, json]
+
+                const artist = user.artists.find(artist => artist.id === json.artist.id)
+                if(artist)
+                    artist.cards.push(json)
+                else{
+                    json.artist.cards = [json]
+                    user.artists.push(json.artist)     
+                }
+
+                const set = user.sets.find(set => set.id === json.set.id)
+                if(set)
+                    set.cards.push(json)
+                else{
+                    json.set.cards = [json]
+                    user.sets.push(json.set)     
+                }
+
                 formik.resetForm();
                 handleAlert('Card added!', 'positiveAlert');
-                // add to user cards
             } catch (error) {
-                // This block will catch network errors and other unexpected issues
-                console.error('Network Error or unexpected issue:', error);
                 handleAlert(error.message, 'negativeAlert');
             }
         }
-    })
+    });
 
     function handleArtistSubmit(){
         fetch('/artists', {
@@ -119,7 +133,6 @@ function NewCard() {
         })
         .then(json => setArtists([...artists, json]))
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
             handleAlert(error.message, 'negativeAlert');
         });
     }
@@ -144,7 +157,6 @@ function NewCard() {
         })
         .then(json => setSets([...sets, json]))
         .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
             handleAlert(error.message, 'negativeAlert');
         });
     }

@@ -111,15 +111,35 @@ class Cards(Resource):
     @login_required
     def post(self):
         data = request.json
-        card = Card(name = data.get('name'),
-                    art = data.get('art'),
-                    artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id,
-                    set_id = Set.query.filter(Set.name == data.get('set')).first().id,
-                    users = [current_user])
-        db.session.add(card)
-        db.session.commit()
-        return card.to_dict(), 201
-        
+        try:
+            card = Card(name = data.get('name'),
+                        art = data.get('art'),
+                        artist_id = Artist.query.filter(Artist.name == data.get('artist')).first().id,
+                        set_id = Set.query.filter(Set.name == data.get('set')).first().id,
+                        users = [current_user])
+            db.session.add(card)
+            db.session.commit()
+            return make_response(card.to_dict(), 201)
+        except ValueError as ve:
+            response = {
+                'error': 'Validation Error',
+                'message': str(ve)
+            }
+            return make_response(response, 400)
+        except IntegrityError as ie:
+            db.session.rollback() 
+            response = {
+                'error': 'Database Error',
+                'message': 'Username already exists.'
+            }
+            return make_response(response, 400)
+        except Exception as e:
+            response = {
+                'error': 'Internal Server Error',
+                'message': 'An unexpected error occurred.'
+            }
+            return make_response(response, 500)
+             
     @login_required
     def patch(self):
         data = request.json
@@ -138,7 +158,6 @@ class Cards(Resource):
 class Artists(Resource):
     def get(self):
         artists = Artist.query.order_by(Artist.name).all()
-        print(artists)
         return make_response([artist.to_dict() for artist in artists], 200)
     
     def post(self):

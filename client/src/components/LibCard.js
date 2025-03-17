@@ -47,8 +47,8 @@ function LibCard({card}) {
             <p className='artistName'>{card.artist.name}</p>                            
             <p className='setName'>{card.set.name}</p>
             {user ? 
-            (state.owned ? (<p style={{color:"green"}}>Owned ✓</p>) : 
-            (<button onClick={handleAddCard}>Add to Collection</button>)) 
+                (state.owned ? (<p style={{color:"green"}}>Owned ✓</p>) : 
+                (<button onClick={handleAddCard}>Add to Collection</button>)) 
             : null}
         </div>
     )

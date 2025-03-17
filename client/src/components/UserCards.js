@@ -34,7 +34,7 @@ function UserCards() {
     }
 
     const handleViewChange = (view) => {
-      setCurrentView(view);
+        setCurrentView(view);
     };
 
     const renderContent = () => {
