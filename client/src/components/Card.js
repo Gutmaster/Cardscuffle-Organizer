@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function Card({ cardData, handleDelete }) {
+function Card({ cardData, handleRemove }) {
     const [card, setCard] = useState(cardData);
     const [artists, setArtists] = useState([])
     const [sets, setSets] = useState([])
@@ -202,7 +202,7 @@ function Card({ cardData, handleDelete }) {
             <p className="setName">{card.set.name}</p>
 
             <button className='submitButton' onClick={e => handleEdit()}>Edit</button>
-            <button className='submitButton'onClick={() => handleDelete(card.id)}>Remove from collection</button>
+            <button className='submitButton'onClick={() => handleRemove(card.id)}>Remove from collection</button>
             {alertMessage !== '' ? (
                 <p className={alertClass}>{alertMessage}</p>
             ) : null}

@@ -14,7 +14,7 @@ function reducer(state, action){
 
 function LibCard({card}) {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const {user} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     useEffect(()=>{
         if(user){
             const isOwned = user.cards.some((userCard) => userCard.id === card.id)
@@ -31,8 +31,8 @@ function LibCard({card}) {
             body: JSON.stringify({ card_id: card.id })
         })
         .then((r) => r.json())
-        .then(() =>{
-            user.cards.push(card)
+        .then((json) =>{
+            setUser(json)
             dispatch({ type: 'SET_OWNED', payload: true })
         })
             .catch((error) => {

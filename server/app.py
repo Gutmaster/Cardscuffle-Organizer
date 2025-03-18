@@ -32,7 +32,7 @@ def not_found(e):
 def cutCards(user):
     for artist in user.unique_artists:
         filtered_cards = [card for card in artist.cards if user in card.users]
-        artist.cards = filtered_cards 
+        artist.cards = filtered_cards
     for set in user.unique_sets:
         filtered_cards = [card for card in set.cards if user in card.users]
         set.cards = filtered_cards
@@ -84,17 +84,14 @@ class Users(Resource):
         card = Card.query.filter(Card.id == card_id).first()
         if not card:
             return {'Error': 'Card not found'}, 404
-        user = current_user
 
-        if card in user.cards: 
-            user.cards.remove(card)
+        if card in current_user.cards: 
+            current_user.cards.remove(card)
         else: 
-            user.cards.append(card)
+            current_user.cards.append(card)
 
-        if not len(card.users):
-            db.session.delete(card)
-        
         db.session.commit()
+        cutCards(current_user)
         return make_response(current_user.to_dict(), 200)
     
 

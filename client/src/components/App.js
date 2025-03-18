@@ -20,12 +20,6 @@ function App() {
     //     if (window.location.pathname !== "/error")
     //         navigate("/error");
     // }, [navigate]);
-    useEffect(() => {
-        if(user === null)
-            navigate("/login");
-        else
-            console.log(user)
-    }, []);
 
 
     return (
