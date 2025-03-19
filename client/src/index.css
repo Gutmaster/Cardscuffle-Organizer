@@ -1,69 +1,69 @@
 :root {
-  --bg: #282c34;
-  --header: #fff;
-  --link: #61dafb;
-  --text: hsla(0, 0%, 100%, 0.88);
+    --bg: #282c34;
+    --header: #fff;
+    --link: #61dafb;
+    --text: hsla(0, 0%, 100%, 0.88);
 }
 
 .home {
-  background-image: url("https://imgs.search.brave.com/3LDxPhmx9a-EGYJMo3a9ZnTG8R6r66Elc1m6PlwP708/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9saXZl/LnN0YXRpY2ZsaWNr/ci5jb20vNjU1MzUv/NDkxMjc5NjE1Mjhf/M2ViYzRjMThkMl9j/LmpwZw");
-  background-size: cover;
-  padding: 8px;
-  text-align: center;
-  height: 1000px;
+    background-image: url("https://imgs.search.brave.com/3LDxPhmx9a-EGYJMo3a9ZnTG8R6r66Elc1m6PlwP708/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9saXZl/LnN0YXRpY2ZsaWNr/ci5jb20vNjU1MzUv/NDkxMjc5NjE1Mjhf/M2ViYzRjMThkMl9j/LmpwZw");
+    background-size: cover;
+    padding: 8px;
+    text-align: center;
+    height: 1000px;
 }
 
 .homeText {
-  background-color: rgb(48, 168, 138);
-  padding: 8px;
-  margin: auto;
-  width: 50%;
-  text-indent: 12px;
-  text-align: left;
-  border-radius: 12px;
-  font-size:30px;
+    background-color: rgb(48, 168, 138);
+    padding: 8px;
+    margin: auto;
+    width: 50%;
+    text-indent: 12px;
+    text-align: left;
+    border-radius: 12px;
+    font-size:30px;
 }
 
 .cardError{
-  color: white;
+    color: white;
 }
 
 a {
-    text-decoration: none;
+     text-decoration: none;
 }
 
 nav a {
-  color: blue;
-  font-weight: bold;
-  margin-left: 15px;
+    color: blue;
+    font-weight: bold;
+    margin-left: 15px;
 }
 
 nav a:hover {
-  color: darkblue;
+     color: darkblue;
 }
 
 .logoutButton {
-  position: absolute; 
-  top: 50px; 
-  right: 50px; 
-  padding: 10px 20px;
-  cursor: pointer; 
+    position: absolute; 
+    top: 50px; 
+    right: 50px; 
+    padding: 10px 20px;
+    cursor: pointer; 
 }
 
 .signUp {
-  margin-left:50%;
-  background-color: rgb(34, 53, 150);
-  padding: 8px;
-  color: white;
-  text-align: center;
-  border-radius: 12px;
-  width: 35%;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    margin-left:50%;
+    background-color: rgb(34, 53, 150);
+    padding: 8px;
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+    width: 35%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .cardTitle{
@@ -80,40 +80,40 @@ nav a:hover {
 }
 
 .title {
-  text-align: center;
-  font-size:larger;
+    text-align: center;
+    font-size:larger;
 }
 
 header {
-  padding: 8px;
-  background-color: rgb(150, 76, 34);
-  text-align: center;
+    padding: 8px;
+    background-color: rgb(150, 76, 34);
+    text-align: center;
 }
 
 header nav {
-  padding: 8px;
+    padding: 8px;
 }
 
-header nav a {
-  font-size: 1.5rem;
+    header nav a {
+    font-size: 1.5rem;
 }
 
 .artistName {
-  margin-left: 10px;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  font-style: italic;
-  color: red;
+    margin-left: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-style: italic;
+    color: red;
 }
 
 .setName {
-  margin-left: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  font-style: italic;
-  color: blue;
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-style: italic;
+    color: blue;
 }
 
 .setDate{
@@ -125,6 +125,20 @@ header nav a {
     color: rgb(64, 64, 187);
 }
 
+.containerUI {
+    background-color: rgb(12, 143, 145);
+    padding: 8px;
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     background-color: rgb(12, 145, 58);
     padding: 8px;
@@ -134,7 +148,6 @@ header nav a {
     margin: auto;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
 }

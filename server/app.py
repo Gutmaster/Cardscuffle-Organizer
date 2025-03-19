@@ -78,6 +78,7 @@ class Users(Resource):
             }
             return make_response(response, 500)
     
+    @login_required
     def patch(self):
         data = request.json
         signal_delete = False
@@ -171,6 +172,7 @@ class Artists(Resource):
         artists = Artist.query.order_by(Artist.name).all()
         return make_response([artist.to_dict() for artist in artists], 200)
     
+    @login_required
     def post(self):
         data = request.json
         artist = Artist(name = data.get('name'))
@@ -184,6 +186,7 @@ class Sets(Resource):
         sets = Set.query.order_by(Set.name).all()
         return make_response([set.to_dict() for set in sets], 200)
     
+    @login_required
     def post(self):
         data = request.json
         set = Set(name = data.get('name'), release_date = datetime(data.get('year'), data.get('month'), data.get('day')))

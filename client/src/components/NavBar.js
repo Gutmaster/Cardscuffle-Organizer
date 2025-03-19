@@ -1,15 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {useContext} from 'react';
 import UserContext from "./context/user";
 
 function Navbar() {
     const { user, setUser } = useContext(UserContext);
+    const navigate = useNavigate();
+
     function HandleLogOut() {
         fetch("logout")
         .then(response => {
             if (response.ok) {
                 setUser(null);
-                window.location.reload();
+                navigate('/login');
             } else {
                 // Handle server errors
                 console.error('Logout failed', response.statusText);
@@ -40,6 +42,7 @@ function Navbar() {
                         <Link to="/">Home </Link>
                         <Link to="/signup">Sign Up </Link>
                         <Link to="/login">Log In </Link>
+                        <Link to="/library">Card Library</Link>
                     </nav>
                 </>
             )}

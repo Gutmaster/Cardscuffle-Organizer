@@ -102,7 +102,7 @@ function UserCards() {
                     <>
                         <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                         {user.artists.map((artist) => (
-                            <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name}</button>
+                            <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name + ' (' + artist.cards.length + ')'}</button>
                         ))}
                     </>
                 );
@@ -111,7 +111,7 @@ function UserCards() {
                     <>
                         <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                         {user.sets.map((set) => (
-                            <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name}</button>
+                            <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name + ' (' + set.cards.length + ')'}</button>
                         ))}
                     </>
                 );
@@ -119,14 +119,18 @@ function UserCards() {
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                        {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
+                        <div className='container'>
+                            {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
+                         </div>
                     </>
                 )
             case 'setSelected':
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                        {selectedSet.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
+                        <div className='container'>
+                            {selectedSet.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
+                        </div>
                     </>
                 )
             case 'none':
@@ -139,7 +143,7 @@ function UserCards() {
                 );
         }
     };
-    return <div className='container'>{renderContent()}</div>;
+    return <div className='containerUI'>{renderContent()}</div>;
 }
   
 export default UserCards;

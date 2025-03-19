@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from "react";
+import React, { useEffect, useContext } from 'react';
 import Home from "./Home.js"
 import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
@@ -8,23 +8,30 @@ import UserCards from "./UserCards.js"
 import CardLibrary from "./Library.js"
 import NewCard from "./NewCard.js"
 import ErrorPage from "./ErrorPage.js";
-import UserContext from "./context/user.js"
+import UserContext from "./context/user.js";
 
+function RedirectComponent() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const {user} = useContext(UserContext);
+    const restrictedRoutes = ['/newcard', '/usercards']
+    //redirect to login if trying to access restricted route
+    useEffect(() => {
+        if(user === null){
+            if(restrictedRoutes.includes(location.pathname)) {
+                navigate('/login', { replace: true });
+            }
+        }
+    }, [location, navigate]);
+
+    return null;
+}
 
 function App() {
-    const {user, error} = useContext(UserContext)
-    const navigate = useNavigate();
-    
-    // const handleError = useCallback((error) => {
-    //     setErrorMessage(error.toString());
-    //     if (window.location.pathname !== "/error")
-    //         navigate("/error");
-    // }, [navigate]);
-
-
     return (
         <>
-        <Navbar/>
+            <Navbar/>
+            <RedirectComponent/>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/signup" element={<SignUp/>} />
@@ -32,7 +39,7 @@ function App() {
                 <Route path="/newcard" element={<NewCard/>} />
                 <Route path="/usercards" element={<UserCards/>} />
                 <Route path="/library" element={<CardLibrary/>} />
-                <Route path="/error" element={<ErrorPage/>} />
+                <Route path="*" element={<ErrorPage/>} />
             </Routes>
         </>
     );

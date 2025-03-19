@@ -38,7 +38,7 @@ function CardLibrary() {
                 <>
                     <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                     {artists.map((artist) => (
-                        <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name}</button>
+                        <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name + ' (' + artist.cards.length + ')'}</button>
                     ))}
                 </>
             );
@@ -47,7 +47,7 @@ function CardLibrary() {
                 <>
                     <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                     {sets.map((set) => (
-                        <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name}</button>
+                        <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name + ' (' + set.cards.length + ')'}</button>
                     ))}
                 </>
             );
@@ -55,14 +55,18 @@ function CardLibrary() {
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                    {selectedArtist.cards.map((card) => <LibCard key={card.name} card={card}/>)}
+                    <div className='container'>
+                        {selectedArtist.cards.map((card) => <LibCard key={card.name} card={card}/>)}
+                    </div>
                 </>
             )
         case 'setSelected':
             return (
                 <>
                     <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                    {selectedSet.cards.map((card) => <LibCard key={card.name} card={card}/>)}
+                    <div className='container'>
+                        {selectedSet.cards.map((card) => <LibCard key={card.name} card={card}/>)}
+                    </div>
                 </>
             )
         case 'none':
@@ -73,10 +77,10 @@ function CardLibrary() {
                     <button className='sortButton' onClick={() => handleViewChange('set')}>View Sets</button>
                 </>
             );
-      }
+        }
     };
   
-    return <div className='container'>{renderContent()}</div>;
-  }
+    return <div className='containerUI'>{renderContent()}</div>;
+}
   
-  export default CardLibrary;
+export default CardLibrary;
