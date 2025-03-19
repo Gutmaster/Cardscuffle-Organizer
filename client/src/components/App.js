@@ -22,7 +22,7 @@ function RedirectComponent() {
                 navigate('/login', { replace: true });
             }
         }
-    }, [location, navigate]);
+    }, [location, navigate, restrictedRoutes, user]);
 
     return null;
 }

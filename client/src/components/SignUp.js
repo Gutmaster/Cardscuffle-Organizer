@@ -1,4 +1,5 @@
 import React, {useState, useContext} from "react";
+import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import * as yup from "yup"
 import UserContext from "./context/user";
@@ -7,6 +8,7 @@ function SignUp() {
     const [alertMessage, setAlertMessage] = useState('')
     const [alertClass, setAlertClass] = useState('positiveAlert')
     const {setUser} = useContext(UserContext);
+    const navigate = useNavigate();
 
     function alertReset(){
         setAlertMessage('')
@@ -15,13 +17,13 @@ function SignUp() {
     function handleAlert(message, aClass){
         setAlertClass(aClass)
         setAlertMessage(message)
-        setTimeout(alertReset, 2000)
+        setTimeout(alertReset, 3000)
     }
     
     const formSchema = yup.object().shape({
         username: yup.string().required("Please enter a username.").max(30),
         password: yup.string().required("Please enter a password.").max(30),
-    })
+    });
 
     const formik = useFormik({
         validateOnChange : false,
@@ -51,10 +53,9 @@ function SignUp() {
                     return
                 }
                 const data = await response.json()
-                console.log(data)
                 setUser(data)
                 formik.resetForm();
-                handleAlert('User Added', 'positiveAlert')
+                navigate('/library');
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
                 console.error('Network Error or unexpected issue:', error)

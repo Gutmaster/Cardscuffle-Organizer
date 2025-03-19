@@ -1,4 +1,5 @@
 import React, {useState, useContext} from "react";
+import {useNavigate} from "react-router-dom";
 import {useFormik} from "formik";
 import * as yup from "yup"
 import UserContext from "./context/user";
@@ -6,7 +7,8 @@ import UserContext from "./context/user";
 function LogIn() {
     const [alertMessage, setAlertMessage] = useState('');
     const [alertClass, setAlertClass] = useState('postiveAlert');
-    const { setUser } = useContext(UserContext);
+    const {setUser} = useContext(UserContext);
+    const navigate = useNavigate();
 
     function alertReset(){
         setAlertMessage('')
@@ -72,8 +74,7 @@ function LogIn() {
                 const data = await response.json();
                 setUser(data);
                 formik.resetForm();
-                handleAlert('Logged In!', 'positiveAlert');
-                setTimeout(alertReset, 2000);
+                navigate('/usercards');
             } catch (error) {
                 // This block will catch network errors and other unexpected issues
                 console.error('Network Error or unexpected issue:', error);

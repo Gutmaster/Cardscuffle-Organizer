@@ -14,8 +14,9 @@ function Navbar() {
                 navigate('/login');
             } else {
                 // Handle server errors
-                console.error('Logout failed', response.statusText);
+                console.error('Logout error', response.statusText);
             }
+            setUser(null)
         })
         .catch(error => console.error('Network error:', error));
     }
@@ -27,8 +28,6 @@ function Navbar() {
                     <h1>{`Cardscuffle Organizer, welcome ${user.username}.`}</h1>
                     <nav>
                         <Link to="/">Home </Link>
-                        <Link to="/signup">Sign Up </Link>
-                        <Link to="/login">Log In </Link>
                         <Link to="/usercards">My Cards </Link>
                         <Link to="/library">Card Library</Link>
                         <Link to="/newcard">New Card</Link>

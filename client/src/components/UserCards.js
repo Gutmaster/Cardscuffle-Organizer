@@ -8,7 +8,7 @@ function UserCards() {
     const [selectedSet, setSelectedSet] = useState();
     const {user, setUser} = useContext(UserContext);
 
-    const handleFormSubmit = async (values, card, setCard, handleAlert, setEdit) => {
+    const handleFormSubmit = async (values, card, setCard, handleAlert, setEdit, artists, sets) => {
         setEdit(prevEdit => !prevEdit);
         try {
             const response = await fetch('/cards', {
@@ -32,7 +32,55 @@ function UserCards() {
                 return;
             }
             const data = await response.json();
-        
+
+            //Fix artist and set menus
+            //Find old artist and set
+            const oldArtist = artists.find(a => a.id === card.artist.id)
+            const oldSet = sets.find(s => s.id === card.set.id)
+            const newArtist = artists.find(a => a.id ===data.artist.id)
+            const newSet = sets.find(s => s.id === data.set.id)
+            //if they don't match
+            if(oldArtist !== newArtist){
+                //go back to artists view if we have selected by artist
+                if(currentView === 'artistSelected')
+                    handleViewChange('artist')
+                //find matching copies from user's artists
+                const uOldArtist = user.artists.find(a => a.id === oldArtist.id)
+                const uNewArtist = user.artists.find(a => a.id === newArtist.id)
+                //remove card from old artist
+                uOldArtist.cards = uOldArtist.cards.filter(card => card.id !== data.id);
+                //remove artist from user's artists if no cards remaining
+                if(!uOldArtist.cards.length){
+                    user.artists = user.artists.filter(a => a.id !== uOldArtist.id)
+                }
+                //if we have the new artist already, add the card
+                if(uNewArtist)
+                    uNewArtist.cards.push(data)
+                else{ //otherwise overwrite cards with the new card and add to artist list
+                    newArtist.cards = [data]
+                    user.artists.push(newArtist)
+                }
+            }
+            if(oldSet !== newSet){
+                //go back to sets view if we have selected by set
+                if(currentView === 'setSelected')
+                    handleViewChange('set')
+                const uOldSet = user.sets.find(a => a.id === oldSet.id)
+                const uNewSet = user.sets.find(a => a.id === newSet.id)
+                //remove card from old set
+                uOldSet.cards = uOldSet.cards.filter(card => card.id !== data.id);
+                //remove set from user's sets if no cards remaining
+                if(!uOldSet.cards.length)
+                    user.sets = user.sets.filter(a => a.id !== uOldSet.id)
+                //if we have the new set already, add the card
+                if(uNewSet)
+                    uNewSet.cards.push(data)
+                else{ //otherwise overwrite library copy of new set's cards with just the new card and add to artist list
+                    newSet.cards = [data]
+                    user.sets.push(newSet)
+                }
+            }
+
             setCard(data);
             handleAlert('Card edited!', 'positiveAlert');
         } catch (error) {
@@ -96,13 +144,15 @@ function UserCards() {
     };
 
     const renderContent = () => {
+        if(!user)
+            return;
         switch (currentView) {
             case 'artist':
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                         {user.artists.map((artist) => (
-                            <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name + ' (' + artist.cards.length + ')'}</button>
+                            <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{`${artist.name} (${artist.cards.length})`}</button>
                         ))}
                     </>
                 );
@@ -111,7 +161,7 @@ function UserCards() {
                     <>
                         <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
                         {user.sets.map((set) => (
-                            <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name + ' (' + set.cards.length + ')'}</button>
+                            <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{`${set.name} (${set.cards.length})`}</button>
                         ))}
                     </>
                 );
@@ -137,13 +187,19 @@ function UserCards() {
             default:
                 return (
                     <>
-                        <button className='sortButton' onClick={() => handleViewChange('artist')}>View Artists</button>
-                        <button className='sortButton' onClick={() => handleViewChange('set')}>View Sets</button>
+                        <button className='sortButton' onClick={() => handleViewChange('artist')}>{`View Artists (${user.artists.length})`}</button>
+                        <button className='sortButton' onClick={() => handleViewChange('set')}>{`View Sets (${user.sets.length})`}</button>
                     </>
                 );
         }
     };
-    return <div className='containerUI'>{renderContent()}</div>;
+    return (
+        <div className='containerUI'>
+            <h2>My Collection</h2>
+            <p>These are all of the cards you've uploaded yourself or added to your collection from the library. Feel free to update them if necessary!</p>
+            {renderContent()}
+        </div>
+    );
 }
   
 export default UserCards;

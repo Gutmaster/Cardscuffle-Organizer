@@ -56,6 +56,7 @@ class Users(Resource):
             user = User(username=data.get('username'), password_hash=data.get('password'))
             db.session.add(user)
             db.session.commit()
+            login_user(user)
             cutCards(user)
             return make_response(user.to_dict(), 201)
         except ValueError as ve:

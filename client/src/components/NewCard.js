@@ -116,7 +116,9 @@ function NewCard() {
         }
     });
 
-    function handleArtistSubmit(){
+    const handleArtistSubmit = (e) => {
+        e.preventDefault();
+        setAddArtist(false);
         fetch('/artists', {
             method: 'POST',
             headers: {
@@ -131,13 +133,18 @@ function NewCard() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             return response.json();
         })
-        .then(json => setArtists([...artists, json]))
+        .then(json => {
+            setArtists([...artists, json])
+            handleAlert('Artist Added!', 'positiveAlert');
+        })
         .catch(error => {
             handleAlert(error.message, 'negativeAlert');
         });
     }
 
-    function handleSetSubmit(){
+    const handleSetSubmit = (e) => {
+        e.preventDefault();
+        setAddSet(false);
         fetch('/sets', {
             method: 'POST',
             headers: {
@@ -155,7 +162,10 @@ function NewCard() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             return response.json();
         })
-        .then(json => setSets([...sets, json]))
+        .then(json => {
+            setSets([...sets, json])
+            handleAlert('Set Added!', 'positiveAlert');
+        })
         .catch(error => {
             handleAlert(error.message, 'negativeAlert');
         });

@@ -32,55 +32,61 @@ function CardLibrary() {
     };
 
     const renderContent = () => {
-      switch (currentView) {
-        case 'artist':
-            return (
-                <>
-                    <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
-                    {artists.map((artist) => (
-                        <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{artist.name + ' (' + artist.cards.length + ')'}</button>
-                    ))}
-                </>
-            );
-        case 'set':
-            return (
-                <>
-                    <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
-                    {sets.map((set) => (
-                        <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{set.name + ' (' + set.cards.length + ')'}</button>
-                    ))}
-                </>
-            );
-        case 'artistSelected':
-            return (
-                <>
-                    <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                    <div className='container'>
-                        {selectedArtist.cards.map((card) => <LibCard key={card.name} card={card}/>)}
-                    </div>
-                </>
-            )
-        case 'setSelected':
-            return (
-                <>
-                    <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                    <div className='container'>
-                        {selectedSet.cards.map((card) => <LibCard key={card.name} card={card}/>)}
-                    </div>
-                </>
-            )
-        case 'none':
-        default:
-            return (
-                <>
-                    <button className='sortButton' onClick={() => handleViewChange('artist')}>View Artists</button>
-                    <button className='sortButton' onClick={() => handleViewChange('set')}>View Sets</button>
-                </>
-            );
-        }
+        switch (currentView) {
+            case 'artist':
+                return (
+                    <>
+                        <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
+                        {artists.map((artist) => (
+                            <button className='sortButton' onClick={() => handleArtistSelect(artist.id)} key={artist.id}>{`${artist.name} (${artist.cards.length})`}</button>
+                        ))}
+                    </>
+                );
+            case 'set':
+                return (
+                    <>
+                        <button className='backButton' onClick={() => handleViewChange('none')}>Back</button>
+                        {sets.map((set) => (
+                            <button className='sortButton' onClick={() => handleSetSelect(set.id)} key={set.id}>{`${set.name} (${set.cards.length})`}</button>
+                        ))}
+                    </>
+                );
+            case 'artistSelected':
+                return (
+                    <>
+                        <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
+                        <div className='container'>
+                            {selectedArtist.cards.map((card) => <LibCard key={card.name} card={card}/>)}
+                        </div>
+                    </>
+                )
+            case 'setSelected':
+                return (
+                    <>
+                        <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
+                        <div className='container'>
+                            {selectedSet.cards.map((card) => <LibCard key={card.name} card={card}/>)}
+                        </div>
+                    </>
+                )
+            case 'none':
+            default:
+                return (
+                    <>
+                        <button className='sortButton' onClick={() => handleViewChange('artist')}>{`View Artists (${artists.length})`}</button>
+                        <button className='sortButton' onClick={() => handleViewChange('set')}>{`View Sets (${sets.length})`}</button>
+                    </>
+                );
+            }
     };
   
-    return <div className='containerUI'>{renderContent()}</div>;
+    return (
+        <div className='containerUI'>
+            <h2>Library</h2>
+            <p>This is a collection of all cards uploaded to the CardScuffle organizer, feel free to add to your collection!</p>
+            {renderContent()}
+        </div>
+    );
 }
   
 export default CardLibrary;

@@ -85,7 +85,7 @@ function Card({ cardData, handleRemove, onSubmit }) {
           return validationErrors;
         },
         onSubmit: (values) => {
-            onSubmit(values, card, setCard, handleAlert, setEdit); // Use the function passed from the parent
+            onSubmit(values, card, setCard, handleAlert, setEdit, artists, sets); // Use the function passed from the parent
         },
       });
 
