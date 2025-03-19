@@ -80,6 +80,7 @@ class Users(Resource):
     
     def patch(self):
         data = request.json
+        signal_delete = False
         card_id = data.get('card_id')
         card = Card.query.filter(Card.id == card_id).first()
         if not card:
@@ -87,12 +88,14 @@ class Users(Resource):
 
         if card in current_user.cards: 
             current_user.cards.remove(card)
+            if not card.users:
+               signal_delete = True
         else: 
             current_user.cards.append(card)
 
         db.session.commit()
         cutCards(current_user)
-        return make_response(current_user.to_dict(), 200)
+        return make_response({'signal_delete': signal_delete, 'user': current_user.to_dict()}, 200)
     
 
 class Cards(Resource):
@@ -149,7 +152,18 @@ class Cards(Resource):
             db.session.commit()
             return card.to_dict(), 200
         else:
-            return make_response("Card not found", 404)
+            return make_response({'message': "Card not found"}, 404)
+        
+    @login_required
+    def delete(self):
+        data = request.json
+        card = Card.query.filter(Card.id == data.get('id')).first()
+        if card:
+            db.session.delete(card)
+            db.session.commit()
+            return make_response({'message': "Card deleted from database."}, 200)
+        else:
+            return make_response({'message': "Card not found."}, 404)
 
 
 class Artists(Resource):

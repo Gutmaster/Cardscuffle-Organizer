@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useFormik} from "formik";
 import * as yup from "yup"
 
-function Card({ cardData, handleRemove }) {
+function Card({ cardData, handleRemove, onSubmit }) {
     const [card, setCard] = useState(cardData);
     const [artists, setArtists] = useState([])
     const [sets, setSets] = useState([])
@@ -65,63 +65,29 @@ function Card({ cardData, handleRemove }) {
             art: card.art,
             artist: card.artist.name,
             set: card.set.name,
-    },
-    validationSchema: formSchema,
-    validate: (values) => {
-        // Use Yup's validation method
-        const validationErrors = {};
-        try {
-            formSchema.validateSync(values, { abortEarly: false });
-        } catch (err) {
-        err.inner.forEach((error) => {
-            validationErrors[error.path] = error.message;
-        });
-        }
-
-        // Set a timer to clear errors after 3 seconds
-        if (Object.keys(validationErrors).length > 0) {
-        setTimeout(() => {
-            formik.setErrors({});
-        }, 2000);
-        }
-
-        return validationErrors;
-    },
-    onSubmit: async (values) => {
-        setEdit(!edit);
-        try {
-        const response = await fetch('/cards', {
-            method: 'PATCH',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-            id: card.id,
-            name: values.name,
-            art: values.art,
-            artist: values.artist,
-            set: values.set,
-            }),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            formik.resetForm();
-            console.error('Validation error:', errorData);
-            handleAlert(errorData.message, 'negativeAlert');
-            return;
-        }
-        const data = await response.json();
-        setCard(data);
-
-        formik.resetForm();
-        handleAlert('Card edited!', 'positiveAlert');
-        } catch (error) {
-            console.error('Network Error or unexpected issue:', error);
-            handleAlert(error.message, 'negativeAlert');
-        }
-    },
-    });
+        },
+        validationSchema: formSchema,
+        validate: (values) => {
+            const validationErrors = {};
+            try {
+                formSchema.validateSync(values, { abortEarly: false });
+            } catch (err) {
+                err.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+                });
+            }
+      
+            if (Object.keys(validationErrors).length > 0) {
+                setTimeout(() => {
+                    formik.setErrors({});
+                }, 2000);
+            }
+          return validationErrors;
+        },
+        onSubmit: (values) => {
+            onSubmit(values, card, setCard, handleAlert, setEdit); // Use the function passed from the parent
+        },
+      });
 
     return (
         <div className="card">

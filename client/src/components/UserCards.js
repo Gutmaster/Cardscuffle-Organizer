@@ -8,17 +8,50 @@ function UserCards() {
     const [selectedSet, setSelectedSet] = useState();
     const {user, setUser} = useContext(UserContext);
 
+    const handleFormSubmit = async (values, card, setCard, handleAlert, setEdit) => {
+        setEdit(prevEdit => !prevEdit);
+        try {
+            const response = await fetch('/cards', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                    body: JSON.stringify({
+                    id: card.id,
+                    name: values.name,
+                    art: values.art,
+                    artist: values.artist,
+                    set: values.set,
+                }),
+            });
+        
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Validation error:', errorData);
+                handleAlert(errorData.message, 'negativeAlert');
+                return;
+            }
+            const data = await response.json();
+        
+            setCard(data);
+            handleAlert('Card edited!', 'positiveAlert');
+        } catch (error) {
+            console.error('Network Error or unexpected issue:', error);
+            handleAlert(error.message, 'negativeAlert');
+        }
+    };
+
     function handleRemove(id) {
         fetch('users', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-        },
-            body: JSON.stringify({ card_id: id }),
+            },
+            body: JSON.stringify({card_id: id}),
         })
         .then((r) => r.json())
         .then((json) => {
-            setUser(json)
+            setUser(json.user)
             if(currentView === 'artistSelected'){
                 selectedArtist.cards = selectedArtist.cards.filter(card => card.id !== id);
                 if(!selectedArtist.cards.length)
@@ -28,6 +61,19 @@ function UserCards() {
                 selectedSet.cards = selectedSet.cards.filter(card => card.id !== id);
                 if(!selectedSet.cards.length)
                     handleViewChange('none')
+            }
+            if(json.signal_delete){
+                fetch('cards', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: id})
+                })
+                .then((r) => r.json())
+                .then((json) => {
+                    console.log(json)
+                })
             }
         })
         .catch((error) => {
@@ -73,14 +119,14 @@ function UserCards() {
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                        {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove}/>)}
+                        {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
                     </>
                 )
             case 'setSelected':
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                        {selectedSet.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove}/>)}
+                        {selectedSet.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
                     </>
                 )
             case 'none':
