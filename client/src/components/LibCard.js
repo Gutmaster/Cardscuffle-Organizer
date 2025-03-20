@@ -47,6 +47,7 @@ function LibCard({card}) {
             <img src={card.art} alt={'art unavailable'}/>
             <p className='artistName'>{card.artist.name}</p>                            
             <p className='setName'>{card.set.name}</p>
+            <p className='setDate'>{card.set.release_date}</p>
             {user ? 
                 (user.cards.find(uCard => uCard.id === card.id) ? (<p style={{color:"green"}}>Owned ✓</p>) : 
                 (<button onClick={handleAddCard}>Add to Collection</button>)) 

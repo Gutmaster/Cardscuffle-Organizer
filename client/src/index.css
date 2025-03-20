@@ -118,11 +118,11 @@ header nav a {
 
 .setDate{
     margin-left: 10px;
-    font-size: 10px;
+    font-size: 14px;
     font-weight: bold;
     margin-bottom: 10px;
     font-style:oblique;
-    color: rgb(64, 64, 187);
+    color: rgb(40, 168, 188);
 }
 
 .bigContainer {
