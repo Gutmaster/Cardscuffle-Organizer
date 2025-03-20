@@ -32,7 +32,6 @@ function UserCards() {
                 return;
             }
             const data = await response.json();
-
             //Fix artist and set menus
             //Find old artist and set
             const oldArtist = artists.find(a => a.id === card.artist.id)
@@ -80,7 +79,7 @@ function UserCards() {
                     user.sets.push(newSet)
                 }
             }
-
+            setUser(user)
             setCard(data);
             handleAlert('Card edited!', 'positiveAlert');
         } catch (error) {
@@ -89,34 +88,46 @@ function UserCards() {
         }
     };
 
-    function handleRemove(id) {
-        fetch('users', {
-            method: 'PATCH',
+    function handleRemove(card) {
+        fetch('usercards', {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({card_id: id}),
+            body: JSON.stringify({card_id: card.id}),
         })
         .then((r) => r.json())
         .then((json) => {
-            setUser(json.user)
-            if(currentView === 'artistSelected'){
-                selectedArtist.cards = selectedArtist.cards.filter(card => card.id !== id);
-                if(!selectedArtist.cards.length)
-                    handleViewChange('none')
+            //go back to artists view if we have selected by artist
+            if(currentView === 'artistSelected')
+                handleViewChange('artist')
+            //go back to sets view if we have selected by set
+            else if(currentView === 'setSelected')
+                handleViewChange('set')
+
+            user.cards = user.cards.filter(c => c.id !== card.id)
+            //find current user's artist and set lists
+            const artist = user.artists.find(a => a.id === card.artist.id);
+            const set = user.sets.find(a => a.id === card.set.id);
+            //remove artist from user's artists if no cards remaining
+            if(!artist.cards.length){
+                user.artists = user.artists.filter(a => a.id !== artist.id)
             }
-            else if(currentView === 'setSelected'){
-                selectedSet.cards = selectedSet.cards.filter(card => card.id !== id);
-                if(!selectedSet.cards.length)
-                    handleViewChange('none')
-            }
+            //remove set from user's sets if no cards remaining
+            if(!set.cards.length)
+                user.sets = user.sets.filter(a => a.id !== set.id)
+
+            //remove card from artist and set
+            artist.cards = artist.cards.filter(c => c.id !== card.id);
+            set.cards = set.cards.filter(c => c.id !== card.id);
+            setUser(user)
             if(json.signal_delete){
                 fetch('cards', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({id: id})
+                    body: JSON.stringify({id: card.id})
                 })
                 .then((r) => r.json())
                 .then((json) => {

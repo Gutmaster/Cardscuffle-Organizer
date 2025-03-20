@@ -6,16 +6,36 @@ function LibCard({card}) {
     const {user, setUser} = useContext(UserContext);
 
     function handleAddCard() {
-        fetch('/users', {
-            method: 'PATCH',
+        fetch('/usercards', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
         },
             body: JSON.stringify({ card_id: card.id })
         })
-        .then((r) => r.json())
+        .then((r) => {
+            console.log(r)
+            return r.json()
+        })
         .then((json) =>{
-            setUser(json.user)
+            setUser(json)
+            //find artist and set in user list
+            const artist = user.artists.find(a => a.id === card.artist.id)
+            const set = user.sets.find(s => s.id === card.set.id)
+            // if artist not in user list, replace artist's cards with this card only and add artist to current user
+            if(!artist){
+                card.artist.cards = [card]
+                user.artists.push(card.artist)
+            }
+            else
+                artist.cards.push(card)
+            if(!set){
+                card.set.cards = [card]
+                user.sets.push(card.set)
+            }
+            else
+                set.cards.push(card)
+            user.cards.push(card)
         })
             .catch((error) => {
             console.error("Error:", error);

@@ -15,7 +15,7 @@ import os
 # Local imports
 from config import app, db, api, login_manager
 # Add your model imports
-from models import User, Card, Set, Artist
+from models import User, Card, Set, Artist, UserCard
 
 
 @login_manager.user_loader
@@ -79,25 +79,60 @@ class Users(Resource):
             }
             return make_response(response, 500)
     
+
+class UserCards(Resource):
     @login_required
-    def patch(self):
+    def post(self):
+        data = request.json
+        try:
+            card_id = data.get('card_id')
+            userCard = UserCard(user_id=current_user.id, card_id=card_id)
+            db.session.add(userCard)
+            db.session.commit()
+            return make_response(current_user.to_dict(), 201)
+        except ValueError as ve:
+            response = {
+                'error': 'Validation Error',
+                'message': str(ve)
+            }
+            return make_response(response, 400)
+        except IntegrityError as ie:
+            print("INTEGRIY ERROR", data)
+            db.session.rollback() 
+            response = {
+                'error': 'Database Error',
+                'message': 'ID already exists.'
+            }
+            return make_response(response, 400)
+        except Exception as e:
+            response = {
+                'error': 'Internal Server Error',
+                'message': 'An unexpected error occurred.'
+            }
+            return make_response(response, 500)
+
+    @login_required
+    def delete(self):
         data = request.json
         signal_delete = False
         card_id = data.get('card_id')
+  
         card = Card.query.filter(Card.id == card_id).first()
-        if not card:
-            return {'Error': 'Card not found'}, 404
+        userCard = UserCard.query.filter(
+            UserCard.card_id == card_id,
+            UserCard.user_id == current_user.id
+        ).first()
 
-        if card in current_user.cards: 
-            current_user.cards.remove(card)
-            if not card.users:
-               signal_delete = True
-        else: 
-            current_user.cards.append(card)
+        if not userCard:
+            return {'Error': 'Card not found in current user.'}, 404
 
+        if not card.users:
+            signal_delete = True
+
+        db.session.delete(userCard)
         db.session.commit()
         cutCards(current_user)
-        return make_response({'signal_delete': signal_delete, 'user': current_user.to_dict()}, 200)
+        return make_response({'signal_delete': signal_delete, 'card': card.to_dict()}, 200)
     
 
 class Cards(Resource):
@@ -240,6 +275,7 @@ class Logout(Resource):
 #     return flask.render_template('login.html', form=form)
 
 api.add_resource(Users, '/users')
+api.add_resource(UserCards, '/usercards')
 api.add_resource(Cards, '/cards')
 api.add_resource(Artists, '/artists')
 api.add_resource(Sets, '/sets')

@@ -29,7 +29,7 @@
 }
 
 a {
-     text-decoration: none;
+    text-decoration: none;
 }
 
 nav a {
@@ -39,7 +39,7 @@ nav a {
 }
 
 nav a:hover {
-     color: darkblue;
+    color: darkblue;
 }
 
 .logoutButton {
@@ -94,7 +94,7 @@ header nav {
     padding: 8px;
 }
 
-    header nav a {
+header nav a {
     font-size: 1.5rem;
 }
 
@@ -131,7 +131,7 @@ header nav {
     color: white;
     text-align: center;
     width: 100vw;
-    height: 100vh;
+    height: stretch;
     margin: auto;
     display: flex;
     flex-wrap: wrap;

@@ -14,8 +14,6 @@ class User(db.Model, SerializerMixin, UserMixin):
     _password_hash = db.Column(db.String, nullable=False)
 
     cards = db.relationship('Card', secondary='user_cards', back_populates='users', cascade='all, delete', passive_deletes=True)
-    # artists = association_proxy('cards', 'artist')
-    # sets = association_proxy('cards', 'set')
 
     @property
     def unique_artists(self):

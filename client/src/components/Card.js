@@ -168,7 +168,7 @@ function Card({ cardData, handleRemove, onSubmit }) {
             <p className="setName">{card.set.name}</p>
 
             <button className='submitButton' onClick={e => handleEdit()}>Edit</button>
-            <button className='submitButton'onClick={() => handleRemove(card.id)}>Remove from collection</button>
+            <button className='submitButton'onClick={() => handleRemove(card, artists, sets)}>Remove from collection</button>
             {alertMessage !== '' ? (
                 <p className={alertClass}>{alertMessage}</p>
             ) : null}
