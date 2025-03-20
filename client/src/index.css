@@ -125,7 +125,7 @@ header nav {
     color: rgb(64, 64, 187);
 }
 
-.containerUI {
+.bigContainer {
     background-color: rgb(12, 143, 145);
     padding: 8px;
     color: white;
@@ -140,7 +140,7 @@ header nav {
     align-items: center;
 }
 
-.container {
+.cardsContainer {
     background-color: rgb(12, 145, 58);
     padding: 8px;
     color: white;

@@ -55,7 +55,7 @@ function CardLibrary() {
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                        <div className='container'>
+                        <div className='cardsContainer'>
                             {selectedArtist.cards.map((card) => <LibCard key={card.name} card={card}/>)}
                         </div>
                     </>
@@ -64,7 +64,7 @@ function CardLibrary() {
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                        <div className='container'>
+                        <div className='cardsContainer'>
                             {selectedSet.cards.map((card) => <LibCard key={card.name} card={card}/>)}
                         </div>
                     </>
@@ -81,7 +81,7 @@ function CardLibrary() {
     };
   
     return (
-        <div className='containerUI'>
+        <div className='bigContainer'>
             <h2>Library</h2>
             <p>This is a collection of all cards uploaded to the CardScuffle organizer, feel free to add to your collection!</p>
             {renderContent()}

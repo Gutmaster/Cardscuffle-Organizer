@@ -169,7 +169,7 @@ function UserCards() {
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
-                        <div className='container'>
+                        <div className='cardsContainer'>
                             {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
                          </div>
                     </>
@@ -178,7 +178,7 @@ function UserCards() {
                 return (
                     <>
                         <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
-                        <div className='container'>
+                        <div className='cardsContainer'>
                             {selectedSet.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
                         </div>
                     </>
@@ -194,7 +194,7 @@ function UserCards() {
         }
     };
     return (
-        <div className='containerUI'>
+        <div className='bigContainer'>
             <h2>My Collection</h2>
             <p>These are all of the cards you've uploaded yourself or added to your collection from the library. Feel free to update them if necessary!</p>
             {renderContent()}
