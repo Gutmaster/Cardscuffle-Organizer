@@ -13,15 +13,15 @@ import UserContext from "./context/user.js";
 function RedirectComponent() {
     const navigate = useNavigate();
     const location = useLocation();
-    const {user} = useContext(UserContext);
-    const [restrictedRoutes] = useState('/newcard', '/usercards');
-    //redirect to login if trying to access restricted route
+    const {user, error} = useContext(UserContext);
+    const [restrictedRoutes] = useState(['/newcard', '/usercards']);
+    
     useEffect(() => {
-        if(user === null){
-            if(restrictedRoutes.includes(location.pathname)) {
+        if(error)//redirect to error page if check_session errors
+            navigate('/error')
+        else if(user === null)//redirect to login if trying to access restricted route
+            if(restrictedRoutes.includes(location.pathname))
                 navigate('/login', { replace: true });
-            }
-        }
     }, [location, navigate, restrictedRoutes, user]);
 
     return null;
@@ -30,16 +30,16 @@ function RedirectComponent() {
 function App() {
     return (
         <>
-            <Navbar/>
             <RedirectComponent/>
+            <Navbar/>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="*" element={<Home />} />
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/login" element={<LogIn/>} />
                 <Route path="/newcard" element={<NewCard/>} />
                 <Route path="/usercards" element={<UserCards/>} />
                 <Route path="/library" element={<CardLibrary/>} />
-                <Route path="*" element={<ErrorPage/>} />
+                <Route path="/error" element={<ErrorPage/>} />
             </Routes>
         </>
     );

@@ -38,14 +38,17 @@ function UserCards() {
             const oldSet = sets.find(s => s.id === card.set.id)
             const newArtist = artists.find(a => a.id ===data.artist.id)
             const newSet = sets.find(s => s.id === data.set.id)
+            //find matching copies from user's artists
+            const uOldArtist = user.artists.find(a => a.id === oldArtist.id)
+            const uNewArtist = user.artists.find(a => a.id === newArtist.id)
+            const uOldSet = user.sets.find(a => a.id === oldSet.id)
+            const uNewSet = user.sets.find(a => a.id === newSet.id)
+
             //if they don't match
             if(oldArtist !== newArtist){
                 //go back to artists view if we have selected by artist
                 if(currentView === 'artistSelected')
                     handleViewChange('artist')
-                //find matching copies from user's artists
-                const uOldArtist = user.artists.find(a => a.id === oldArtist.id)
-                const uNewArtist = user.artists.find(a => a.id === newArtist.id)
                 //remove card from old artist
                 uOldArtist.cards = uOldArtist.cards.filter(card => card.id !== data.id);
                 //remove artist from user's artists if no cards remaining
@@ -60,12 +63,15 @@ function UserCards() {
                     user.artists.push(newArtist)
                 }
             }
+            else{
+                const index = uNewArtist.cards.findIndex(c => c.id === card.id);
+                uNewArtist.cards[index] = data; // Replace the old card with the new data
+            }
+
             if(oldSet !== newSet){
                 //go back to sets view if we have selected by set
                 if(currentView === 'setSelected')
                     handleViewChange('set')
-                const uOldSet = user.sets.find(a => a.id === oldSet.id)
-                const uNewSet = user.sets.find(a => a.id === newSet.id)
                 //remove card from old set
                 uOldSet.cards = uOldSet.cards.filter(card => card.id !== data.id);
                 //remove set from user's sets if no cards remaining
@@ -79,6 +85,11 @@ function UserCards() {
                     user.sets.push(newSet)
                 }
             }
+            else{
+                const index = uNewSet.cards.findIndex(c => c.id === card.id);
+                uNewSet.cards[index] = data; // Replace the old card with the new data
+            }
+
             setUser(user)
             setCard(data);
             handleAlert('Card edited!', 'positiveAlert');

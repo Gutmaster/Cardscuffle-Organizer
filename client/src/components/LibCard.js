@@ -14,7 +14,6 @@ function LibCard({card}) {
             body: JSON.stringify({ card_id: card.id })
         })
         .then((r) => {
-            console.log(r)
             return r.json()
         })
         .then((json) =>{

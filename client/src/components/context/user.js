@@ -12,6 +12,8 @@ export const UserProvider = ({ children }) => {
         .then((response) => {
             if (response.status === 201)
                 return response.json();
+            else if (response.status === 500)
+                throw new Error("Server Error: 500");
             else
                 return null;
         })
