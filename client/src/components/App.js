@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Home from "./Home.js"
 import Navbar from "./NavBar.js";
 import SignUp from "./SignUp.js"
@@ -14,7 +14,7 @@ function RedirectComponent() {
     const navigate = useNavigate();
     const location = useLocation();
     const {user} = useContext(UserContext);
-    const restrictedRoutes = ['/newcard', '/usercards']
+    const [restrictedRoutes] = useState('/newcard', '/usercards');
     //redirect to login if trying to access restricted route
     useEffect(() => {
         if(user === null){

@@ -130,17 +130,18 @@ header nav {
     padding: 8px;
     color: white;
     text-align: center;
-    border-radius: 12px;
+    width: 100vw;
+    height: 100vh;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
 .container {
-    background-color: rgb(12, 145, 58);
+    /* background-color: rgb(12, 145, 58); */
     padding: 8px;
     color: white;
     text-align: center;
