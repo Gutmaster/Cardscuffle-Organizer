@@ -4,9 +4,8 @@ import Card from './Card.js';
 
 function UserCards() {
     const [currentView, setCurrentView] = useState('none');
-    const [selectedArtist, setSelectedArtist] = useState();
-    const [selectedSet, setSelectedSet] = useState();
     const {user, setUser} = useContext(UserContext);
+    const [selectedCards, setSelectedCards] = useState([])
 
     const handleFormSubmit = async (values, card, setCard, handleAlert, setEdit, artists, sets) => {
         setEdit(prevEdit => !prevEdit);
@@ -46,9 +45,12 @@ function UserCards() {
 
             //if artists don't match
             if(oldArtist !== newArtist){
-                //go back to artists view if we have selected by artist
+                //go back to artists view if we have selected by artist, otherwise remove card from current view
                 if(currentView === 'artistSelected')
-                    handleViewChange('artist')
+                    if(selectedCards.length <= 1)
+                        handleViewChange('artist')
+                    else
+                        setSelectedCards(selectedCards.filter(c => c.id !== card.id));
                 //remove card from old artist
                 uOldArtist.cards = uOldArtist.cards.filter(card => card.id !== data.id);
                 //remove artist from user's artists if no cards remaining
@@ -70,7 +72,10 @@ function UserCards() {
             if(oldSet !== newSet){
                 //go back to sets view if we have selected by set
                 if(currentView === 'setSelected')
-                    handleViewChange('set')
+                    if(selectedCards.length <= 1)
+                        handleViewChange('set')
+                    else
+                        setSelectedCards(selectedCards.filter(c => c.id !== card.id));
                 //remove card from old set
                 uOldSet.cards = uOldSet.cards.filter(card => card.id !== data.id);
                 //remove set from user's sets if no cards remaining
@@ -150,12 +155,14 @@ function UserCards() {
     }
 
     function handleArtistSelect(id){
-        setSelectedArtist(user.artists.find(artist => artist.id === id));
+        const artist = user.artists.find(artist => artist.id === id);
+        setSelectedCards(artist.cards)
         setCurrentView('artistSelected');
     }
 
     function handleSetSelect(id){
-        setSelectedSet(user.sets.find(set => set.id === id));
+        const set = user.sets.find(set => set.id === id);
+        setSelectedCards(set.cards)
         setCurrentView('setSelected');
     }
 
@@ -190,7 +197,7 @@ function UserCards() {
                     <>
                         <button className='backButton' onClick={() => handleViewChange('artist')}>Back</button>
                         <div className='cardsContainer'>
-                            {selectedArtist.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
+                            {selectedCards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
                          </div>
                     </>
                 )
@@ -199,7 +206,7 @@ function UserCards() {
                     <>
                         <button className='backButton' onClick={() => handleViewChange('set')}>Back</button>
                         <div className='cardsContainer'>
-                            {selectedSet.cards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
+                            {selectedCards.map((card) => <Card key={card.name} cardData={card} handleRemove={handleRemove} onSubmit={handleFormSubmit}/>)}
                         </div>
                     </>
                 )
