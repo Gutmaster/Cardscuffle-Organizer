@@ -13,13 +13,12 @@ import UserContext from "./context/user.js";
 function RedirectComponent() {
     const navigate = useNavigate();
     const location = useLocation();
-    const {user, error} = useContext(UserContext);
+    const {user} = useContext(UserContext);
     const [restrictedRoutes] = useState(['/newcard', '/usercards']);
     
+    //redirect to login if trying to access restricted route
     useEffect(() => {
-        if(error)//redirect to error page if check_session errors
-            navigate('/error')
-        else if(user === null)//redirect to login if trying to access restricted route
+        if(user === null)
             if(restrictedRoutes.includes(location.pathname))
                 navigate('/login', { replace: true });
     }, [location, navigate, restrictedRoutes, user]);

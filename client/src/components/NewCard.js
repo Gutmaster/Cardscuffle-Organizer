@@ -116,59 +116,64 @@ function NewCard() {
         }
     });
 
-    const handleArtistSubmit = (e) => {
-        e.preventDefault();
-        setAddArtist(false);
-        fetch('/artists', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: newArtist,
-            }, null, 2)
-        })
-        .then(response => {
-            if (!response.ok)
-                throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(json => {
-            setArtists([...artists, json])
+    const handleArtistSubmit = async (e) => {
+        try{
+            e.preventDefault();
+            setAddArtist(false);
+            const response = await fetch('/artists', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: newArtist,
+                }, null, 2)
+            })
+            if(!response.ok) {
+                // This block will catch non-200-level HTTP responses
+                const errorData = await response.json()
+                console.error('Validation error:', errorData)
+                handleAlert(errorData.message, 'negativeAlert')
+                return
+            }
+            const data = await response.json()
+            setArtists([...artists, data])
             handleAlert('Artist Added!', 'positiveAlert');
-        })
-        .catch(error => {
+        }catch(error) {
             handleAlert(error.message, 'negativeAlert');
-        });
+        };
     }
 
-    const handleSetSubmit = (e) => {
-        e.preventDefault();
-        setAddSet(false);
-        fetch('/sets', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: newSet,
-                year: 2015,
-                month: 2,
-                day: 1
-            }, null, 2)
-        })
-        .then(response => {
-            if (!response.ok)
-                throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(json => {
-            setSets([...sets, json])
+    const handleSetSubmit = async (e) => {
+        try{
+            const [year, month, day] = date.split('-');
+            e.preventDefault();
+            setAddSet(false);
+            const response = await fetch('/sets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: newSet,
+                    year: year,
+                    month: month,
+                    day: day
+                }, null, 2)
+            })
+            if(!response.ok) {
+                // This block will catch non-200-level HTTP responses
+                const errorData = await response.json()
+                console.error('Validation error:', errorData)
+                handleAlert(errorData.message, 'negativeAlert')
+                return
+            }
+            const data = await response.json()
+            setSets([...sets, data])
             handleAlert('Set Added!', 'positiveAlert');
-        })
-        .catch(error => {
+        }catch(error) {
             handleAlert(error.message, 'negativeAlert');
-        });
+        };
     }
       
     return (

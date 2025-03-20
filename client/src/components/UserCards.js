@@ -32,7 +32,7 @@ function UserCards() {
                 return;
             }
             const data = await response.json();
-            //Fix artist and set menus
+            ////Fix artist and set menus////
             //Find old artist and set
             const oldArtist = artists.find(a => a.id === card.artist.id)
             const oldSet = sets.find(s => s.id === card.set.id)
@@ -44,7 +44,7 @@ function UserCards() {
             const uOldSet = user.sets.find(a => a.id === oldSet.id)
             const uNewSet = user.sets.find(a => a.id === newSet.id)
 
-            //if they don't match
+            //if artists don't match
             if(oldArtist !== newArtist){
                 //go back to artists view if we have selected by artist
                 if(currentView === 'artistSelected')
@@ -63,11 +63,10 @@ function UserCards() {
                     user.artists.push(newArtist)
                 }
             }
-            else{
+            else{//if artists match
                 const index = uNewArtist.cards.findIndex(c => c.id === card.id);
                 uNewArtist.cards[index] = data; // Replace the old card with the new data
-            }
-
+            }//if sets don't match
             if(oldSet !== newSet){
                 //go back to sets view if we have selected by set
                 if(currentView === 'setSelected')
@@ -85,11 +84,10 @@ function UserCards() {
                     user.sets.push(newSet)
                 }
             }
-            else{
+            else{//if sets match
                 const index = uNewSet.cards.findIndex(c => c.id === card.id);
                 uNewSet.cards[index] = data; // Replace the old card with the new data
             }
-
             setUser(user)
             setCard(data);
             handleAlert('Card edited!', 'positiveAlert');

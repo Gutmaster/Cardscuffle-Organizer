@@ -155,5 +155,5 @@ class Artist(db.Model, SerializerMixin):
         if type(value) != str:
             raise ValueError(f'{key} must be a string.')
         if not 3 <= len(value) <= 30:
-                raise ValueError('Arist name must be between 3 and 30 characters.')
+                raise ValueError('Artist name must be between 3 and 30 characters.')
         return value

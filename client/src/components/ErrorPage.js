@@ -1,12 +1,9 @@
-import React, {useContext} from 'react';
-import UserContext from './context/user';
+import React from 'react';
 
 function ErrorPage() {
-    const {error} = useContext(UserContext);
-
     return (
-        <div className='container'>
-            <h1>{error ? error.message : 'You found the error page, congratulations!'}</h1>
+        <div className='bigContainer'>
+            <h1>Network Error</h1>
             <a href="/">Go back to Home</a>
         </div>
     );

@@ -4,7 +4,6 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -22,7 +21,7 @@ export const UserProvider = ({ children }) => {
             setLoading(false);
         })
         .catch(error => {
-            setError(error);
+            console.log(error)
             setLoading(false);
         });
     }, []);
@@ -32,7 +31,7 @@ export const UserProvider = ({ children }) => {
     }
 
     return (
-        <UserContext.Provider value={{ user, setUser, error }}>
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
         </UserContext.Provider>
     );

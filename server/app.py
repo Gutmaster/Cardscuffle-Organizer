@@ -4,13 +4,10 @@
 from datetime import datetime
 
 # Remote library imports
-from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response, jsonify
+from flask import render_template, request, redirect, url_for, make_response
 from flask_restful import Resource
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import desc
-import os
-
 
 # Local imports
 from config import app, db, api, login_manager
@@ -210,11 +207,31 @@ class Artists(Resource):
     
     @login_required
     def post(self):
-        data = request.json
-        artist = Artist(name = data.get('name'))
-        db.session.add(artist)
-        db.session.commit()
-        return artist.to_dict(), 201
+        try:
+            data = request.json
+            artist = Artist(name = data.get('name'))
+            db.session.add(artist)
+            db.session.commit()
+            return artist.to_dict(), 201
+        except ValueError as ve:
+            response = {
+                'error': 'Validation Error',
+                'message': str(ve)
+            }
+            return make_response(response, 400)
+        except IntegrityError as ie:
+            db.session.rollback() 
+            response = {
+                'error': 'Database Error',
+                'message': 'Name already exists.'
+            }
+            return make_response(response, 400)
+        except Exception as e:
+            response = {
+                'error': 'Internal Server Error',
+                'message': 'An unexpected error occurred.'
+            }
+            return make_response(response, 500)
 
 
 class Sets(Resource):
@@ -224,11 +241,32 @@ class Sets(Resource):
     
     @login_required
     def post(self):
-        data = request.json
-        set = Set(name = data.get('name'), release_date = datetime(data.get('year'), data.get('month'), data.get('day')))
-        db.session.add(set)
-        db.session.commit()
-        return set.to_dict(), 201
+        try:
+            data = request.json
+            set = Set(name = data.get('name'), release_date = datetime(int(data.get('year')), int(data.get('month')), int(data.get('day'))))
+            print(set)
+            db.session.add(set)
+            db.session.commit()
+            return set.to_dict(), 201
+        except ValueError as ve:
+            response = {
+                'error': 'Validation Error',
+                'message': str(ve)
+            }
+            return make_response(response, 400)
+        except IntegrityError as ie:
+            db.session.rollback() 
+            response = {
+                'error': 'Database Error',
+                'message': 'Name already exists.'
+            }
+            return make_response(response, 400)
+        except Exception as e:
+            response = {
+                'error': 'Internal Server Error',
+                'message': 'An unexpected error occurred.'
+            }
+            return make_response(response, 500)
 
 
 class Login(Resource):
