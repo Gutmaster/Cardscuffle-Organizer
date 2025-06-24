@@ -2,7 +2,7 @@
 ## CardScuffle Organizer
 
 ## Introduction
-This web application lets users upload and view cards from the hit fiction collectible card game Card Scuffle, categorized by artist and set. The user can also add and edit cards to keep the database current with new releases.
+This web application lets users upload and view cards from the hit fictiononal collectible card game Cardscuffle, categorized by artist and set. The user can also add and edit cards to keep the database current with new releases.
 
 
 # File Descriptions
